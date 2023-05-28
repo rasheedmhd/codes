@@ -1,4 +1,4 @@
-struct locked_list {
+ls struct locked_list {
   spinlock_t s;
   struct cds_list_head h;
 };
