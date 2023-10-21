@@ -80,8 +80,8 @@ pub fn load(input: File) -> ParseProto {
                 constants.push(Value::String(name));
                 bytecodes.push(ByteCode::GetGlobal(0, (constants.len()-1) as u8));
 
-                if let Token::String(s) = lex.next() {
-                    constants.push(Value::String(s));
+                if let Token::String(string) = lex.next() {
+                    constants.push(Value::String(string));
                     bytecodes.push(ByteCode.LoadConst(1, (constants.len()-1) as u8));
                     bytecodes.push(ByteCode::Call(0, 1));
                 } else {
@@ -97,6 +97,63 @@ pub fn load(input: File) -> ParseProto {
     ParseProto {
         constants,
         bytecodes,
+    }
+}
+
+// vm state
+pub struct ExeState {
+    globals: HashMap<String, Value>,
+    stack: Vec::<Value>,
+}
+
+// fn lib_print(state: &mut ExeState) -> i32 {
+//     println!("{:?}", state.stack[1]);
+//     0
+// }
+//
+fn lib_print(state: &mut ExeState) -> ! {
+    println!("{:?}", state.stack[1]);
+}
+
+
+impl ExeState {
+    pub fn new() -> Self {
+        let mut globals = HashMap::new();
+        globals.insert(String::from("print"), Value::Function(lib_print));
+
+        ExeState {
+            globals,
+            stack: Vec::new(),
+        }
+    }
+}
+
+pub fn execute(&mut self, proto: &ParseProto) {
+    for code in proto.bytecodes.iter() {
+        match *code {
+            ByteCode::GetGlobal(dst, name) => {
+                let name = &proto.constants[name as usize]
+                    if let Value::String(key) = name {
+                        let v = self.globals.get(key).unwrap_or(&Value::Nil).clone();
+                        self.set_stack(dst, v);
+                    } else {
+                        panic!("invalid global key: {name:?");
+                    }
+            }
+            ByteCode::LoadConst(dst, c) => {
+                let v = proto.constants[c as usize].clone();
+                self.set_stack(dst, v);
+            }
+
+            ByteCode::Call(function, _) => {
+                let function = &self.constants[c as usize].clone();
+                if let Value::Function(f) = function {
+                    f(self);
+                } else {
+                    panic!("invalid function: {function:?}");
+                }
+            }
+        }
     }
 }
 
