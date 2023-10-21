@@ -1,10 +1,11 @@
 // AN INTERPRETER FOR THE LUA PROGRAMMING LANGUAGE
 // obviously written in Rust
 
-use std::fs::File;
+use crate::vm::ExeState;
+use std::collections::HashMap;
 use std::env;
 use std::fmt;
-use crate::vm::ExeState;
+use std::fs::File;
 
 mod bytecode;
 mod lexer;
@@ -30,7 +31,7 @@ pub enum ByteCode {
 pub enum Value {
     Nil,
     String(String),
-    Function(fn (&mut ExeState) -> i32),
+    Function(fn(&mut ExeState) -> i32),
 }
 
 impl fmt::Debug for Value {
@@ -49,24 +50,24 @@ pub struct Lexer {
 }
 
 impl Lexer {
-    pub fn new(input: File) -> Self;
-    pub fn next(&mut self) -> Token;
+    pub fn new(input: File) -> Self {}
+    pub fn next(&mut self) -> Token {}
 }
 
-loop {
-    if let Some(token) = lexer.next() {
-        match token {
-            ...
-        }
-    } else {
-        break
-    }
-}
+// loop {
+//     if let Some(token) = lexer.next() {
+//         match token {
+//             ...
+//         }
+//     } else {
+//         break
+//     }
+// }
 
 #[derive(Debug)]
 pub struct ParseProto {
-    pub constants: Vec::<Value>,
-    pub bytecodes: Vec::<ByteCode>,
+    pub constants: Vec<Value>,
+    pub bytecodes: Vec<ByteCode>,
 }
 
 pub fn load(input: File) -> ParseProto {
@@ -78,11 +79,11 @@ pub fn load(input: File) -> ParseProto {
         match lex.next() {
             Token::Name(name) => {
                 constants.push(Value::String(name));
-                bytecodes.push(ByteCode::GetGlobal(0, (constants.len()-1) as u8));
+                bytecodes.push(ByteCode::GetGlobal(0, (constants.len() - 1) as u8));
 
                 if let Token::String(string) = lex.next() {
                     constants.push(Value::String(string));
-                    bytecodes.push(ByteCode.LoadConst(1, (constants.len()-1) as u8));
+                    bytecodes.push(ByteCode::LoadConst(1, (constants.len() - 1) as u8));
                     bytecodes.push(ByteCode::Call(0, 1));
                 } else {
                     panic!("expected a string");
@@ -103,7 +104,7 @@ pub fn load(input: File) -> ParseProto {
 // vm state
 pub struct ExeState {
     globals: HashMap<String, Value>,
-    stack: Vec::<Value>,
+    stack: Vec<Value>,
 }
 
 // fn lib_print(state: &mut ExeState) -> i32 {
@@ -114,7 +115,6 @@ pub struct ExeState {
 fn lib_print(state: &mut ExeState) -> ! {
     println!("{:?}", state.stack[1]);
 }
-
 
 impl ExeState {
     pub fn new() -> Self {
@@ -132,13 +132,13 @@ pub fn execute(&mut self, proto: &ParseProto) {
     for code in proto.bytecodes.iter() {
         match *code {
             ByteCode::GetGlobal(dst, name) => {
-                let name = &proto.constants[name as usize]
-                    if let Value::String(key) = name {
-                        let v = self.globals.get(key).unwrap_or(&Value::Nil).clone();
-                        self.set_stack(dst, v);
-                    } else {
-                        panic!("invalid global key: {name:?");
-                    }
+                let name = &proto.constants[name as usize];
+                if let Value::String(key) = name {
+                    let v = self.globals.get(key).unwrap_or(&Value::Nil).clone();
+                    self.set_stack(dst, v);
+                } else {
+                    panic!("invalid global key: {name:?");
+                }
             }
             ByteCode::LoadConst(dst, c) => {
                 let v = proto.constants[c as usize].clone();
@@ -146,7 +146,7 @@ pub fn execute(&mut self, proto: &ParseProto) {
             }
 
             ByteCode::Call(function, _) => {
-                let function = &self.constants[c as usize].clone();
+                let function = &self.constants[function as usize].clone();
                 if let Value::Function(f) = function {
                     f(self);
                 } else {
@@ -158,12 +158,12 @@ pub fn execute(&mut self, proto: &ParseProto) {
 }
 
 fn main() {
-    let args: Vec<string> = env.args().collect();
+    let args: Vec<String> = env::args().collect();
     if args.len() != 2 {
         println!("Usage: {} script", args[0]);
         // return;
     }
-    let file = File::open(&args[1]).unwrap()
+    let file = File::open(&args[1]).unwrap();
 
     let proto = parser::load(file);
     vm::ExeState::new().execute(&proto);
