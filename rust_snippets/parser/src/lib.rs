@@ -99,19 +99,19 @@ fn identifier_parser() {
     );
 }
 
-fn pair<P1, P2, R1, R2>(parser1: P1, parser2: P2) -> impl Fn(&str) -> Result<(&str, (R1, R2)), &str>
-where
-    P1: Fn(&str) -> Result<(&str, R1), &str>,
-    P2: Fn(&str) -> Result<(&str, R2), &str>,
-{
-    move |input| match parser1(input) {
-        Ok((next_input, result1)) => match parser2(next_input) {
-            Ok((final_input, result2)) => Ok((final_input, (result1, result2))),
-            Err(err) => Err(err),
-        },
-        Err(err) => Err(err),
-    }
-}
+// fn pair<P1, P2, R1, R2>(parser1: P1, parser2: P2) -> impl Fn(&str) -> Result<(&str, (R1, R2)), &str>
+// where
+//     P1: Fn(&str) -> Result<(&str, R1), &str>,
+//     P2: Fn(&str) -> Result<(&str, R2), &str>,
+// {
+//     move |input| match parser1(input) {
+//         Ok((next_input, result1)) => match parser2(next_input) {
+//             Ok((final_input, result2)) => Ok((final_input, (result1, result2))),
+//             Err(err) => Err(err),
+//         },
+//         Err(err) => Err(err),
+//     }
+// }
 
 #[test]
 fn pair_combinator() {
@@ -125,15 +125,62 @@ fn pair_combinator() {
 }
 
 // Enter the Functor
-fn map<P, F, A, B>(parser: P, map_fn: F) -> impl Fn(&str) -> Result<(&str, B), &str>
+// fn map<P, F, A, B>(parser: P, map_fn: F) -> impl Fn(&str) -> Result<(&str, B), &str>
+// where
+//     P: Fn(&str) -> Result<(&str, A), &str>,
+//     F: Fn(A) -> B,
+// {
+//     // move |input| match parser(input) {
+//     //     Ok((next_input, result)) => Ok((next_input, map_fn(result))),
+//     //     Err(err) => Err(err),
+//     // }
+
+//     move |input| parser(input).map(|(next_input, result)| (next_input, map_fn(result)))
+// }
+
+// A type alias
+type ParseResult<'a, Output> = Result<(&'a str, Output), &'a str>;
+
+trait Parser<'a, Output> {
+    fn parse(&self, input: &'a str) -> ParseResult<'a, Output>;
+}
+
+impl<'a, F, Output> Parser<'a, Output> for F
 where
-    P: Fn(&str) -> Result<(&str, A), &str>,
+    F: Fn(&'a str) -> ParseResult<Output>,
+{
+    fn parse(&self, input: &'a str) -> ParseResult<'a, Output> {
+        self(input)
+    }
+}
+
+// Rewriting the map function
+fn map<'a, P, F, A, B>(parser: P, map_fn: F) -> impl Parser<'a, B>
+where
+    P: Parser<'a, A>,
     F: Fn(A) -> B,
 {
-    // move |input| match parser(input) {
-    //     Ok((next_input, result)) => Ok((next_input, map_fn(result))),
-    //     Err(err) => Err(err),
-    // }
+    move |input| {
+        parser
+            .parse(input)
+            .map(|(next_input, result)| (next_input, map_fn(result)))
+    }
+}
 
-    move |input| parser(input).map(|(next_input, result)| (next_input, map_fn(result)))
+// Rewriting the pair function
+// tidying up pair
+fn pair<'a, P1, P2, R1, R2>(parser_one: P1, parser_two: P2) -> impl Parser<'a, (R1, R2)>
+where
+    P1: Parser<'a, R1>,
+    P2: Parser<'a, R2>,
+{
+    move |input| {
+        parser_one
+            .parse(input)
+            .and_then(|(next_input, result_one)| {
+                parser_two
+                    .parse(next_input)
+                    .map(|(last_input, result_two)| (last_input, (result_one, result_two)))
+            })
+    }
 }
