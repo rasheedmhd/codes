@@ -23,8 +23,16 @@ fn the_letter_a(input: &str) -> Result<(&str, ()), &str> {
 }
 
 // A Parser Builder
-fn match_literal(expected: &'static str) -> impl Fn(&str) -> Result<(&str, ()), &str> {
-    move |input| match input.get(0..expected.len()) {
+// fn match_literal(expected: &'static str) -> impl Fn(&str) -> Result<(&str, ()), &str> {
+//     move |input| match input.get(0..expected.len()) {
+//         Some(next) if next == expected => Ok((&input[expected.len()..], ())),
+//         _ => Err(input),
+//     }
+// }
+
+// Rewriting match literal
+fn match_literal<'a>(expected: &'static str) -> impl Parser<'a, ()> {
+    move |input: &'a str| match input.get(0..expected.len()) {
         Some(next) if next == expected => Ok((&input[expected.len()..], ())),
         _ => Err(input),
     }
@@ -183,4 +191,21 @@ where
                     .map(|(last_input, result_two)| (last_input, (result_one, result_two)))
             })
     }
+}
+
+// Left and Right
+fn left<'a, P1, P2, R1, R2>(parser_one: P1, parser_two: P2) -> impl Parser<'a, R1>
+where
+    P1: Parser<'a, R1>,
+    P2: Parser<'a, R2>,
+{
+    map(pair(parser_one, parser_two), |(_left, right)| left)
+}
+
+fn right<'a, P1, P2, R1, R2>(parser_one: P1, parser_two: P2) -> impl Parser<'a, R1>
+where
+    P1: Parser<'a, R1>,
+    P2: Parser<'a, R2>,
+{
+    map(pair(parser_one, parser_two), |(_left, right)| right)
 }
