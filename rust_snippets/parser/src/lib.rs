@@ -38,26 +38,6 @@ fn match_literal<'a>(expected: &'static str) -> impl Parser<'a, ()> {
     }
 }
 
-// fn main() {
-//     // fn letter_a(input: &str) -> Result<(&str, Element), &str> {
-//     //     let input = input;
-//     //     let first_letter = input.slice[0];
-//     //     if let first_letter = "a" {
-//     //         println!("The first letter matches "a", {first_letter}");
-//     //         Some(first_letter)
-//     //     } else {
-//     //         input
-//     //     }
-//     // }
-//     //
-
-//     // let sample_input = "aberkewitz";
-//     // let sample_name = "yaw";
-
-//     // letter_a(sample_name);
-// }
-//
-//
 // Parser Testing
 #[test]
 fn literal_parser() {
@@ -152,6 +132,15 @@ type ParseResult<'a, Output> = Result<(&'a str, Output), &'a str>;
 trait Parser<'a, Output> {
     fn parse(&self, input: &'a str) -> ParseResult<'a, Output>;
 }
+
+// impl<'a, F, Output> Parser<'a, Output> for F
+// where
+//     F: Fn(&'a str) -> ParseResult<Output>,
+// {
+//     fn parse(&self, input: &'a str) -> ParseResult<'a, Output> {
+//         self(input)
+//     }
+// }
 
 impl<'a, F, Output> Parser<'a, Output> for F
 where
