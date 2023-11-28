@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require 'gemtrick'
+puts Gemtrick.greet
