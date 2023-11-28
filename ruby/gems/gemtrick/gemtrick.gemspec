@@ -1,6 +1,7 @@
 Gem::Specification.new do |s|
     s.name        = "gemtrick"
-    s.version     = "0.0.1"
+    s.version     = "0.0.2"
+    s.executables << "gemtrick"
     s.summary     = "Gemtrick!"
     s.description = "A simple hello world gem"
     s.authors     = ["Rasheed Starlet"]
