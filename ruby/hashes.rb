@@ -19,7 +19,7 @@ shoes = {
 shoes["summer"]   #=> "sandals"
 
 
-# To prevent null-usage, use-after-free, 
+# To prevent null-usage, use-after-free,
 #=> use .fetch instead
 shoes["hiking"]   #=> nil
 shoes.fetch("hiking")   #=> KeyError: key not found: "hiking"
@@ -49,7 +49,7 @@ hash1 = { "mb" => 2048, "gb" => 2 }
 hash2 = { "tb" => 1024, "pb" => 1 }
 hash1.merge(hash2)      #=> { "a" => 100, "b" => 254, "c" => 300 }
 
-# A better way to keys (pronounced as kiss) 
+# A better way to keys (pronounced as kiss)
 # 'Rocket' syntax
 american_cars = {
   :chevrolet => "Corvette",

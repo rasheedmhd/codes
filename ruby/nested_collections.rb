@@ -26,9 +26,9 @@ mutable = Array.new(3, Array.new(2))
 mutable[0][0] = 1000  #=> 1000
 mutable #=> [[1000, nil], [1000, nil], [1000, nil]]
 
-# Modifying Arrays with 
+# Modifying Arrays with
 #=> <<
-#=> .push() 
+#=> .push()
 #=> .pop()
 test_scores << [100, 99, 98, 97]  #=> [[97, 76, 79, 93], [79, 84, 76, 79], [88, 67, 64, 76], [94, 55, 67, 81], [100, 99, 98, 97]]
 test_scores[0].push(100)  #=> [97, 76, 79, 93, 100]
@@ -103,7 +103,7 @@ vehicles = {
   caleb: { year: 2020, make: "Honda", model: "Accord" }
 }
 
-# Accessing data 
+# Accessing data
 vehicles[:alice][:year] #=> 2019
 vehicles[:blake][:make] #=> "Volkswagen"
 vehicles[:caleb][:model]  #=> "Accord"
@@ -128,7 +128,7 @@ vehicles  #=> {:alice=>{:year=>2019, :make=>"Toyota", :model=>"Corolla"}, :caleb
 vehicles[:dave].delete(:color)  #=> "red"
 vehicles  #=> {:alice=>{:year=>2019, :make=>"Toyota", :model=>"Corolla"}, :caleb=>{:year=>2020, :make=>"Honda", :model=>"Accord"}, :dave=>{:year=>2021, :make=>"Ford", :model=>"Escape"}}
 
-# Methods 
+# Methods
 vehicles.select { |name, data| data[:year] >= 2020 }
 #=> {:caleb=>{:year=>2020, :make=>"Honda", :model=>"Accord"}, :dave=>{:year=>2021, :make=>"Ford", :model=>"Escape"}}
 

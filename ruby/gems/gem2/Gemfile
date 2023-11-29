@@ -1,0 +1,7 @@
+# frozen_string_literal: true
+
+# Gem2/Gemfile
+
+source 'http://rubygems.org'
+
+gemspec

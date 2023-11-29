@@ -41,7 +41,7 @@ class GoodDog
 		# puts "obj init"
 	end
 
-	#=> A method that returns 
+	#=> A method that returns
 	#=> the instance variable
 	#=> A getter method
 	# ---------------------------
@@ -50,7 +50,7 @@ class GoodDog
 	# end
 
 	# def set_name=(name)
-	# 	@name = name 
+	# 	@name = name
 	# end
 	# ---------- conventionally, -------
 	def name
@@ -58,7 +58,7 @@ class GoodDog
 	end
 
 	def name=(name)
-		@name = name 
+		@name = name
 	end
 	#-----------------------------------
 
@@ -71,10 +71,10 @@ puts sparky.get_name
 sparky.set_name = "AppeHaparin"
 
 
-# USING attr_accessor 
+# USING attr_accessor
 class GoodDog
   #=> attr_accessor :name, :height, :weight, :age, :etc
-  #=> provides both getter and setter methods 
+  #=> provides both getter and setter methods
   attr_accessor :name
 
   #=> Okay cool, but I want only getter methods
@@ -175,7 +175,7 @@ puts GoodDog.total_number_of_dogs   #=> 2
 #=> Must begin with a capital letter
 
 # .to_s
-#=> implemented by default on all objects 
+#=> implemented by default on all objects
 #=> puts calls the obj.to_s. slightly different with arrays
 #=> we can create our own instance method to override the default
 

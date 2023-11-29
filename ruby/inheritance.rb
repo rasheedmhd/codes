@@ -19,9 +19,9 @@ end
 sparky = GoodDog.new
 paws = Cat.new
 puts sparky.speak
-puts paws.speak 
+puts paws.speak
 
-# super 
+# super
 class Animal
   def speak
     "Hello!"
