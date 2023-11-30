@@ -7,3 +7,6 @@ class Greeting
     @text 
   end
 end
+
+
+my_object = Greeting.new("Hello")
