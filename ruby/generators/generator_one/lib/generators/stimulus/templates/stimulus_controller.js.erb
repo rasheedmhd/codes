@@ -7,4 +7,10 @@ export default class extends Controller {
 
  connect() {
  }
+ <% options[:actions].each do |action| %>
+
+ <%= action %>(){
+ }
+
+<% end %>
 }
