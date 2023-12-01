@@ -1,0 +1,31 @@
+Description:
+    This generator sets up shrine for assets management for plutonium rails
+
+Example:
+    bin/rails generate shrine Setup
+
+    This will create:
+        In app/models
+        shrine_attachment.rb
+
+
+    bin/rails generate shrine Attachment
+
+    This will create:
+        In app/models
+        shrine_attachment.rb
+
+
+    bin/rails generate shrine Migrate
+
+    This will create:
+        In db/migrate
+        {current_time}_create_shrine_attachments.rb
+
+
+    bin/rails generate shrine Initialize
+
+    This will create:
+        In app/config
+        shrine.rb
+
