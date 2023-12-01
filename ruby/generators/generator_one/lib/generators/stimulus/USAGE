@@ -1,0 +1,8 @@
+Description:
+  Generates a New Stimulus Controller
+
+Example:
+  bin/rails generate stimulus Thing
+
+  This will create:
+    app/javascripts/controllers/thing_controller.js
