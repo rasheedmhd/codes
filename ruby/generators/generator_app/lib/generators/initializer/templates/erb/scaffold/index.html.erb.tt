@@ -1,0 +1,1 @@
+<%% @<%= plural_table_name %>.count %> <%= human_name.pluralize %>
