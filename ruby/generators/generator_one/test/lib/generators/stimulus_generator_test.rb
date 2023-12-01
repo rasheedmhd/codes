@@ -17,4 +17,13 @@ class StimulusGeneratorTest < Rails::Generators::TestCase
 
     assert_file 'app/javascript/controllers/thing_controller.js'
   end
+
+  test 'should add stimulusjs boilerplate' do
+    run_generator ['Thing']
+    assert_file "app/javascript/controllers/thing_controller.js" do |content|
+     assert_match /Controller/, content
+     assert_match /connect()/, content
+     assert_match /@hotwired/, content
+    end
+   end
 end
