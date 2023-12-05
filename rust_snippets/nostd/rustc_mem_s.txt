@@ -1,0 +1,25 @@
+# generated with 
+# objdump -h "$(which rustc)"
+
+
+/Users/Starlet/.cargo/bin/rustc:	file format mach-o arm64
+
+Sections:
+Idx Name             Size     VMA              Type
+  0 __text           004b39f8 0000000100003900 TEXT
+  1 __stubs          00000a98 00000001004b72f8 TEXT
+  2 __stub_helper    00000ab0 00000001004b7d90 TEXT
+  3 __gcc_except_tab 00036798 00000001004b8840 DATA
+  4 __const          000ee0c0 00000001004ef000 DATA
+  5 __cstring        000010cc 00000001005dd0c0 DATA
+  6 __unwind_info    0000d178 00000001005de18c DATA
+  7 __eh_frame       000003f0 00000001005eb308 DATA
+  8 __got            00000050 00000001005ec000 DATA
+  9 __mod_init_func  00000008 00000001005ec050 DATA
+ 10 __const          0007ca58 00000001005ec058 DATA
+ 11 __la_symbol_ptr  00000710 000000010066c000 DATA
+ 12 __thread_vars    00000258 000000010066c710 DATA
+ 13 __data           000031d0 000000010066c968 DATA
+ 14 __thread_data    00000044 000000010066fb38 DATA
+ 15 __thread_bss     00000158 000000010066fb80 DATA
+ 16 __bss            00000498 000000010066fcd8 BSS
