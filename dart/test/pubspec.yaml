@@ -7,4 +7,11 @@ environment:
   sdk: ^3.0.0
   
 dev_dependencies:
-  hotreloader: ^4.1.0
+  hotreloader: ^3.0.6
+  shelf: 
+  shelf_hotreload: 
+  shelf_router:
+  shelf_static:
+  build_runner:
+  build_web_compilers:
+  # shelf_io:
