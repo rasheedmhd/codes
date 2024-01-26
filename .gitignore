@@ -2,3 +2,5 @@ rust_snippets/parser/target/
 rust_snippets/nostd/target/
 .DS_Store
 rust_snippets/.DS_Store
+dart/test
+dart/.DS_Store
