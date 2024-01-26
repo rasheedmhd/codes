@@ -4,3 +4,4 @@ rust_snippets/nostd/target/
 rust_snippets/.DS_Store
 dart/test
 dart/.DS_Store
+python/affinityct/__pycache__
