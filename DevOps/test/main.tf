@@ -28,7 +28,7 @@ provider "aws" {
   #   profile = "stac-ai"
 }
 
-# resource "aws_instance" "stac_ai_server" {
+# resource "aws_instance" "main_server" {
 #   ami           = "ami-0b0ea68c435eb488d"
 #   instance_type = "t2.micro"
 
@@ -81,14 +81,14 @@ resource "aws_vpn_gateway" "main" {
 }
 
 # Step 5: A VPN connection
-resource "aws_vpn_connection" "stac_ai_vpn" {
+resource "aws_vpn_connection" "main_vpn" {
   customer_gateway_id                     = aws_customer_gateway.main.id
   vpn_gateway_id                          = aws_vpn_gateway.main.id
 #   outside_ip_address_type                 = "PrivateIpv4"
   type                                    = "ipsec.1"
 
   tags = {
-    Name = "stac_ai_ipsec_vpn"
+    Name = "main_ipsec_vpn"
   }
 }
 
