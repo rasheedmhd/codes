@@ -61,10 +61,18 @@ resource "aws_vpn_gateway" "main" {
     Name = var.vpn_gateway
   }
 }
+resource "aws_internet_gateway" "igw" {
+  vpc_id 			= aws_vpc.apps_net.id
+
+  tags = {
+    Name 			= var.internet_gateway
+  }
+}
 
 # Step 5: A VPN connection
 resource "aws_vpn_connection" "main_vpn" {
   customer_gateway_id                     = aws_customer_gateway.main.id
+  aws_internet_gateway                    = aws_internet_gateway.igw.id
   vpn_gateway_id                          = aws_vpn_gateway.main.id
   type                                    = "ipsec.1"
 
@@ -73,4 +81,42 @@ resource "aws_vpn_connection" "main_vpn" {
   }
 }
 
+# SUBNETS
+resource "aws_subnet" "PublicSubnet" {
+  vpc_id              				= aws_vpc.apps_net.id
+  cidr_block          				= "10.0.0.0/24"
+  availability_zone   				= "us-east-1a"
+  # Specify true to indicate that instances launched into the subnet should be assigned a public IP address.
+  map_public_ip_on_launch     = true
 
+  tags = {
+    Name = "PublicSubnet"
+  }
+}
+
+
+resource "aws_subnet" "Applications" {
+  vpc_id              				= aws_vpc.apps_net.id
+  cidr_block          				= "10.0.0.0/24"
+  availability_zone   				= "us-east-1c"
+  # Specify true to indicate that instances launched into the subnet should be assigned a public IP address.
+  map_public_ip_on_launch     = false
+
+  tags = {
+    # Applications
+    Name = "ApplicationsPrivateSubnet"
+  }
+}
+
+resource "aws_subnet" "DataServices" {
+  vpc_id              				= aws_vpc.apps_net.id
+  cidr_block          				= "10.0.0.0/24"
+  availability_zone   				= "us-east-1f"
+  # Specify true to indicate that instances launched into the subnet should be assigned a public IP address.
+  map_public_ip_on_launch     = false
+
+  tags = {
+    # Data Services
+    Name = "DataServicesIsolatedSubnet"
+  }
+}
