@@ -1,0 +1,8 @@
+[package]
+name = "length"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+unic-segment = "0.9.0"
+unicode-segmentation = "1.9.0"
