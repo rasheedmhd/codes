@@ -13,7 +13,7 @@ provider "aws" {
   region  = "us-east-1"
 }
 
-resource "aws_vpc" "apps_net" {
+resource "aws_vpc" "main" {
   cidr_block       = "10.0.0.0/16"
   instance_tenancy = "default"
 
@@ -44,7 +44,7 @@ resource "aws_customer_gateway" "main" {
 
 # Step 2: Virtual Private Gateway
 resource "aws_vpn_gateway" "main" {
-  vpc_id             = aws_vpc.apps_net.id
+  vpc_id             = aws_vpc.main.id
 #   amazon_side_asn    = 
 #   availability_zone  =
 
@@ -53,7 +53,7 @@ resource "aws_vpn_gateway" "main" {
   }
 }
 resource "aws_internet_gateway" "igw" {
-  vpc_id 			= aws_vpc.apps_net.id
+  vpc_id 			= aws_vpc.main.id
 
   tags = {
     Name 			= var.internet_gateway
@@ -74,7 +74,7 @@ resource "aws_vpn_connection" "main_vpn" {
 
 # SUBNETS
 resource "aws_subnet" "PublicSubnet" {
-  vpc_id              				= aws_vpc.apps_net.id
+  vpc_id              				= aws_vpc.main.id
   cidr_block          				= "10.0.0.0/24"
   availability_zone   				= "us-east-1a"
   # Specify true to indicate that instances launched into the subnet should be assigned a public IP address.
@@ -87,7 +87,7 @@ resource "aws_subnet" "PublicSubnet" {
 
 
 resource "aws_subnet" "Applications" {
-  vpc_id              				= aws_vpc.apps_net.id
+  vpc_id              				= aws_vpc.main.id
   cidr_block          				= "10.0.0.0/24"
   availability_zone   				= "us-east-1c"
   # Specify true to indicate that instances launched into the subnet should be assigned a public IP address.
@@ -100,7 +100,7 @@ resource "aws_subnet" "Applications" {
 }
 
 resource "aws_subnet" "DataServices" {
-  vpc_id              				= aws_vpc.apps_net.id
+  vpc_id              				= aws_vpc.main.id
   cidr_block          				= "10.0.0.0/24"
   availability_zone   				= "us-east-1f"
   # Specify true to indicate that instances launched into the subnet should be assigned a public IP address.
@@ -144,5 +144,26 @@ resource "aws_instance" "isolated_server" {
 
   tags          = {
     Name = "isolated-data-server"
+  }
+}
+
+// ROUTING TABLES
+resource "aws_route_table" "public_rt" {
+  vpc_id = aws_vpc.main.id
+
+  route = []
+
+  tags = {
+    Name = "PublicRouteTable"
+  }
+}
+
+resource "aws_route_table" "private_rt" {
+  vpc_id = aws_vpc.main.id
+
+  route = []
+
+  tags = {
+    Name = "PrivateRouteTable"
   }
 }
