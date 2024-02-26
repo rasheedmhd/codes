@@ -151,7 +151,16 @@ resource "aws_instance" "isolated_server" {
 resource "aws_route_table" "public_rt" {
   vpc_id = aws_vpc.main.id
 
-  route = []
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.main.id
+  }
+
+  # OPTIONAL
+  # route {
+  #   ipv6_cidr_block        = "::/0"
+  #   gateway_id = aws_internet_gateway.igw.id
+  # }
 
   tags = {
     Name = "PublicRouteTable"
