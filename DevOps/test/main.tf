@@ -22,15 +22,6 @@ resource "aws_vpc" "apps_net" {
   }
 }
 
-# resource "aws_instance" "stac_server" {
-#   ami           = var.instance_ami
-#   instance_type = var.instance_type
-
-#   tags          = {
-#     Name = var.instance_name
-#   }
-# }
-
 # SITE-TO-SITE VPN STEPS
 # Step 1: Create a customer gateway
 # Step 2: Create a target gateway
@@ -118,5 +109,40 @@ resource "aws_subnet" "DataServices" {
   tags = {
     # Data Services
     Name = "DataServicesIsolatedSubnet"
+  }
+}
+
+// EC2 instance to be spinned up in the Public Subnet
+resource "aws_instance" "public_server" {
+  ami           = var.instance_ami
+  instance_type = var.instance_type
+  subnet_id     = aws_subnet.PublicSubnet.id
+
+  tags          = {
+    Name = var.instance_name
+  }
+}
+
+// EC2 instance to be spinned up in the Private Subnet
+// For the Purpose of hosting applications
+resource "aws_instance" "applications_server" {
+  ami           = var.instance_ami
+  instance_type = var.instance_type
+  subnet_id     = aws_subnet.Applications.id
+
+  tags          = {
+    Name = "private-applicatations-server"
+  }
+}
+
+// EC2 instance to be spinned up in the Isolated Subnet
+// For the Purpose of hosting data
+resource "aws_instance" "isolated_server" {
+  ami           = var.instance_ami
+  instance_type = var.instance_type
+  subnet_id     = aws_subnet.DataServices.id
+
+  tags          = {
+    Name = "isolated-data-server"
   }
 }
