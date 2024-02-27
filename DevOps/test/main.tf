@@ -126,9 +126,10 @@ resource "aws_instance" "public_server" {
 // EC2 instance to be spinned up in the Private Subnet
 // For the Purpose of hosting applications
 resource "aws_instance" "applications_server" {
-  ami           = var.instance_ami
-  instance_type = var.instance_type
-  subnet_id     = aws_subnet.Applications.id
+  ami                     = var.instance_ami
+  instance_type           = var.instance_type
+  subnet_id               = aws_subnet.Applications.id
+  vpc_security_group_ids  = [aws_security_group.public_sg.id]
 
   tags          = {
     Name = "private-applicatations-server"
@@ -175,4 +176,29 @@ resource "aws_route_table" "private_rt" {
   tags = {
     Name = "PrivateRouteTable"
   }
+}
+
+
+resource "aws_security_group" "public_sg" {
+  name        = "SSHSG"
+  description = "Allow SSH traffic"
+  vpc_id      = aws_vpc.main.id  # Replace with your VPC ID
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Allow SSH from any IP address
+  }
+
+  egress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Allow SSH to any IP address
+  }
+}
+
+output "security_group_id" {
+  value = aws_security_group.public_sg.id
 }
