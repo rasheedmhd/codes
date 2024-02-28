@@ -178,6 +178,32 @@ resource "aws_route_table" "private_rt" {
   }
 }
 
+// All traffic egress security group
+resource "aws_security_group" "SGPublic" {
+  name        = "SGPublic"
+  description = "Allow only SSH ingress but all egress traffic"
+  vpc_id      = aws_vpc.apps_net.id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Allow SSH from any IP address
+  }
+
+  egress {
+   from_port        = 0
+   to_port          = 0
+   protocol         = "-1" # semantically equivalent to all ports
+   cidr_blocks      = ["0.0.0.0/0"]
+   ipv6_cidr_blocks = ["::/0"]
+ }
+
+  tags          = {
+    Name = "all-egress-traffic-sg"
+  }
+}
+
 
 resource "aws_security_group" "public_sg" {
   name        = "SSHSG"
