@@ -228,3 +228,22 @@ resource "aws_security_group" "public_sg" {
 output "security_group_id" {
   value = aws_security_group.public_sg.id
 }
+
+resource "aws_eip" "nat" {
+  instance = aws_instance.public_server.id
+  # domain   = "vpc"
+}
+
+resource "aws_nat_gateway" "a2p_gateway" {
+  connectivity_type = "public"
+  allocation_id     = aws_eip.nat.id
+  subnet_id         = aws_subnet.PublicSubnet.id
+
+  tags = {
+    Name = "A2P-NAT"
+  }
+
+  # To ensure proper ordering, it is recommended to add an explicit dependency
+  # on the Internet Gateway for the VPC.
+  depends_on = [aws_internet_gateway.igw]
+}
