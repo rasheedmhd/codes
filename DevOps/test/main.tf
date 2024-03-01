@@ -157,11 +157,6 @@ resource "aws_route_table" "public_rt" {
     gateway_id = aws_internet_gateway.main.id
   }
 
-  # OPTIONAL
-  # route {
-  #   ipv6_cidr_block        = "::/0"
-  #   gateway_id = aws_internet_gateway.igw.id
-  # }
 
   tags = {
     Name = "PublicRouteTable"
@@ -205,8 +200,8 @@ resource "aws_security_group" "SGPublic" {
 }
 
 
-resource "aws_security_group" "public_sg" {
-  name        = "SSHSG"
+resource "aws_security_group" "private_sg" {
+  name        = "SGPrivate"
   description = "Allow SSH traffic"
   vpc_id      = aws_vpc.main.id  # Replace with your VPC ID
 
@@ -217,30 +212,39 @@ resource "aws_security_group" "public_sg" {
     cidr_blocks = ["0.0.0.0/0"]  # Allow SSH from any IP address
   }
 
+# not this, our NAT won't work
+  # egress {
+  #   from_port   = 22
+  #   to_port     = 22
+  #   protocol    = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]  # Allow SSH to any IP address
+  # }
+
   egress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Allow SSH to any IP address
-  }
+   from_port        = 0
+   to_port          = 0
+   protocol         = "-1" # semantically equivalent to all ports
+   cidr_blocks      = ["0.0.0.0/0"]
+   ipv6_cidr_blocks = ["::/0"]
+ }
 }
 
 output "security_group_id" {
   value = aws_security_group.public_sg.id
 }
 
-resource "aws_eip" "nat" {
-  instance = aws_instance.public_server.id
-  # domain   = "vpc"
-}
+// NAT gateways and Elastic IP Addresses
+// This is enough to get an EIP assigned to the Subnet
+resource "aws_eip" "test_nat" {}
 
-resource "aws_nat_gateway" "a2p_gateway" {
+resource "aws_nat_gateway" "test_nat_gateway" {
   connectivity_type = "public"
-  allocation_id     = aws_eip.nat.id
+  allocation_id     = aws_eip.test_nat.id # needed for nat gateways of public connectivity_type
+  // Subnet Id of the subnet the Nat gateway is goin to reside on 
   subnet_id         = aws_subnet.PublicSubnet.id
 
   tags = {
-    Name = "A2P-NAT"
+    Name = "One-Nat-Gateway"
   }
 
   # To ensure proper ordering, it is recommended to add an explicit dependency
