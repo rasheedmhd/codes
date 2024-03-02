@@ -1,6 +1,7 @@
 rust_snippets/parser/target/
 rust_snippets/nostd/target/
 rust_snippets/length/target/
+rust_snippets/fs/target/
 .DS_Store
 rust_snippets/.DS_Store
 dart/test
