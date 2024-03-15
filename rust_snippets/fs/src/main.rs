@@ -2,7 +2,6 @@ use std::process;
 use std::env::args;
 use std::io::Write;
 use std::fs::File;
-use std::fs;
 
 // const BUFFER: usize = 2048; 
 
@@ -20,10 +19,12 @@ fn main() {
     }
 
     // open source file
-    let fdold = File::open(argv[1]);
+    let fdold = File::open(&argv[1].to_string());
 
     // create new file
-    let fdnew = File::create(argv[2]);
+    let fdnew = File::create(&argv[2].to_string());
+
+    fdnew.unwrap().write_all(&[' ']);
 
 
 }
