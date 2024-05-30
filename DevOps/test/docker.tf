@@ -1,13 +1,23 @@
 terraform {
+    cloud {
+        organization = "stacai"
+        workspaces {
+        name = "graffiti"
+        }
+    }
   required_providers {
     docker = {
       source  = "kreuzwerker/docker"
       version = "~> 3.0.2"
     }
+
   }
 }
 
-provider "docker" {}
+provider "docker" {
+
+
+}
 
 resource "docker_image" "nginx" {
   name         = "nginx"
