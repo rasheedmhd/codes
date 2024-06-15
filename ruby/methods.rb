@@ -23,6 +23,27 @@ end
 # => nil
 multiply(2, 3) => 6
 
+# Variadic Methods,
+# Methods that takes a variable number or args
+def join_with_commas(*words) 
+  words.join(', ')
+end
+# => nil
+join_with_commas('one', 'two', 'three') 
+# => "one, two, three"
+
+# And finally, * works in parallel assignment too:
+before, *words, after = ['Testing: ', 'one', 'two', 'three', '.']
+
+# A method definition can’t have more than one variable-length parameter, 
+# but normal parameters may appear on either side of it:
+def join_with_commas(before, *words, after) 
+  before + words.join(', ') + after
+end
+
+# => nil
+join_with_commas('Testing: ', 'one', 'two', 'three', '.')
+
 
 # Defining Methods
 def my_name
@@ -149,3 +170,46 @@ puts whisper #=> "HELLO EVERYBODY"
 puts whisper.downcase! #=> "hello everybody"
 puts whisper #=> "hello everybody"
 end
+
+# Blocks
+# A block is a piece of Ruby code surrounded by do/end or curly brackets. 
+# Methods can take an implicit block argument and call the code in that block with the yield keyword:
+def do_three_times_old
+  yield
+  puts "-----"
+  yield
+  puts "-----"
+  yield
+end
+
+do_three_times_old { puts "Hello 3x"}
+
+# Blocks can take arguments:
+def do_three_times 
+  yield('un')
+  yield('deux')
+  yield('trois') 
+  # yield('first')
+  # yield('second')
+  # yield('third') 
+end
+# => nil
+do_three_times { |n| puts "#{n}: hello" }
+do_three_times { |n| puts "Hello #{n} x" }
+
+# Yield returns the result of executing the block:
+# Pretty Neat Huh?
+def number_names
+  [yield('one'), yield('two'), yield('three')].join(', ')
+end
+
+def lang_names
+  [ yield('ML'), 
+    yield('Rust'), 
+    yield('OCaml'), 
+    yield('Ruby')
+  ].join(', ')
+end
+# => nil
+number_names { |name| name.upcase.reverse }
+# => "ENO, OWT, EERHT"
