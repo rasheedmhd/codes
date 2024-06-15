@@ -1,3 +1,15 @@
+val Rust = {
+  creator = "Graydon Hoare",
+  company = "Mozilla",
+  release = 2015,
+  quote   = "Rustaceans"
+};
+
+#company Rust;
+(* prints *)
+(* > val it = "Mozilla": string *)
+
+
 (* 2 Names, Functions and Types : TUPLES *)
 (* RECORDS. *)
 

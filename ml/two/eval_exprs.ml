@@ -38,3 +38,25 @@ fun cond(p,x,y) : int =
 
 
 (* Conditional and/or.  *)
+
+(* Local Declarations  *)
+fun fraction (n,d) =
+let val com = gcd(n,d)
+in (n div com, d div com) end;
+(* We have used a let expression, which has the general form let D in E end *)
+(* During evaluation, the declaration D is evaluated first: expressions within the declaration are evaluated, and their results given names.  *)
+
+
+(* Hiding declarations using local
+A local declaration resembles a let expression:
+local D1 in D2 end
+This declaration behaves like the list of declarations D1;D2 except that D1 is visible only within D2, not outside. Since a list of declarations is regarded as one declaration, both D1 and D2 can declare any number of names. *)
+
+(* Simultaneous declarations
+A simultaneous declaration defines several names at once. *)
+
+(* Here we declare names for π, e and the logarithm of 2. *)
+val pi = 4.0 * Math.atan 1.0
+and e = Math.exp 1.0
+and log 2 = Math .ln 2.0;
+ 
