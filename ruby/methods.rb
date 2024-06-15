@@ -1,13 +1,40 @@
+# Defining methods for Objects
+o = Object.new
+def o.add(x, y)
+	x + y
+end
+
+o.add(4, 5)
+
+# Self in Method definition
+# Ruby always keeps track of the current object (called self) and will allow us to send a message to that object by writing a message name on its own
+def o.add_twice(x, y) 
+	add(x, y) + add(x, y) # implicite 'self' awareness
+	# self.add(x, y) + self.add(x, y) # verbose
+
+end
+
+o.add_twice(2, 3) => 10
+
+# Any method definitions that don’t specify an object will be made available through main:
+def multiply(a, b) 
+	a*b
+end
+# => nil
+multiply(2, 3) => 6
+
+
 # Defining Methods
 def my_name
   "Joe Smith"
 end
+
 puts my_name    #=> "Joe Smith"
 
 # Rules for naming variables
 method_name      # valid
 _name_of_method  # valid
-1_method_name    # invalid
+# 1_method_name    # invalid
 method_27        # valid
 method?_name     # invalid
 method_name!     # valid
@@ -18,12 +45,14 @@ begin_count      # valid
 def sing(name)
   "Hey, " + name + "!"
 end
+
 puts sing("Jude") #=> Hey, Jude!
 
 # Default Parameters
 def greet(name = "stranger")
   "Hello, " + name + "!"
 end
+
 puts greet("Jane") #=> Hello, Jane!
 puts greet #=> Hello, stranger!
 
@@ -39,6 +68,7 @@ puts my_name #=> "Joe Smith"
 def my_name
   return "Joe Smith"
 end
+
 puts my_name #=> "Joe Smith"
 
 def even_odd(number)
@@ -48,13 +78,15 @@ def even_odd(number)
     "That is an odd number."
   end
 end
+
 puts even_odd(16) #=>  That is an even number.
 puts even_odd(17) #=>  That is an odd number.
 
 def my_name
   return "Joe Smith"
-  "Jane Doe"
+  # "Jane Doe" # not reachable
 end
+
 puts my_name #=> "Joe Smith"
 
 def even_odd(number)
@@ -67,6 +99,7 @@ def even_odd(number)
     "That is an odd number."
   end
 end
+
 puts even_odd(20) #=>  That is an even number.
 puts even_odd("Ruby") #=>  A number was not entered.
 
@@ -90,10 +123,10 @@ phrase = ["be", "to", "not", "or", "be", "to"]
 puts phrase.reverse.join(" ").capitalize
 #=> "To be or not to be"
 
-["be", "to", "not", "or", "be", "to"].reverse
-= ["to", "be", "or", "not", "to", "be"].join(" ")
-= "to be or not to be".capitalize
-= "To be or not to be"
+["be", "to", "not", "or", "be", "to"].reverse 
+# = ["to", "be", "or", "not", "to", "be"].join(" ")
+# = "to be or not to be".capitalize
+# = "To be or not to be"
 
 # Predicate Methods
 #=> has ? in their names and returns true or false
@@ -115,30 +148,4 @@ puts whisper #=> "HELLO EVERYBODY"
 #=> Ruby gives us whisper.downcase! 
 puts whisper.downcase! #=> "hello everybody"
 puts whisper #=> "hello everybody"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+end

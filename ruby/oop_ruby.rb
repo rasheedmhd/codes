@@ -1,27 +1,47 @@
-# Defining methods for Objects
-o = Object.new
-def o.add(x, y)
-	x + y
+class Calculator
+	def divide(x, y)
+		x/y 
+	end
+end
+	# => nil
+c = Calculator.new
+#  => <Calculator>
+c.class
+	# => Calculator
+c.divide(10, 2)
+
+# Note that defining a method inside a class definition adds the method to instances of that class, not to main:
+divide(10, 2)
+# NoMethodError: undefined method `divide' for main:Object
+
+# One class can bring in another class’s method definitions through inheritance:
+class MultiplyingCalculator < Calculator 
+	def multiply(x, y)
+		x*y 
+	end
 end
 
-o.add(4, 5)
+# => nil
+mc = MultiplyingCalculator.new 
+# => <MultiplyingCalculator>
+mc.class
+# => MultiplyingCalculator
+mc.class.superclass
 
-# Self in Method definition
-# Ruby always keeps track of the current object (called self) and will allow us to send a message to that object by writing a message name on its own
-def o.add_twice(x, y) 
-	add(x, y) + add(x, y) # implicite 'self' awareness
-	# self.add(x, y) + self.add(x, y) # verbose
-
-end
-
-o.add_twice(2, 3) => 10
-
-# Any method definitions that don’t specify an object will be made available through main:
-def multiply(a, b) 
-	a*b
+# A method in a subclass can call a superclass method of the same name by using the super keyword:
+class BinaryMultiplyingCalculator < MultiplyingCalculator 
+	def multiply(x, y)
+		result = super(x, y)
+		result.to_s(2) 
+	end
 end
 # => nil
-multiply(2, 3) => 6
+
+bmc = BinaryMultiplyingCalculator.new 
+# => <BinaryMultiplyingCalculator>
+bmc.multiply(10, 2)
+# => "10100"
+
 
 # MODULES
 module Speak
