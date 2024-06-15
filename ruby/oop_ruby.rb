@@ -1,3 +1,28 @@
+# Defining methods for Objects
+o = Object.new
+def o.add(x, y)
+	x + y
+end
+
+o.add(4, 5)
+
+# Self in Method definition
+# Ruby always keeps track of the current object (called self) and will allow us to send a message to that object by writing a message name on its own
+def o.add_twice(x, y) 
+	add(x, y) + add(x, y) # implicite 'self' awareness
+	# self.add(x, y) + self.add(x, y) # verbose
+
+end
+
+o.add_twice(2, 3) => 10
+
+# Any method definitions that don’t specify an object will be made available through main:
+def multiply(a, b) 
+	a*b
+end
+# => nil
+multiply(2, 3) => 6
+
 # MODULES
 module Speak
 	def Speak(sound)
@@ -166,8 +191,8 @@ end
 
 puts GoodDog.total_number_of_dogs   #=> 0
 
-dog1 = GoodDog.new
-dog2 = GoodDog.new
+# dog1 = GoodDog.new
+# dog2 = GoodDog.new
 
 puts GoodDog.total_number_of_dogs   #=> 2
 
