@@ -34,6 +34,9 @@ join_with_commas('one', 'two', 'three')
 
 # And finally, * works in parallel assignment too:
 before, *words, after = ['Testing: ', 'one', 'two', 'three', '.']
+puts before 
+puts words 
+puts after
 
 # A method definition can’t have more than one variable-length parameter, 
 # but normal parameters may appear on either side of it:

@@ -1,4 +1,5 @@
 name = "Mav"
+puts name
 age = 11
 age += 4 #=> age = age + 4
 age -= 2 #=> age = age - 2
