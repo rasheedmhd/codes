@@ -1,18 +1,14 @@
 let listings = [
-  { brand: "Nike", description: "Dunk Low Premium", price: 4390.0, size: 43 },
+  { image: "images/men product/shoe14.png", brand: "Nike", description: "Dunk Low Premium", price: 4390.0, size: 43 },
   {
+    image: "images/men product/shoe7.png",
     brand: "Nike",
     description: "Air Force One Low EVO",
     price: 20.0,
     size: 473,
   },
-  { brand: "Nike", description: "JumpMan MVP3", price: 3780.0, size: 43 },
-  {
-    brand: "Nike",
-    description: "GORE-TEX Cortez TXT",
-    price: 3780.0,
-    size: 49,
-  },
+  { image: "images/men product/shoe12.png", brand: "Nike", description: "JumpMan MVP3", price: 3780.0, size: 43 },
+  { image: "images/men product/shoe10.png", brand: "Nike", description: "GORE-TEX Cortez TXT", price: 3780.0, size: 49 },
 ];
 localStorage.setItem("listings", JSON.stringify(listings));
 
@@ -51,17 +47,17 @@ function updateCart() {
     const cartItem = document.createElement("div");
     cartItem.className = "cart-item";
     cartItem.innerHTML = `
-   <div class="pro-container">
-        <div class="product">
-          <img src="images/men product/shoe7.png" />
-          <div class="desc">
-            <span>${item.brand}</span>
-            <h5>${item.description}</h5>
-            <h6>Men's Shoe - UK ${item.size}</h6>
-            <h4>GHS : ${item.price.toFixed(2)}</h4>
-          </div>
-          <button onclick="removeItemFromCart(${index})">Remove from Cart</button>
-    </div>
+    <div class="pro-container">
+         <div class="product">
+           <img src="${item.image}"/>
+           <div class="desc">
+             <h3>${item.brand}</h3>
+             <h5>${item.description}</h5>
+             <h6>Men's Shoe - UK ${item.size}</h6>
+             <h4>GHS : ${item.price.toFixed(2)}</h4>
+           </div>
+           <button onclick="removeItemFromCart(${index})">Remove from Cart</button>
+     </div>
         `;
     cartContainer.appendChild(cartItem);
     totalPrice += item.price;
@@ -109,7 +105,7 @@ function displayCart() {
         itemElement.appendChild(button);
         itemsContainer.appendChild(itemElement);
 
-      }
+      };
 
-displayItems();
+      displayItems();
       displayCart();
