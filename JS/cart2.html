@@ -1,0 +1,73 @@
+< !DOCTYPE html >
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Cart Example</title>
+        </head>
+        <body>
+          <div id="itemsContainer"></div>
+          <div id="cartContainer">
+            <h2>Cart Items</h2>
+            <ul id="cartList"></ul>
+          </div>
+          <script>
+            const cartItems = [
+            {name: "Item 1", description: "Description of item 1", price: 10.0 },
+            {name: "Item 2", description: "Description of item 2", price: 20.0 },
+            {name: "Item 3", description: "Description of item 3", price: 30.0 },
+            {name: "Item 4", description: "Description of item 4", price: 40.0 },
+            ];
+
+            function addItemToCart(item) {
+      // Retrieve the current cart from localStorage
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            // Add the new item to the cart
+            cart.push(item);
+
+            // Save the updated cart back to localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            console.log('Item added to cart:', item);
+            console.log('Updated cart:', cart);
+
+            // Update the cart display
+            displayCartItems(cart);
+    }
+
+            function displayCartItems(cart) {
+      const cartList = document.getElementById('cartList');
+            cartList.innerHTML = ''; // Clear the current cart display
+
+      cart.forEach(item => {
+        const listItem = document.createElement('li');
+            listItem.textContent = `${item.name}: ${item.description} - $${item.price}`;
+            cartList.appendChild(listItem);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+      const itemsContainer = document.getElementById('itemsContainer');
+      cartItems.forEach((item, index) => {
+        const itemElement = document.createElement('div');
+            itemElement.textContent = `${item.name}: ${item.description} - $${item.price}`;
+
+            const button = document.createElement('button');
+            button.textContent = "Add to Cart";
+            button.setAttribute('data-item', JSON.stringify(item));
+            button.addEventListener('click', function() {
+              addItemToCart(JSON.parse(this.getAttribute('data-item')));
+        });
+
+            itemElement.appendChild(button);
+            itemsContainer.appendChild(itemElement);
+      });
+
+            // Retrieve the cart from localStorage and display it
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            displayCartItems(cart);
+    });
+          </script>
+        </body>
+      </html>
