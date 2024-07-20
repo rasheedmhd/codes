@@ -3,6 +3,8 @@ use std::fs::File;
 use std::io::{self, Write};
 use std::path::Path;
 
+// takes the name of a path 
+// prev parser
 fn main() -> io::Result<()> {
     let args: Vec<String> = env::args().collect();
     if args.len() != 2 {
@@ -13,20 +15,23 @@ fn main() -> io::Result<()> {
     let output_dir = &args[1];
 
     define_ast(output_dir, "Expr", vec![
-        "Binary   . left : Box<Expr>, operator : Token, right : Box<Expr>",
-        "Grouping . expression : Box<Expr>",
-        "Literal  . value : String",
-        "Unary    . operator : Token, right : Box<Expr>",
-    ])
-}
-
+        "Assign . name: Token, value : BoxedExpr"
+        ])
+    }
+    // "Expression . expression : BoxedExpr",
+    // "Print      . expression : BoxedExpr",
+    // "Var        . name : Token, initializer : BoxedExpr"
+    // "Unary      . operator : Token, right : BoxedExpr"
+    // "Variable   . name : Token"
+    // "Assign : Token name, Expr value"
 fn define_ast(output_dir: &str, base_name: &str, types: Vec<&str>) -> io::Result<()> {
     let path = Path::new(output_dir).join(format!("{}.rs", base_name.to_lowercase()));
     let mut file = File::create(&path)?;
 
-    writeln!(file, "pub mod llama_ast {{")?;
+    // writeln!(file, "pub mod llama_ast {{")?;
     writeln!(file)?;
     writeln!(file, "    use super::token::Token;")?;
+    writeln!(file, "    type BoxedExpr = Box<Expr>;")?;
     writeln!(file)?;
 
     // Enum
@@ -55,6 +60,7 @@ fn define_ast(output_dir: &str, base_name: &str, types: Vec<&str>) -> io::Result
 
 fn define_type<W: Write>(writer: &mut W, base_name: &str, struct_name: &str, field_list: &str) -> io::Result<()> {
     writeln!(writer)?;
+    writeln!(writer, "    #[derive(Clone, Debug, PartialEq)]")
     writeln!(writer, "    pub struct {}{} {{", struct_name, base_name)?;
 
     for field in field_list.split(", ") {
@@ -74,7 +80,6 @@ fn define_type<W: Write>(writer: &mut W, base_name: &str, struct_name: &str, fie
     }
     writeln!(writer, "            }}")?;
     writeln!(writer, "        }}")?;
-    writeln!(writer, "    }}")?;
     writeln!(writer)?;
 
     Ok(())

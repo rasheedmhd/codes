@@ -1,0 +1,6 @@
+1. C intro ✅ [ 4. Bin Rep ]
+-> 5. Arch
+-> 11. Mem Hierarchy
+-> [ 12. Optimization ] 13. OS
+14. Shared Mem
+-> 15. Other Parrallel

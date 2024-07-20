@@ -21,25 +21,25 @@ val Rust = {
 (* A record is enclosed in braces {. . . }; each field has the form label = expression. *)
 
 val henryV = {
-                name    = "Henry V",
-                born    = 1387,
-                crowned = 1413,
-                died    = 1422,
-                quote   = "Bid them achieve me and then sell my bones"
-              };
+    name    = "Henry V",
+    born    = 1387,
+    crowned = 1413,
+    died    = 1422,
+    quote   = "Bid them achieve me and then sell my bones"
+  };
 
 val richardIII = {
-                name = "Richard III",
-                born = 1452,
-                crowned = 1483,
-                died = 1485,
-                quote = "Plots have I laid..."
-              };
+    name = "Richard III",
+    born = 1452,
+    crowned = 1483,
+    died = 1485,
+    quote = "Plots have I laid..."
+  };
 
 (* If we do not need all the fields, we can write three dots (...) in place of the others. *)
 val {
     name=nameV,
-    born=bornV, 
+    born=bornV,
     ...
   } = HenryV;
 
@@ -49,7 +49,7 @@ label identical. Such a specification can be shortened to simply label. We open
 up Richard III: *)
 val { name, born, died, quote, crowned } = richardIII ;
 
-(* Record field selections. 
+(* Record field selections.
 The selection #label gets the value of the given label from a record. *)
 
 #quote richardIII ;
@@ -90,16 +90,16 @@ lifetime richardIII ;
 fun lifetime({name,born,crowned,died,quote}) = died - born;
 
 (* INFIX OPERATORS *)
-(* We take infix notation for granted in mathematics. 
-Imagine doing without it. Instead of 2+2=4 we should have to write =(+(2,2),4). 
+(* We take infix notation for granted in mathematics.
+Imagine doing without it. Instead of 2+2=4 we should have to write =(+(2,2),4).
 Most functional languages let programmers declare their own infix operators. *)
 
 infix xor;
 
 fun (p xor q) = (p orelse q) andalso not (p andalso q);
 
-(* An ML infix directive may state a precedence from 0 to 9. 
-default precedence = 0 = lowest. 
+(* An ML infix directive may state a precedence from 0 to 9.
+default precedence = 0 = lowest.
 infix is left associated, while infixr is right associated. *)
 infix 6 plus;
 fun (a plus b) = "(" ^ a ^ "+" ^ b ^ ")";
@@ -115,13 +115,13 @@ infix 8 pow;
 fun (a pow b) = "(" ^ a ^ "#" ^ b ^ ")";
 "m" times "i" pow "j" pow "2" times "n";
 
-(* Many infix operators have symbolic names. 
+(* Many infix operators have symbolic names.
 Let ++ be the operator for vector addition: *)
 infix ++;
 fun ((x1,y1) ++ (x2,y2)) : vec = (x1+x2, y1+y2);
 
-(* Keep symbolic names separate. 
-Symbolic names can cause confusion if you run them together. 
+(* Keep symbolic names separate.
+Symbolic names can cause confusion if you run them together.
 Below, ML reads the characters +~ as one symbolic name,
 then complains that this name has no value: *)
 
@@ -130,17 +130,17 @@ then complains that this name has no value: *)
 (* Symbolic names must be separated by spaces or other characters: *)
 1+ ~3;
 
-(* Taking infixes as functions. Occasionally an infix has to be treated like an ordinary function. 
+(* Taking infixes as functions. Occasionally an infix has to be treated like an ordinary function.
 In ML the keyword op overrides infix status: if ⊕ is an infix
   operator then op⊕ is the corresponding function, which can be applied to a pair
   in the usual way. *)
 op++ ((2.5,0.0), (0.1,2.5));
 
 (* Infix status can be revoked. If ⊕ is an infix operator then the directive nonfix⊕
-makes it revert to ordinary function notation. 
+makes it revert to ordinary function notation.
 A subsequent infix directive can make ⊕ an infix operator again.
-Here we deprive ML's multiplication operator of its infix status. 
-The attempt to use it produces an error message, since we may not apply 3 as a function. 
+Here we deprive ML's multiplication operator of its infix status.
+The attempt to use it produces an error message, since we may not apply 3 as a function.
 But * can be applied as a function: *)
 
 nonfix *;
