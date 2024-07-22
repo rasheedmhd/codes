@@ -37,7 +37,7 @@ int main() {
 	// }
 	// return  0;
 	int  some[5], more[10], i;
-	char name[7];
+	char name[8];
 	name[0] = 's';
 	name[1] = 't';
 	name[2] = 'a';
@@ -45,6 +45,8 @@ int main() {
 	name[4] = 'l';
 	name[5] = 'e';
 	name[6] = 't';
+	// Corrected a null-terminated string bug/error
+	name[7] = '\0';
 
 	printf("%s\n", name);
 
