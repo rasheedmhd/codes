@@ -9,4 +9,9 @@ dart/.DS_Store
 python/affinityct/__pycache__
 DevOps/test/.terraform/
 DevOps/test/.terraform.lock.hcl
-DevOps/test/terraform.tfstate.backup 
+DevOps/test/terraform.tfstate.backup
+
+
+
+sys/*.out
+elm/elm-stuff/*
