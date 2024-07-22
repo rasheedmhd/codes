@@ -1,5 +1,6 @@
 import Html exposing (text, ul, li)
 import List exposing (map, concatMap, filterMap, repeat)
+
 main =
 [1..40] |> concatMap (\c ->
     [1..c-1] |> concatMap (\b ->
