@@ -11,8 +11,6 @@ DevOps/test/.terraform/
 DevOps/test/.terraform.lock.hcl
 DevOps/test/terraform.tfstate.backup
 
-
-
 sys/*.out
 sys/ch2/*.out
 elm/elm-stuff/*
