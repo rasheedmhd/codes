@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io::{self, Write};
 use std::path::Path;
 
-// takes the name of a path 
+// takes the name of a path
 // prev parser
 fn main() -> io::Result<()> {
     let args: Vec<String> = env::args().collect();
@@ -14,16 +14,14 @@ fn main() -> io::Result<()> {
 
     let output_dir = &args[1];
 
-    define_ast(output_dir, "Expr", vec![
-        "Assign . name: Token, value : BoxedExpr"
-        ])
-    }
-    // "Expression . expression : BoxedExpr",
-    // "Print      . expression : BoxedExpr",
-    // "Var        . name : Token, initializer : BoxedExpr"
-    // "Unary      . operator : Token, right : BoxedExpr"
-    // "Variable   . name : Token"
-    // "Assign : Token name, Expr value"
+    define_ast(output_dir, "Stmt", vec!["Block . statements: Vec<Stmt>"])
+}
+// "Expression . expression : BoxedExpr",
+// "Print      . expression : BoxedExpr",
+// "Var        . name : Token, initializer : BoxedExpr"
+// "Unary      . operator : Token, right : BoxedExpr"
+// "Variable   . name : Token"
+// "Assign : Token name, Expr value"
 fn define_ast(output_dir: &str, base_name: &str, types: Vec<&str>) -> io::Result<()> {
     let path = Path::new(output_dir).join(format!("{}.rs", base_name.to_lowercase()));
     let mut file = File::create(&path)?;
@@ -58,9 +56,14 @@ fn define_ast(output_dir: &str, base_name: &str, types: Vec<&str>) -> io::Result
     Ok(())
 }
 
-fn define_type<W: Write>(writer: &mut W, base_name: &str, struct_name: &str, field_list: &str) -> io::Result<()> {
+fn define_type<W: Write>(
+    writer: &mut W,
+    base_name: &str,
+    struct_name: &str,
+    field_list: &str,
+) -> io::Result<()> {
     writeln!(writer)?;
-    writeln!(writer, "    #[derive(Clone, Debug, PartialEq)]")
+    writeln!(writer, "    #[derive(Clone, Debug, PartialEq)]");
     writeln!(writer, "    pub struct {}{} {{", struct_name, base_name)?;
 
     for field in field_list.split(", ") {
@@ -90,20 +93,38 @@ fn define_visitor<W: Write>(writer: &mut W, base_name: &str, types: &[&str]) -> 
 
     for type_def in types {
         let type_name = type_def.split('.').next().unwrap().trim();
-        writeln!(writer, "        fn visit_{}_{}(&mut self, {}: &{}{}) -> T;",
-                 type_name.to_lowercase(), base_name.to_lowercase(),
-                 base_name.to_lowercase(), type_name, base_name)?;
+        writeln!(
+            writer,
+            "        fn visit_{}_{}(&mut self, {}: &{}{}) -> T;",
+            type_name.to_lowercase(),
+            base_name.to_lowercase(),
+            base_name.to_lowercase(),
+            type_name,
+            base_name
+        )?;
     }
 
     writeln!(writer, "    }}")?;
     writeln!(writer)?;
 
     writeln!(writer, "    impl {} {{", base_name)?;
-    writeln!(writer, "        pub fn accept<T>(&self, visitor: &mut dyn Visitor<T>) -> T {{")?;
+    writeln!(
+        writer,
+        "        pub fn accept<T>(&self, visitor: &mut dyn Visitor<T>) -> T {{"
+    )?;
     writeln!(writer, "            match self {{")?;
     for type_def in types {
         let struct_name = type_def.split('.').next().unwrap().trim();
-        writeln!(writer, "                {}::{}({}) => visitor.visit_{}_{}({}),", base_name, struct_name, base_name.to_lowercase(), struct_name.to_lowercase(), base_name.to_lowercase(), base_name.to_lowercase())?;
+        writeln!(
+            writer,
+            "                {}::{}({}) => visitor.visit_{}_{}({}),",
+            base_name,
+            struct_name,
+            base_name.to_lowercase(),
+            struct_name.to_lowercase(),
+            base_name.to_lowercase(),
+            base_name.to_lowercase()
+        )?;
     }
     writeln!(writer, "            }}")?;
     writeln!(writer, "        }}")?;
