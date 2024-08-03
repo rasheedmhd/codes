@@ -1,47 +1,89 @@
+-- Make a GET request to load a book called "Public Opinion"
+--
+-- Read how it works:
+--   https://guide.elm-lang.org/effects/http.html
+--
 module Main exposing (main)
 
 import Browser
-import Html exposing (Html, div, text)
+import Html exposing (Html, text, pre)
 import Http
 
-type alias Model =
- { message : String }
+
+
+-- MAIN
+
 
 main =
- Browser.element { init = init, update = update, view = view, subscriptions = \_ -> Sub.none }
- -- Browser.sandbox { init = init, update = update, view = view }
+  Browser.element
+    { init = init
+    , update = update
+    , subscriptions = subscriptions
+    , view = view
+    }
 
+
+
+-- MODEL
+
+
+type Model
+  = Failure
+  | Loading
+  | Success String
+
+
+init : () -> (Model, Cmd Msg)
 init _ =
- -- "Hello World!"
- ( { message = "Loading...." }
- , getMessage
- )
+  ( Loading
+  , Http.get
+      { url = "https://elm-lang.org/assets/public-opinion.txt"
+      , expect = Http.expectString GotText
+      }
+  )
 
- type Msg =
- GotMessage ( Result Http.Error String)
 
+
+-- UPDATE
+
+
+type Msg
+  = GotText (Result Http.Error String)
+
+
+update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
- case msg of
-  GotMessage (Ok message) =>
-   { model | message = message }
+  case msg of
+    GotText result ->
+      case result of
+        Ok fullText ->
+          (Success fullText, Cmd.none)
 
-  GotMessage (Err _) ->
-   { modle | message = "Failed to load message }
+        Err _ ->
+          (Failure, Cmd.none)
 
+
+
+-- SUBSCRIPTIONS
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+  Sub.none
+
+
+
+-- VIEW
+
+
+view : Model -> Html Msg
 view model =
- div [] [ text model.message ]
+  case model of
+    Failure ->
+      text "I was unable to load your book."
 
-getMessage =
- Http.get
- { url = "http://localhost:8080"
- , expect = Http.expectString GotMessage
- }
+    Loading ->
+      text "Loading..."
 
--- use Http, Http.Response
-
--- app "Basic Web Server" provides [main] to platform
-
--- main = Http.serve 8080 \req ->
-
--- Http.okWith [("Access-Control-Allow-Origin", "*")] "Hell
--- from Roc!"
+    Success fullText ->
+      pre [] [ text fullText ]
