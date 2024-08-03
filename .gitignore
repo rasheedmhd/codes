@@ -13,6 +13,9 @@ DevOps/test/terraform.tfstate.backup
 
 sys/*.out
 sys/ch2/*.out
+
 elm/elm-stuff/*
 elm/Groove/elm-stuff/*
+elm/elm-frontend/elm-stuff/*
+
 tgpl/ch1/dup
