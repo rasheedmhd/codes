@@ -14,14 +14,17 @@ fn main() -> io::Result<()> {
 
     let output_dir = &args[1];
 
-    define_ast(output_dir, "Stmt", vec!["Block . statements: Vec<Stmt>"])
+    define_ast(output_dir, "Stmt", vec!["While . condition : BoxedExpr, body : BoxedStmt"])
 }
 // "Expression . expression : BoxedExpr",
 // "Print      . expression : BoxedExpr",
 // "Var        . name : Token, initializer : BoxedExpr"
 // "Unary      . operator : Token, right : BoxedExpr"
 // "Variable   . name : Token"
-// "Assign : Token name, Expr value"
+// "Assign     . name : Token, value : BoxedExpr"
+// "If         . condition : BoxedExpr, thenBranch : Stmt," + " elseBranch : Stmt" ,
+// "Logical    . left : BoxedExpr, operator : Token, right : BoxedExpr"
+// "While      . condition : BoxedExpr, body : BoxedStmt"
 fn define_ast(output_dir: &str, base_name: &str, types: Vec<&str>) -> io::Result<()> {
     let path = Path::new(output_dir).join(format!("{}.rs", base_name.to_lowercase()));
     let mut file = File::create(&path)?;
@@ -51,7 +54,7 @@ fn define_ast(output_dir: &str, base_name: &str, types: Vec<&str>) -> io::Result
         define_type(&mut file, base_name, class_name, fields)?;
     }
 
-    writeln!(file, "}}")?;
+    // writeln!(file, "}}")?;
 
     Ok(())
 }
@@ -83,8 +86,7 @@ fn define_type<W: Write>(
     }
     writeln!(writer, "            }}")?;
     writeln!(writer, "        }}")?;
-    writeln!(writer)?;
-
+    writeln!(writer, "    }}")?;
     Ok(())
 }
 
@@ -130,7 +132,7 @@ fn define_visitor<W: Write>(writer: &mut W, base_name: &str, types: &[&str]) -> 
     writeln!(writer, "        }}")?;
     writeln!(writer, "    }}")?;
 
-    writeln!(writer)?;
+    // writeln!(writer)?;
 
     Ok(())
 }

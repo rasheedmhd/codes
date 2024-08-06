@@ -37,7 +37,7 @@ init : () -> (Model, Cmd Msg)
 init _ =
   ( Loading
   , Http.get
-      { url = "https://rasheedstarlet.com/articles/strings.html"
+      { url = "http://localhost:8000/"
       , expect = Http.expectString GotText
       }
   )
@@ -80,7 +80,7 @@ view : Model -> Html Msg
 view model =
   case model of
     Failure ->
-      text "I was unable to load your book."
+      text "I was unable to get a message from the server."
 
     Loading ->
       text "Loading..."
