@@ -8,9 +8,14 @@
 -- 2. img [ src "1.jpeg" ] []
 -- or even both empty
 -- br [] []
+
 module PhotoGroove exposing (main)
 
-import Html exposing (div, h1, img, text)
+-- Imports all primitive/attributes the Html modules offers
+-- https://package.elm-lang.org/packages/elm/html/latest/Html
+import Html exposing (..)
+-- Imports all primitive/attributes the Html>Attribute module offers
+-- https://package.elm-lang.org/packages/elm/html/latest/Html-Attributes
 import Html.Attributes exposing (..)
 
 view model =

@@ -37,7 +37,7 @@ init : () -> (Model, Cmd Msg)
 init _ =
   ( Loading
   , Http.get
-      { url = "http://localhost:8000/"
+      { url = "http://rasheedstarlet.com"
       , expect = Http.expectString GotText
       }
   )

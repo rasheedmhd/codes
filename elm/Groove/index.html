@@ -34,8 +34,11 @@
 	</head>
 	<body>
 		<div id="app"></div>
+		<!-- The Elm application will render into this div -->
 		<script src="app.js"></script>
+		<!-- PhotoGroove.elm will get compiled inot app.js -->
 		<script>
+			// The Elm object comes from app.js
 			Elm.PhotoGroove.init({ node: document.getElementById("app") });
 		</script>
 	</body>
