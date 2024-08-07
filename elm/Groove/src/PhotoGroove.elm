@@ -8,15 +8,16 @@
 -- 2. img [ src "1.jpeg" ] []
 -- or even both empty
 -- br [] []
-
 module PhotoGroove exposing (main)
 
+import Browser
 -- Imports all primitive/attributes the Html modules offers
 -- https://package.elm-lang.org/packages/elm/html/latest/Html
 import Html exposing (..)
 -- Imports all primitive/attributes the Html>Attribute module offers
 -- https://package.elm-lang.org/packages/elm/html/latest/Html-Attributes
 import Html.Attributes exposing (..)
+import Html.Events exposing (onClick)
 
 urlPrefix =
  "http://elm-in-action.com/"
@@ -42,6 +43,7 @@ viewThumbnail selectedUrl thumbnail =
  img
   [ src (urlPrefix ++ thumbnail.url)
   , classList [ ( "selected", selectedUrl == thumbnail.url ) ]
+  , onClick { decription = "ClickedPhoto", data = thumbnail.url }
   ]
   []
 
@@ -52,7 +54,7 @@ initialModel =
   , { url = "2.jpeg" }
   , { url = "3.jpeg" }
   ]
-  , selectedUrl = "1.jpeg"
+ , selectedUrl = "1.jpeg"
  }
 
 
@@ -65,4 +67,8 @@ update msg model =
   model
 
 main =
- view initialModel
+ Browser.sandbox
+  { init = initialModel
+  , view = view
+  , update = update
+  }
