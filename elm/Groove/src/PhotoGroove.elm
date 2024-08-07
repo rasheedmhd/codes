@@ -18,12 +18,13 @@ import Html exposing (..)
 -- https://package.elm-lang.org/packages/elm/html/latest/Html-Attributes
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
+import Array exposing (Array)
 
 photoListUrl : String
 photoListUrl =
  "http://elm-in-action.com/"
 
-view : { a | selectedUrl : String, photos : List { b | url : String } } -> Html { decription : String, data : String }
+view : Model -> Html Msg
 view model =
  div [ class "content" ]
   [ h1 [] [ text "Photo Groove" ]
@@ -37,7 +38,7 @@ view model =
   ]
 
 -- Helper/translation function
-viewThumbnail : String -> { a | url : String } -> Html { decription : String, data : String }
+viewThumbnail : String -> Photo -> Html Msg
 viewThumbnail selectedUrl thumbnail =
 -- Return image but in a situation where by the selectedUrl is
 -- the same as the url of the thumbnail,
@@ -50,8 +51,19 @@ viewThumbnail selectedUrl thumbnail =
   ]
   []
 
+type alias Photo =
+ { url : String }
 
-initialModel : { photos : List { url : String }, selectedUrl : String }
+
+type alias Model =
+-- { a | selectedUrl : String, photos : List { b | url : String } }
+ { photos: List Photo
+ , selectedUrl : String
+ }
+
+type alias Msg =
+  { decription : String, data : String }
+initialModel : Model
 initialModel =
  { photos =
   [ { url = "1.jpeg" }
@@ -60,6 +72,10 @@ initialModel =
   ]
  , selectedUrl = "1.jpeg"
  }
+
+photoArray : Array Photo
+photoArray = 
+ Array.fromList initialModel.photos
 
 
 -- { description = "ClickedPhoto", data = "2.jpeg" }
@@ -71,7 +87,7 @@ update msg model =
  else 
   model
 
-main : Program () { photos : List { url : String }, selectedUrl : String } { decription : String, data : String }
+main : Program () Model Msg
 main =
  Browser.sandbox
   { init = initialModel
