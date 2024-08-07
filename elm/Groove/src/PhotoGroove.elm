@@ -108,6 +108,14 @@ photoArray : Array Photo
 photoArray = 
  Array.fromList initialModel.photos
 
+getPhotoUrl : Int -> String
+getPhotoUrl index =
+ case Array.get index photoArray of
+  Just photo ->
+   photo.url
+
+  Nothing -> 
+   ""
 
 -- { description = "ClickedPhoto", data = "2.jpeg" }
 update : Msg -> Model -> Model
