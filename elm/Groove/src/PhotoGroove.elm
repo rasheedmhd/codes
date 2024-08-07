@@ -19,9 +19,11 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 
-urlPrefix =
+photoListUrl : String
+photoListUrl =
  "http://elm-in-action.com/"
 
+view : { a | selectedUrl : String, photos : List { b | url : String } } -> Html { decription : String, data : String }
 view model =
  div [ class "content" ]
   [ h1 [] [ text "Photo Groove" ]
@@ -29,25 +31,27 @@ view model =
     (List.map (viewThumbnail model.selectedUrl) model.photos)
   , img
     [ class "large"
-    , src (urlPrefix ++ "large/" ++ model.selectedUrl)
+    , src (photoListUrl ++ "large/" ++ model.selectedUrl)
     ]
     []
   ]
 
 -- Helper/translation function
+viewThumbnail : String -> { a | url : String } -> Html { decription : String, data : String }
 viewThumbnail selectedUrl thumbnail =
 -- Return image but in a situation where by the selectedUrl is
 -- the same as the url of the thumbnail,
 -- there by returning true, add a class attribute
 -- with the name of the classList string to the image and return it
  img
-  [ src (urlPrefix ++ thumbnail.url)
+  [ src (photoListUrl ++ thumbnail.url)
   , classList [ ( "selected", selectedUrl == thumbnail.url ) ]
   , onClick { decription = "ClickedPhoto", data = thumbnail.url }
   ]
   []
 
 
+initialModel : { photos : List { url : String }, selectedUrl : String }
 initialModel =
  { photos =
   [ { url = "1.jpeg" }
@@ -59,6 +63,7 @@ initialModel =
 
 
 -- { description = "ClickedPhoto", data = "2.jpeg" }
+update : { a | decription : String, data : b } -> { c | selectedUrl : b } -> { c | selectedUrl : b }
 update msg model =
  if msg.decription == "ClickedPhoto" then
   { model | selectedUrl = msg.data }
@@ -66,6 +71,7 @@ update msg model =
  else 
   model
 
+main : Program () { photos : List { url : String }, selectedUrl : String } { decription : String, data : String }
 main =
  Browser.sandbox
   { init = initialModel
