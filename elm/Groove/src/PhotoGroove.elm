@@ -25,7 +25,7 @@ view model =
  div [ class "content" ]
   [ h1 [] [ text "Photo Groove" ]
   , div [ id "thumbnails" ]
-    (List.map (createThumbnailUrl model.selectedUrl) model.photos)
+    (List.map (viewThumbnail model.selectedUrl) model.photos)
   , img
     [ class "large"
     , src (urlPrefix ++ "large/" ++ model.selectedUrl)
@@ -34,7 +34,7 @@ view model =
   ]
 
 -- Helper/translation function
-createThumbnailUrl selectedUrl thumbnail =
+viewThumbnail selectedUrl thumbnail =
 -- Return image but in a situation where by the selectedUrl is
 -- the same as the url of the thumbnail,
 -- there by returning true, add a class attribute
@@ -43,6 +43,7 @@ createThumbnailUrl selectedUrl thumbnail =
   [ src (urlPrefix ++ thumbnail.url)
   , classList [ ( "selected", selectedUrl == thumbnail.url ) ]
   ]
+  []
 
 
 initialModel =
@@ -54,6 +55,14 @@ initialModel =
   , selectedUrl = "1.jpeg"
  }
 
+
+-- { description = "ClickedPhoto", data = "2.jpeg" }
+update msg model =
+ if msg.decription == "ClickedPhoto" then
+  { model | selectedUrl = msg.data }
+
+ else 
+  model
 
 main =
  view initialModel
