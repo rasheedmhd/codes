@@ -5191,10 +5191,21 @@ var $elm$browser$Browser$sandbox = function (impl) {
 };
 var $author$project$PhotoGroove$update = F2(
 	function (msg, model) {
-		return (msg.decription === 'ClickedPhoto') ? _Utils_update(
-			model,
-			{selectedUrl: msg.data}) : model;
+		var _v0 = msg.description;
+		switch (_v0) {
+			case 'ClickedPhoto':
+				return _Utils_update(
+					model,
+					{selectedUrl: msg.data});
+			case 'ClickedSurpriseMe':
+				return _Utils_update(
+					model,
+					{selectedUrl: '2.jpeg'});
+			default:
+				return model;
+		}
 	});
+var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -5208,6 +5219,23 @@ var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$html$Html$img = _VirtualDom_node('img');
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 'Normal', a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
 var $author$project$PhotoGroove$photoListUrl = 'http://elm-in-action.com/';
 var $elm$html$Html$Attributes$src = function (url) {
 	return A2(
@@ -5242,23 +5270,6 @@ var $elm$html$Html$Attributes$classList = function (classes) {
 				$elm$core$Tuple$first,
 				A2($elm$core$List$filter, $elm$core$Tuple$second, classes))));
 };
-var $elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 'Normal', a: a};
-};
-var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
-var $elm$html$Html$Events$on = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$Normal(decoder));
-	});
-var $elm$html$Html$Events$onClick = function (msg) {
-	return A2(
-		$elm$html$Html$Events$on,
-		'click',
-		$elm$json$Json$Decode$succeed(msg));
-};
 var $author$project$PhotoGroove$viewThumbnail = F2(
 	function (selectedUrl, thumbnail) {
 		return A2(
@@ -5275,7 +5286,7 @@ var $author$project$PhotoGroove$viewThumbnail = F2(
 							_Utils_eq(selectedUrl, thumbnail.url))
 						])),
 					$elm$html$Html$Events$onClick(
-					{data: thumbnail.url, decription: 'ClickedPhoto'})
+					{data: thumbnail.url, description: 'ClickedPhoto'})
 				]),
 			_List_Nil);
 	});
@@ -5294,6 +5305,17 @@ var $author$project$PhotoGroove$view = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text('Photo Groove')
+					])),
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Events$onClick(
+						{data: '', description: 'ClickedSurpriseMe'})
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Surprise Me!')
 					])),
 				A2(
 				$elm$html$Html$div,
