@@ -10,19 +10,27 @@
 -- br [] []
 module PhotoGroove exposing (main)
 
+import Array exposing (Array)
 import Browser
+import Html.Attributes exposing (..)
+
 -- Imports all primitive/attributes the Html modules offers
 -- https://package.elm-lang.org/packages/elm/html/latest/Html
 import Html exposing (..)
 -- Imports all primitive/attributes the Html>Attribute module offers
 -- https://package.elm-lang.org/packages/elm/html/latest/Html-Attributes
-import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
-import Array exposing (Array)
+import Random
 
 photoListUrl : String
 photoListUrl =
  "http://elm-in-action.com/"
+
+type Msg
+ = ClickedPhoto String
+ | GotSelectedIndex Int
+ | ClickedSize ThumbnailSize
+ | ClickedSurpriseMe
 
 view : Model -> Html Msg
 view model =
@@ -43,17 +51,12 @@ view model =
     []
   ]
 
--- Helper/translation function
 viewThumbnail : String -> Photo -> Html Msg
 viewThumbnail selectedUrl thumbnail =
--- Return image but in a situation where by the selectedUrl is
--- the same as the url of the thumbnail,
--- there by returning true, add a class attribute
--- with the name of the classList string to the image and return it
  img
   [ src (photoListUrl ++ thumbnail.url)
   , classList [ ( "selected", selectedUrl == thumbnail.url ) ]
-  , onClick (ClickedPhoto thumbnail.url )
+  , onClick ( ClickedPhoto thumbnail.url )
   ]
   []
 
@@ -66,14 +69,14 @@ viewSizeChooser size =
 
 sizeToString : ThumbnailSize -> String
 sizeToString size =
- case size of 
-  Small -> 
+ case size of
+  Small ->
    "small"
 
-  Medium -> 
-   "med"
+  Medium ->
+   "medium"
 
-  Large -> 
+  Large ->
    "large"
 
 type alias Photo =
@@ -91,15 +94,6 @@ type alias Model =
  , chosenSize : ThumbnailSize
  }
 
--- We can add more fields to preserve backwards
--- compatibility
--- type alias Msg =
---   { description : String, data : String, size : ThumbnailSize }
-
-type Msg 
- = ClickedPhoto String
- | ClickedSize ThumbnailSize
- | ClickedSurpriseMe
 initialModel : Model
 initialModel =
  { photos =
@@ -112,7 +106,7 @@ initialModel =
  }
 
 photoArray : Array Photo
-photoArray = 
+photoArray =
  Array.fromList initialModel.photos
 
 getPhotoUrl : Int -> String
@@ -121,24 +115,34 @@ getPhotoUrl index =
   Just photo ->
    photo.url
 
-  Nothing -> 
+  Nothing ->
    ""
 
+randomPhotoPicker : Random.Generator Int
+randomPhotoPicker =
+ Random.int 0 (Array.length photoArray - 1)
+
 -- { description = "ClickedPhoto", data = "2.jpeg" }
-update : Msg -> Model -> Model
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
  case msg of
-  ClickedSize size -> 
-   { model | chosenSize = size }
+  GotSelectedIndex index ->
+    ( { model | selectedUrl = getPhotoUrl index }, Cmd.none )
+
   ClickedPhoto  url ->
-   { model | selectedUrl = url }
+   ( { model | selectedUrl = url }, Cmd.none )
+
+  ClickedSize size ->
+   ( { model | chosenSize = size }, Cmd.none )
+
   ClickedSurpriseMe ->
-   { model | selectedUrl = "2.jpeg" }
+   ( model, Random.generate GotSelectedIndex randomPhotoPicker )
 
 main : Program () Model Msg
 main =
- Browser.sandbox
-  { init = initialModel
+ Browser.element
+  { init = \flags -> ( initialModel, Cmd.none )
   , view = view
   , update = update
+  , subscriptions = \model -> Sub.none
   }
