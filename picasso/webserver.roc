@@ -12,4 +12,4 @@ main = \req ->
     datetime = Utc.now! |> Utc.toIso8601Str
     Stdout.line! "$(datetime) $(Http.methodToStr req.method) $(req.url)"
 
-    Task.ok { status: 200, headers: [], body: Str.toUtf8 "<b>Hello, world! Kenken</b>\n" }
+    Task.ok { status: 200, headers: [], body: Str.toUtf8 "<b>Hello, world! This is Roc Picasso</b>\n" }

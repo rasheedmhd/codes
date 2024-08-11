@@ -1,16 +1,14 @@
 <!doctype html>
 <html>
-	<head>
-		<link rel="stylesheet" href="http://elm-in-action.com/styles.css" />
-	</head>
+	<head> </head>
 	<body>
 		<div id="app"></div>
-		<!-- The Elm application will render into this div -->
-		<script src="app.js"></script>
-		<!-- PhotoGroove.elm will get compiled inot app.js -->
+		<script src="main.js"></script>
 		<script>
-			// The Elm object comes from app.js
-			Elm.Picasso.init({ node: document.getElementById("app") });
+			Elm.Main.init({ node: document.getElementById("app") });
 		</script>
+		<!-- <script>
+			var app = Elm.Main.init();
+		</script> -->
 	</body>
 </html>
