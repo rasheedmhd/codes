@@ -6120,7 +6120,7 @@ var $elm$http$Http$get = function (r) {
 var $author$project$Main$fetchData = $elm$http$Http$get(
 	{
 		expect: $elm$http$Http$expectString($author$project$Main$GotResponse),
-		url: 'https://www.rasheedstarlet.com/articles/reductionists.html'
+		url: 'http://localhost:8000/'
 	});
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2($author$project$Main$Loading, $author$project$Main$fetchData);

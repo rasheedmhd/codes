@@ -73,7 +73,7 @@ view model =
 fetchData : Cmd Msg
 fetchData =
     Http.get
-        { url = "https://www.rasheedstarlet.com/articles/reductionists.html"
+        { url = "http://localhost:8000/"
         , expect = Http.expectString GotResponse
         }
 

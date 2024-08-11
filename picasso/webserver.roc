@@ -7,9 +7,13 @@ import pf.Utc
 
 main : Request -> Task Response []
 main = \req ->
-
     # Log request datetime, method and url
     datetime = Utc.now! |> Utc.toIso8601Str
     Stdout.line! "$(datetime) $(Http.methodToStr req.method) $(req.url)"
-
-    Task.ok { status: 200, headers: [], body: Str.toUtf8 "<b>Hello, world! This is Roc Picasso</b>\n" }
+    Task.ok {
+        status: 200,
+        headers: [
+            { name: "Access-Control-Allow-Origin", value: Str.toUtf8 "*" },
+        ],
+        body: Str.toUtf8 "Hello, world! This is Roc Picasso\n",
+    }
