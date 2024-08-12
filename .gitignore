@@ -17,7 +17,7 @@ sys/ch2/*.out
 elm/elm-stuff/*
 elm/Groove/elm-stuff/*
 elm/elm-frontend/elm-stuff/*
-picasso/frontend/elm-stuff/*
-picasso/basic-webserver-0.7.0
+ElmWithRoc/frontend/elm-stuff/*
+ElmWithRoc/basic-webserver-0.7.0
 
 tgpl/ch1/dup

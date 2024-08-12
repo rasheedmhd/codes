@@ -13,6 +13,7 @@ main = \req ->
     Task.ok {
         status: 200,
         headers: [
+            # { name: "Content-Type", value: Str.toUtf8 "text/plain; charset=utf-8" },
             { name: "Access-Control-Allow-Origin", value: Str.toUtf8 "*" },
         ],
         body: Str.toUtf8 "Hello, world! This is Roc Picasso\n",
