@@ -21,3 +21,6 @@ ElmWithRoc/frontend/elm-stuff/*
 ElmWithRoc/basic-webserver-0.7.0
 
 tgpl/ch1/dup
+
+zero2prod/target*
+zero2prod/Cargo.lock
