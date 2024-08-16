@@ -1,18 +1,17 @@
-rust_snippets/parser/target/
-rust_snippets/nostd/target/
-rust_snippets/length/target/
-rust_snippets/fs/target/
+Rust/parser/target/
+Rust/nostd/target/
+Rust/length/target/
+Rust/fs/target/
 .DS_Store
-rust_snippets/.DS_Store
-dart/test
+Rust/.DS_Store
+Dart/test
 dart/.DS_Store
-python/affinityct/__pycache__
 DevOps/test/.terraform/
 DevOps/test/.terraform.lock.hcl
 DevOps/test/terraform.tfstate.backup
 
-sys/*.out
-sys/ch2/*.out
+Sys/*.out
+Sys/ch2/*.out
 
 elm/elm-stuff/*
 elm/Groove/elm-stuff/*
@@ -22,5 +21,5 @@ ElmWithRoc/basic-webserver-0.7.0
 
 tgpl/ch1/dup
 
-zero2prod/target*
-zero2prod/Cargo.lock
+Zero2prod/target*
+Zero2prod/Cargo.lock
