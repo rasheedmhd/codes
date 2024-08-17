@@ -23,3 +23,6 @@ tgpl/ch1/dup
 
 Zero2prod/target*
 Zero2prod/Cargo.lock
+
+Rust/Async/target
+Rust/Async/fibonacci/Cargo.lock
