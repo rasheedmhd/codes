@@ -31,7 +31,7 @@ async fn main() -> Result<(), Error> {
 
     let start_time = Instant::now();
 
-    let (_, _, _, _, _) = tokio::join!(
+    tokio::join!(
 	    reqwest::get(url),
 	    reqwest::get(url),
 	    reqwest::get(url),
