@@ -12,3 +12,6 @@ tokio-macros = "2.4.0"
 
 [target.aarch64-apple-darwin]
 rustflags = ["-C", "link-arg=-fuse-ld=/opt/homebrew/opt/llvm/bin/ld64.lld"]
+
+[dev-dependencies]
+reqwest = "0.12.6"
