@@ -16,8 +16,8 @@ fn main() -> io::Result<()> {
 
     define_ast(
         output_dir,
-        "Expr",
-        vec!["Call . callee : BoxedExpr, paren : Token, arguments : Vec<BoxedExpr>"],
+        "Stmt",
+        vec!["Function . name : Token, params: Vec<Token>, body : Vec<Stmt>"],
     )
 }
 // "Expression . expression : BoxedExpr",
@@ -29,7 +29,8 @@ fn main() -> io::Result<()> {
 // "If         . condition : BoxedExpr, thenBranch : Stmt," + " elseBranch : Stmt" ,
 // "Logical    . left : BoxedExpr, operator : Token, right : BoxedExpr"
 // "While      . condition : BoxedExpr, body : BoxedStmt"
-// "Call . callee : BoxedExpr, paren : Token, arguments : Vec<BoxedExpr>"
+// "Call       . callee : BoxedExpr, paren : Token, arguments : Vec<BoxedExpr>"
+// "Function   . name : Token, params: Vec<Token>, body : Vec<Stmt>" ,
 fn define_ast(output_dir: &str, base_name: &str, types: Vec<&str>) -> io::Result<()> {
     let path = Path::new(output_dir).join(format!("{}.rs", base_name.to_lowercase()));
     let mut file = File::create(&path)?;
