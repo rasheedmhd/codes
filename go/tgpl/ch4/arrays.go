@@ -49,3 +49,15 @@
 // 	d := [3]int{1, 2}
 // 	fmt.Println(a == d) // compile error: cannot compare [2]int == [3]int
 // }
+//
+// // 	b := [32]byte{}
+// // for i := 0; i < 32; i++ {
+// // 	b[i] = byte(i + 1)
+// // }
+// func zero(ptr *[32]byte) {
+// 	fmt.Print("&x", ptr)
+// 	for i := range ptr {
+// 		ptr[i] = 0
+// 	}
+// 	fmt.Print("&x", ptr)
+// }
