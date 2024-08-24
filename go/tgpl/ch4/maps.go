@@ -45,15 +45,37 @@ func main() {
 
 	// Checking the presence of a key in a hash map
 	age, ok := ages["bob"]
-	if !ok {
-		/* "bob" is not a key in this map; age == 0. */
+	if !ok { /* "bob" is not a key in this map; age == 0. */
 	}
 
 	// often combined, like this:
 	if age, ok := ages["bob"]; !ok { /* ... */
+		fmt.Print(age)
 	}
+
+	fmt.Print(age)
+
 	// Subscripting a map in this context yields two values;
 	// 2nd is a boolean that reports whether the element was present.
 	// The boolean variable is often called ok, especially if it is immediately used in an if condition.
+	//
 
+}
+
+// As with slices, maps cannot be compared to each other; ONLY nil.
+// To test whether two maps contain the same keys and the same associated values,
+// we must write a loop like this
+func equal(x, y map[string]int) bool {
+
+	if len(x) != len(y) {
+		return false
+	}
+
+	for k, xv := range x {
+		if yv, ok := y[k]; !ok || yv != xv {
+			return false
+		}
+	}
+
+	return true
 }
