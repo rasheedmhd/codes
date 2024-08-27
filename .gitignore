@@ -22,6 +22,7 @@ ElmWithRoc/basic-webserver-0.7.0
 tgpl/ch1/dup
 
 Zero2prod/target*
+Zero2prod/.idea
 Zero2prod/Cargo.lock
 
 Rust/Async/fibonacci/target

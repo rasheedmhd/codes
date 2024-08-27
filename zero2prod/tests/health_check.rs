@@ -17,10 +17,8 @@ async fn health_check_works() {
     assert_eq!(Some(0), response.content_length());
 }
 
-
 fn spawn_app() -> String {
-    let listener = TcpListener::bind("127.0.0.1:0")
-    .expect("Failed to bind random port");
+    let listener = TcpListener::bind("127.0.0.1:0").expect("Failed to bind random port");
     // We retrieve the port assigned to us by the OS
     let port = listener.local_addr().unwrap().port();
     let server = pigment::run::start(listener).expect("Failed to bind address");
