@@ -10,6 +10,17 @@ serde = { version = "1.0.209", features = ["derive"] }
 tokio = { version = "1.39.2", features = ["macros", "rt-multi-thread"] }
 tokio-macros = "2.4.0"
 
+[dependencies.sqlx]
+version = "0.8.1"
+default-features = false
+features = [
+    "runtime-actix-rustls",
+    "macros",
+    "postgres",
+    "uuid",
+    "chrono",
+    "migrate"
+]
 
 [target.aarch64-apple-darwin]
 rustflags = ["-C", "link-arg=-fuse-ld=/opt/homebrew/opt/llvm/bin/ld64.lld"]
