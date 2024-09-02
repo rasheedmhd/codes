@@ -9,12 +9,13 @@ actix-web = "4"
 serde = { version = "1.0.209", features = ["derive"] }
 tokio = { version = "1.39.2", features = ["macros", "rt-multi-thread"] }
 tokio-macros = "2.4.0"
+config = "0.14.0"
 
 [dependencies.sqlx]
 version = "0.8.1"
 default-features = false
 features = [
-    "runtime-actix-rustls",
+    "runtime-tokio-rustls",
     "macros",
     "postgres",
     "uuid",
