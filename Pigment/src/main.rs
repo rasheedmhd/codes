@@ -1,5 +1,5 @@
 use std::net::TcpListener;
-use sqlx::PgConnection;
+use sqlx::{PgConnection, Connection};
 use pigment::startup::run;
 use pigment::configuration::get_configuration;
 

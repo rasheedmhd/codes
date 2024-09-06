@@ -13,7 +13,7 @@ pub fn run(tcp_listener: TcpListener, connection: PgConnection) -> Result<Server
         App::new()
             .route("/health_check", web::get().to(health_check))
             .route("/subscriptions", web::post().to(subscribe))
-            // Register the connection as part of the application state
+            // Register the db connection as part of the application state
             .app_data(connection.clone())
     })
     .listen(tcp_listener)?
