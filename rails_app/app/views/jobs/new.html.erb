@@ -1,0 +1,15 @@
+<h1>Jobs#new</h1>
+<p>Find me in app/views/jobs/new.html.erb</p>
+
+
+<%= form_with model: @job do |form| %>
+  <div>
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+  <div>
+    <%= form.label :poster %>
+    <%= form.text_field :poster %>
+  </div>
+  <%= form.submit %>
+<% end %>

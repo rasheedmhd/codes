@@ -30,3 +30,34 @@ Zero2prod/.idea/workspace.xml
 
 Rust/Async/fibonacci/target
 Rust/Async/fibonacci/Cargo.lock
+
+
+
+rails_app/.bundle
+
+# Ignore all environment files (except templates).
+rails_app/.env*
+rails_app/.env*.erb
+
+# Ignore all logfiles and tempfiles.
+rails_app/log/*
+rails_app/tmp/*
+rails_app/log/.keep
+rails_app/tmp/.keep
+
+# Ignore pidfiles, but keep the directory.
+rails_app/tmp/pids/*
+rails_app/tmp/pids/
+rails_app/tmp/pids/.keep
+
+# Ignore storage (uploaded files in development and any SQLite databases).
+rails_app/storage/*
+rails_app/storage/.keep
+rails_app/tmp/storage/*
+rails_app/tmp/storage/
+rails_app/tmp/storage/.keep
+
+rails_app/public/assets
+
+# Ignore master key for decrypting credentials and more.
+rails_app/config/master.key
