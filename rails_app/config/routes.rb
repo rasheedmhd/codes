@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   root "home#index"
   resources :users, path: "traders", controller: "traders"
+  resources :users, path: "traders"
   resources :cards
   get 'jobs/create'
   get 'jobs/index'
