@@ -1,6 +1,13 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
 
+  # Reserved rails method names
+  def render; end
+  def redirect_to; end
+  def params; end
+  def before_action; end
+  def custom_render_traders; end
+
   # GET /users or /users.json
   def index
     @users = User.all

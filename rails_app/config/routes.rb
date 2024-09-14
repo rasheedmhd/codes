@@ -2,8 +2,10 @@ Rails.application.routes.draw do
   get 'home/index'
 
   root "home#index"
-  resources :users, path: "traders", controller: "traders"
-  resources :users, path: "traders"
+  # resources :users, path: "traders", controller: "traders"
+  resources :users
+  resources :users
+  get "render", to: "users#custom_render_traders"
   resources :cards
   get 'jobs/create'
   get 'jobs/index'
