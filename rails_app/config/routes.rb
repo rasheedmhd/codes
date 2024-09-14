@@ -1,9 +1,12 @@
 Rails.application.routes.draw do
-  resources :users
+  get 'home/index'
+
+  root "home#index"
+  resources :users, path: "traders", controller: "traders"
   resources :cards
   get 'jobs/create'
   get 'jobs/index'
-  get 'jobs/new'
+  get 'jobs/new', to: "users#new", as: "jobsss"
   get 'jobs/edit'
   get 'job/create'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
