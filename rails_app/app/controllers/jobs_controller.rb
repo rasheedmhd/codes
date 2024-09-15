@@ -2,7 +2,7 @@ class JobsController < ApplicationController
   def create
     # Fails because we need to explicitly permit and require 
     # parameters
-    Person.create(params[:job])
+    # Person.create(params[:job])
   end
 
   def index
@@ -13,4 +13,9 @@ class JobsController < ApplicationController
 
   def edit
   end
+  
+  private 
+    def params 
+      job_params.require(:job).permit(:name)
+    end
 end

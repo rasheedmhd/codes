@@ -2,7 +2,12 @@
 <p>Find me in app/views/jobs/index.html.erb</p>
 
 <%= session[:candidate] %>
+<%= params[:statu] %>
 <%= params[:status] %>
 <%= params[:fetch] %>
 <%= params[:controller] %>
 <%= params[:action] %>
+
+STRONG PARAMETERS
+The permitted scalar types are
+String, Symbol, NilClass, Numeric, TrueClass, FalseClass, Date, Time, DateTime, StringIO, IO, ActionDispatch::Http::UploadedFile, and Rack::Test::UploadedFile

@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
-  permit_all_parameters :true
 
   # Reserved rails method names
   # def render; end
@@ -29,7 +28,7 @@ class UsersController < ApplicationController
 
   # POST /users or /users.json
   def create
-    @user = User.new(params[:user])
+    # @user = User.new(params[:user])
 
     respond_to do |format|
       if @user.save
