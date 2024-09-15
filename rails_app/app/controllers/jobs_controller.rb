@@ -1,5 +1,8 @@
 class JobsController < ApplicationController
   def create
+    # Fails because we need to explicitly permit and require 
+    # parameters
+    Person.create(params[:job])
   end
 
   def index

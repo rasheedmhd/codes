@@ -4,12 +4,12 @@ Rails.application.routes.draw do
   root "home#index"
   # resources :users, path: "traders", controller: "traders"
   resources :users
-  resources :users
   get "render", to: "users#custom_render_traders"
   resources :cards
+  get "jobs/:status", to: "jobs#index", fetch: "People"
   get 'jobs/create'
   get 'jobs/index'
-  get 'jobs/new', to: "users#new", as: "jobsss"
+  get 'jobs/new'
   get 'jobs/edit'
   get 'job/create'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

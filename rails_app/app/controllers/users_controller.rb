@@ -1,12 +1,13 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
+  permit_all_parameters :true
 
   # Reserved rails method names
-  def render; end
-  def redirect_to; end
-  def params; end
-  def before_action; end
-  def custom_render_traders; end
+  # def render; end
+  # def redirect_to; end
+  # def params; end
+  # def before_action; end
+  # def custom_render_traders; end
 
   # GET /users or /users.json
   def index
@@ -28,7 +29,7 @@ class UsersController < ApplicationController
 
   # POST /users or /users.json
   def create
-    @user = User.new(user_params)
+    @user = User.new(params[:user])
 
     respond_to do |format|
       if @user.save
