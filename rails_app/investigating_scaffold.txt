@@ -1,0 +1,35 @@
+What 
+rails g scaffold does
+1. run rails g model - 
+which creates
+-  migration file 20240915133530_create_scaffold_fist_arg_but_just_model_gs.rb
+-  model           app/models/scaffold_fist_arg_but_just_model_g.rb
+-  model test      test/models/scaffold_fist_arg_but_just_model_g_test.rb
+-  fixture test    test/fixtures/scaffold_fist_arg_but_just_model_gs.yml
+
+2. Add REST resources in routes.rb
+- resources :scaffold_fist_arg
+
+3. Creates Controller in app/controllers
+scaffold_fist_arg_controller.rb
+
+4. Creates matching views
+-  app/views/products
+-  app/views/products/index.html.erb
+-  app/views/products/edit.html.erb
+-  app/views/products/show.html.erb
+-  app/views/products/new.html.erb
+-  app/views/products/_form.html.erb
+-  app/views/products/_product.html.erb 
+
+5. Test
+- test/controllers/products_controller_test.rb
+- test/system/products_test.rb
+
+6. Helpers
+- app/helpers/products_helper.rb
+
+7. Jbuilder
+- app/views/products/index.json.jbuilder
+- app/views/products/show.json.jbuilder
+- app/views/products/_product.json.jbuilder 
