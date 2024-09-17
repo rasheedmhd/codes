@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_15_133427) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_15_171826) do
   create_table "candidates", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -24,6 +24,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_15_133427) do
     t.string "name"
     t.string "title"
     t.integer "year"
+    t.string "type"
+    t.string "tag"
+    t.integer "price"
   end
 
   create_table "jobs", force: :cascade do |t|
