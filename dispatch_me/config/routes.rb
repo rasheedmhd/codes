@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   get "demo" => "demo#index"
   get "render" => "demo#renderrr"
   get "notemplate" => "demo#no_t"
+  get "nothing" => "demo#nothing"
+  get "layout" => "demo#clayout"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
