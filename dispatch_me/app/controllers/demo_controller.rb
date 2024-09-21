@@ -4,4 +4,6 @@ class DemoController < ApplicationController
   def renderrr
     render html: "<strong>Not Found</strong>".html_safe
   end
+  def no_t
+  end
 end
