@@ -1,5 +1,4 @@
-class DemoController < ActionController::Metal 
-  def index
-    self.response_body = "Hello World!"
-  end
+class DemoController < ApplicationController
+  # Rails still understands and works with this, 
+  # displaying the index file from app/views/demo
 end
