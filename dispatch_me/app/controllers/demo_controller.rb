@@ -21,4 +21,10 @@ class DemoController < ApplicationController
     # head :ok
     head :unauthorized
   end
+  def redirections
+    # redirect_to post_url(@post), status: :found
+    # redirect_to :atom, status: :moved_permanently
+    # redirect_to post_url(@post), status: 301
+    # redirect_to :atom, status: 302
+  end
 end
