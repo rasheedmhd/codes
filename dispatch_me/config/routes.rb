@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  get 'persons/index'
+  get 'persons/new'
+  get 'persons/create'
+  get 'persons/update'
+  get 'persons/edit'
   get "demo" => "demo#index"
   get "render" => "demo#renderrr"
   get "notemplate" => "demo#no_t"
