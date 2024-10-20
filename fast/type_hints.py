@@ -5,4 +5,14 @@ def get_full_name(first_name: str, last_name: str):
     return full_name
 
 
-print(get_full_name("john", "DOe"))
+# print(get_full_name("john", "DOe"))
+
+
+def get_name_with_age(name: str, age: int):
+    # mypy would help you catch type errors like not 
+    # adding the str() to convert age into a string 
+    # before trying to concatenate
+    name_with_age = name + " is " + str(age) + " years old."
+    return name_with_age
+
+print(get_name_with_age("Liz", 45))
