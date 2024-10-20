@@ -37,9 +37,4 @@ def say_hi(name: Optional[str]):
 def salut(name: str | None):
     print(f"Salut! {name}")
 
-# salut(name="jay")
-
-def say_hi2(name: str | None):
-    print(f"Hey {name}!")
-
-say_hi2()
+salut()
