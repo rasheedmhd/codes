@@ -24,7 +24,7 @@ end
 multiply(2, 3) => 6
 
 # Variadic Methods,
-# Methods that takes a variable number or args
+# Methods that takes a variable number of args
 def join_with_commas(*words) 
   words.join(', ')
 end
