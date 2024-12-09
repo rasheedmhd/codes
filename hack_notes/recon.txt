@@ -1,0 +1,29 @@
+Recon
+1. Confirm that active recon is allowed
+2. Manual scope walk through - aim is to reveal the attack surface, all the end points we can launch an attack test
+3. Uncover the tech and infra+structure of the application
+4. Google dork for info to advance your hacking, eg: searching for payloads
+
+SCOPE DISCOVERY
+1. whois and reverse whois
+2. nslookup
+3. certificates searching with crt.sh
+4. Enumerate subdomains
+- sublist3r, gobuster, amass. altdns
+5. Service Enumeration (port scanning)
+- nmap, masscan
+6. Crawl all pages - ZAP Spider
+7. Third Party Hosting 
+- Use google dorking to plus tools like lazys3
+https://buckets.grayhatwarfare.com/
+to discover open buckets, use aws cli to read the bucket contents
+https://github.com/nahamsec/lazys3/ - I can rewrite it in Rust/Go/TypeScript
+8. Github Recon - tools 
+Gitrob (https://github.com/michenriksen/gitrob/)
+TruffleHog (https://github.com/trufflesecurity/truffleHog/) 
+9. OSINT
+10. Fingerprinting - 
+- nmap domain_name -sV
+- inspecting req headers in burp proxy
+- view html sc  
+tools - wapplyzer, builtwith, stackshare, retire.js

@@ -1,0 +1,60 @@
+1. Look for input fields
+2. Type in the payload. Simple payloads prolly won't work bc of sanitation
+3. More than <script> tags
+- test on HTML tag attributes like onload, onclick, onerror
+- HTTP URL schemes like javascript: and data:
+- with data: you can pass a base64 encode of the script payload
+- like data:text/html;base64,PHNjcmlwdD5hbGVydCgnWFNTIGJ5IFZpY2tpZScpPC9zY3JpcHQ+"
+- or just pass the script 
+
+Reading source code can help you detect 
+if there is a possibility of XSS like DOM-XSS
+
+Look at cookie implementation to see how you can
+escalate an XSS by stealing user cookies 
+check httponly flg
+
+cheatsheet
+https://portswigger.net/web-security/cross-site-scripting/cheat-sheet
+https://github.com/masatokinugawa/filterbypass/wiki/Browser's-XSS-Filter-Bypass-Cheat-Sheet
+
+https://html5sec.org/
+
+polyglot
+https://web.archive.org/web/20190617111911/https://polyglot.innerht.ml/
+
+IoT
+https://github.com/OWASP/IoTGoat/
+
+https://cheatsheetseries.owasp.org/index.html
+
+XSS Filter Evasion Cheat Sheet
+https://cheatsheetseries.owasp.org/cheatsheets/XSS_Filter_Evasion_Cheat_Sheet.html
+
+
+On ruling out false XSS with innerHTML 
+TIP:
+Scan source code for how innerHTML is used. 
+
+HTML specifies that a <script> tag inserted with innerHTML should not execute.
+https://www.w3.org/TR/2008/WD-html5-20080610/dom.html#innerhtml0
+
+However, there are ways to execute JavaScript without using <script> elements, 
+so there is still a security risk whenever you use innerHTML to set strings 
+over which you have no control. For example:
+const name = "<img src='x' onerror='alert(1)'>";
+el.innerHTML = name; // shows the alert
+
+On report writing 
+For that reason, it is recommended that instead of innerHTML you use:
+
+Node.textContent when inserting plain text, as this inserts it as raw text rather than parsing it as HTML.
+https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML#security_considerations
+
+
+XSS’s impact depends on a variety of factors: whether it’s stored or
+reflected, whether cookies are accessible, where the payload executes, and
+so on. Despite the potential damage XSS can cause on a site, fixing XSS
+vulnerabilities is often easy
+
+When they say they have fixed your issue, please test again to confirm that it has really be fixed. if it isn't fixed properly please point out to them to make a proper complete fix 

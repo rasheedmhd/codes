@@ -1,0 +1,19 @@
+HTTP Parameter Pollution
+This happens when you send extra http url parameters to the servers to observe
+how it handles them. 
+You can send custom parameters or duplicate parameter value
+
+HPP exists in two forms server and client side
+server side - you send the server unexpected parameters to exploit
+how it handles them
+in the case of sending extra parameters, several server softwares 
+handle that situation in different ways. In Recon and fingerprinting
+you can make an educated guess on which server is used in the backend
+so you can make an educated guess as to what will happen with the 
+extra parameters you send.
+Apache + PHP = last occurence 
+Tomcat = first occurence
+ASP + IIS = all occurences
+more info Luca Carettoni and Stefano di Paolo
+
+https://id.vk.com/auth?v=1.46.0&app_id=7913379&uuid=6aacda8cf8&redirect_uri=https%3A%2F%2Fvk.com%2Fjoin&app_settings=W10%3D&action=eyJuYW1lIjoibm9fcGFzc3dvcmRfZmxvdyIsInBhcmFtcyI6eyJ0eXBlIjoic2lnbl91cCJ9fQ%3D%3D&scheme=space_gray

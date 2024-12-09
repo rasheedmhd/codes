@@ -1,0 +1,15 @@
+Recon Questions for high impact 
+What is the app meant to do?
+What is the app meant to not do?
+What is the app protecting?
+Who is the app protecting?
+What is considered sensitive information?
+What mechanisms are in place to protect that sensitive information?
+How do I by pass these mechanism protecting the sensitive information?
+How do I access the sensitive informtion ?
+What functionalities does it have?
+
+For Reporting
+Take reporting notes in tandem with Recon notes 
+How did I access the sensitive information?
+How do I improve the mechanisms to prevent my access / mechanisms by pass

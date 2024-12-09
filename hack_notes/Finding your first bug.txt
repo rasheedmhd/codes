@@ -1,0 +1,38 @@
+Finding your first bug
+1. Stop consuming content aimlessly - it doesn't translate into doing the work, you need to get your hands dirty
+2. Hack to Learn, Learn as you hack
+3. Focus on the how? That is learning how to fish not getting fish handed to you
+- keep this in mind when reading triaged bug reports, I think reading them would 
+be an amazing source to learn, even better that CTFs
+4. Approach - Spend enough time to understand what the product does (You get it? Recon)
+- see Recon questions for high impact 
+- Get intimate with the application 
+i.e Focus on understanding the application rather than hacking it
+4. Do a VDP because the best hackers aren't hacking there because it doesn't pay them
+so you have a chance to uncover some vulns so you can learn.
+5. Learn a few vulns types, maybe 3, hack for them everywhere, get some bounties with them, get super comfy with them and then add more vulns as you hack.
+But how do you decide on what you learn and what not to learn? 
+Which should be your first 3? which should be your next 3? and the next? 
+Tip: Take a look at the OWASP top 10, I don't think that alone is enough,
+hear me out take a look at the OWASP top 10 for 2024
+Top Ten Vulnerabilities for OWASP 2024
+1. Broken Access Control
+2. Cryptographic Failures
+3. Injection
+4. Insecure Design
+5. Security Misconfiguration
+6. Vulnerable and Outdated Components
+7. Identification and Authentication Failures
+8. Software and Data Integrity Failures
+9. Security Logging and Monitoring Failures
+10. Server-Side Request Forgery (SSRF)
+What’s Next for OWASP 2025?
+- I found something interesting 
+I took a sneak peak at some vulns reported at most of the programs that I might have interest in and realized that a good amount of reports fall under low or medium severity, I don't know why I think low/medium is easy but yeah that is what I thought, You would think that with all these expert hackers hacking on this platform, they would uncover mostly critical vulns but the data says different.
+My hypothesis is that these platforms pay much attention to critical vulns so much of those are secured and the low/medium as left but that doesnt' make a lot of sense because the low and medium vulns should be easy to catch by their expert security engineers. 
+
+What this means for beginners is that, we can focus on the ubiquitios vulns learn them and be confident that we can find some bugs with what we know rather than being concerned that we are leaving bugs out because we don't know all the vulns types. Once you get good with what you know that even serves as a reinforcement of the strategy, we should give it name? "Kindness of the commons?"
+
+But based on the data from the reported vulns, some of the OWASP Top 10 vulns can be found there, so based on the OWASP Top 10 vulns and the classes of the majority of vulns reported we can make an informed decision on which vulns to learn first. 
+
+Another way is to just follow your curiosity/passion to learn what vulns interest you and try hunting for those. But based on probability learning the most common vulns would get you to your first bug fasted. 

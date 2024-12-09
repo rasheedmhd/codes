@@ -1,0 +1,9 @@
+Bug Bounty Platforms
+1. Hackerone : https://hackerone.com/opportunities/all
+2. Bugcrowd  : https://www.bugcrowd.com/try-bugcrowd/
+3. intigriti : https://app.intigriti.com/researcher/dashboard
+4. Whitehub  : https://whitehub.net/programs
+5. remedy	 : https://r.xyz/bug-bounty/programs
+6. hackenproof : https://hackenproof.com/programs
+7. bugbase.io  : https://bugbase.io
+8. yeswehack   : https://yeswehack.com

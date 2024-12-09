@@ -1,0 +1,36 @@
+The Blueprint to your first $1,000+ Bounty.
+Advice
+1. Make Hacking a daily habit
+2. You need to learn how to walk before you can run
+- f1000 teaches you what is possible
+- f10,000 teaches you that you can do this consistently
+- allows you to scale your skills to go for a f100,000
+
+Stop aimlessly jumping from one program to another
+1. Browse through the bug bounty mmgt platform e.g hackerone 
+select 3 explore them and choose only 1. 
+Keep in mind of the attack surface. 
+Ideally you want a program
+with a large attack surface, 
+based on assets and vulns scope.
+
+- What you hunt for should be driven by the platform. What vulns
+you look for should be based on the platform. 
+If you do recon right, understand the target scope, you can make
+an informed decision for what to test on what scope 
+
+- Don't overcomplicate your setup
+- Tools should make you more efficient not replace you
+
+2. First Week - Program Selection, refer to 1 above
+- You love to brag about hacking 
+[
+	I work at Airbnb
+	Security Engineer at Airbnb
+	Securing Airbnb
+]
+- Massive attack surface
+3. Second Week - Get Cozy with the target (Reconnnnnn)
+4. Third Week - Systematic approach to hacking 
+- Document everything
+- 3 day recon and just testing basic vulns 
