@@ -1,9 +1,23 @@
 Bug Bounty Blogs
 Patrik Fehrenbach's 
 https://wss.sh/en/blog/
+https://www.cyberark.com/
+
+bbre.dev
+https://preview.mailerlite.com/n7m2n4a4s1
+https://members.bugbountyexplained.com/case-studies/
 
 Build Vulns Program Comparism Website 
 
+
+Reports to read
+Stored XSS in product description
+https://hackerone.com/reports/1085546
+
+HTML injection in packing slips can lead to physical theft
+https://hackerone.com/reports/1087122
+
+https://hackerone.com/filedescriptor/hacktivity?type=user
 
 Perfect Programs
 coinbase

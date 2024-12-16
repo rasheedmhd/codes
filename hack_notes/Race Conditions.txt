@@ -1,0 +1,27 @@
+Race Conditions 
+Caused my vulnerable impl of 
+
+Step 1: Find Features Prone to Race Conditions
+Attackers use race conditions to subvert access controls. In theory, any application whose sensitive actions rely on access-control mechanisms could be
+vulnerable.
+
+Step 2: Send Simultaneous Requests
+
+Step 2: Send Simultaneous Requests
+
+Step 3: Check the Results
+
+Step 4: Create a Proof of Concept
+
+Finding Your First Race Condition!
+Now you’re ready to find your first race condition. Follow these steps to
+manipulate web applications using this neat technique:
+1. Spot the features prone to race conditions in the target application and
+copy the corresponding requests.
+2. Send multiple of these critical requests to the server simultaneously.
+You should craft requests that should be allowed once but not allowed
+multiple times.
+3. Check the results to see if your attack has succeeded. And try to execute
+the attack multiple times to maximize the chance of success.
+4. Consider the impact of the race condition you just found.
+5. Draft up your first race condition report!

@@ -1,0 +1,49 @@
+Server Side Request Forgery
+Impersonating server and make request on their behalf
+Possible through signature forgery, this allows them
+to presume a privileged position, bypass firewall 
+controls and gain access to internal networks 
+
+PREVENTION
+Impl Allow / block list 
+
+Hunting 
+Review source code - how it validates user provided urls req params
+Test end points with the potential to be prone to SSRF vulns
+
+1. Spot features prone to SSRF vulns
+- webhooks (learn what they are)
+- file uploads
+- proxy services
+- link and thumbnails expansions 
+- urls embedded in files and processed (XML, PDF)
+- API endpoints that accept URLS
+- website allow users to set up web hook urls
+and this can lead to SSRF's
+
+Notice these potentially vulnerable features on the target site and
+record
+Step 2: Provide Potentially Vulnerable Endpoints with Internal URLs
+
+Step 3: Check the Results
+- Get a domain from a SP that gives you logging access 
+provide your domain in the SSRF payload and listen for 
+out bound req to it through the server logs
+- use netcat as a listener a
+- outbound req isn't enough to exploit
+- port scan the internal network for idiots(ports) that shouldn't be openned
+but are openned
+
+If you can identify a significant time
+difference between requests to different ports, you have found an exploitable SSRF.
+
+
+
+
+
+
+
+
+
+
+

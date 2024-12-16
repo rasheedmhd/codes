@@ -1,0 +1,4 @@
+HTML injection
++ Content Spoofing
+
+Like stored-XSS but injects HTML and plain Text

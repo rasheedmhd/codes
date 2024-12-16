@@ -4,14 +4,32 @@ Recon
 3. Uncover the tech and infra+structure of the application
 4. Google dork for info to advance your hacking, eg: searching for payloads
 
+Vuln Search
+https://www.cvedetails.com/documentation/
+
 SCOPE DISCOVERY
 1. whois and reverse whois
 2. nslookup
 3. certificates searching with crt.sh
 4. Enumerate subdomains
-- sublist3r, gobuster, amass. altdns
+Sublist3r - query search engines + subdomain dbs
+Gobuster - brute forcer
+Amass - uses DNS zone transfers, certificate parsing, search engines, and subdomain databases to
+find subdomains.
+Altdns - https://github.com/infosec-au/altdns/
+SubBrute - brute forcer
+Subfinder
+
+Wordlists
+https://github.com/danielmiessler/SecLists/
+https://github.com/assetnote/commonspeak2/
+
 5. Service Enumeration (port scanning)
 - nmap, masscan
+passive reconn
+Shodan
+Project Sonar
+Censys
 6. Crawl all pages - ZAP Spider
 7. Third Party Hosting 
 - Use google dorking to plus tools like lazys3
