@@ -1,0 +1,50 @@
+Insecure Deserialization
+When applications deserialize program objects
+without proper precautions
+- they are language dependant
+- hard to find
+- require deep technical knowledge to exploit
+- worth to find, they can lead to authentication bypasses or even RCEs
+- learn serialization
+
+Mechanisms
+- developers trust serialized data
+- attackers serialize data that when deserialized can 
+cause unintended circumstances
+- PHP
+- Controlling Variable Values
+- unserialize() Under the Hood
+- Achieving RCE
+- Using Other Magic Methods
+- Using POP Chains
+
+- Java
+- Achieving RCE
+- Automating the Exploitation by Using Ysoserial
+- 
+https://owasp.org/www-community/vulnerabilities/PHP_Object_Injection:
+
+owasp.org/www-community/vulnerabilities/PHP_Object_Injection.
+
+hunting
+Conducting a source code review is the most reliable way to detect deserialization vulnerabilities.
+Begin by paying close attention to the large blobs of data passed into an
+application.
+For example, a Content-Type
+set to application/x-java-serialized-object indicates that the application is
+passing information via Java serialized objects.
+Read each programming language’s documentation to familiarize yourself with the structure of its serialized objects.
+
+Finding Your First Insecure Deserialization!
+
+1. Search for deserialization functions in source code that accept user input.
+2. Look for large blobs of data passed into an application. 
+These could indicate serialized objects that are encoded.
+3. Alternatively, look for features that might have to deserialize objects
+supplied by the user, such as database inputs, authentication tokens,
+and HTML form parameters.
+4. If the serialized object contains information about the identity of the
+user, try tampering with the serialized object found and see if you can
+achieve authentication bypass.
+5. See if you can escalate the flaw into a SQL injection or remote code
+execution. Be extra careful not to cause damage to your target application or server.
