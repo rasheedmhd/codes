@@ -37,10 +37,81 @@ but are openned
 If you can identify a significant time
 difference between requests to different ports, you have found an exploitable SSRF.
 
+Bypassing SSRF
+- circumvent allow list 
++ get an Open Redierect vuln on an allowlisted url
+and pass it a redirect_to url of the internal server/ip
++ checked for the allow list impl. if regex based, the regex
+might be improperly configured or detrimentally flexible, 
+with dynamic analysis, you might just circumvent it
 
+- circumvent block list
++ make the server request a URL that you control and that redirects to the blocklisted address. 
+For example, you can ask the target server to send a request to your server
++ use IPv6 addresses
+Sometimes the SSRF protection mechanisms a site has implemented for
+IPv4 might not have been implemented for IPv6. 
+IPv6 address ::1 points to the localhost, and fc00:: is the first address on the
+private network. [learn about ip addrs (internal networks)]
++ tricking the server with DNS
+uses the same trick as the ipv6 trick above
+A records - ipv4
+AAAA records - ipv6 
+nslookup DOMAIN
+nslookup rasheedstarlet.com -type=AAAA
++ Switching Out the Encoding
+These encoding methods don’t change how a server interprets the location of the address, 
+but they might allow the input to slip under the radar of a blocklist if it bans only 
+addresses that are encoded a certain way.
+hex encoding, octal encoding, dword encoding, URL encoding, and mixed encoding.
+hex eg https://public.example.com/proxy?url=https://0x7f.0x0.0x0.0x1
+oct eg https://public.example.com/proxy?url=https://0177.0.0.01
+dword eg https://public.example.com/proxy?url=https://2130706433
+enc eg https://public.example.com/proxy?url=https://%6c%6f%63%61%6c%68%6f%73%74
 
+This is just a small portion of bypasses you can try. You can use many
+more creative ways to defeat protection and achieve SSRF. When you can’t
+find a bypass that works, switch your perspective by asking yourself, how would
+I implement a protection mechanism for this feature? Design what you think
+the protection logic would look like.
 
+Escalating the Attack
++ Network scanning
+sending req to end points + ports and noting the returned results to
+discover openned and closed ports 
 
++ Pull Instance Metadata
+These API endpoints are accessible by default unless network admins
+specifically block or disable them. The information these services reveal is
+often extremely sensitive and could allow attackers to escalate SSRFs to serious information leaks and even RCE.
+For example, this
+API request fetches all instance metadata from the running instance:
+http://169.254.169.254/latest/meta-data/
+Use this URL in an endpoint vulnerable to SSRF:
+https://public.example.com/proxy?url=http://169.254.169.254/latest/meta-data/
+
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html.
+
+https://cloud.google.com/compute/docs/storing-retrieving-metadata/
+
++ Exploit Blind SSRFs
+Because blind SSRFs don’t return a response or error message, their exploitation is often limited to network mapping, port scanning, and service
+discovery
+
+Finding Your First SSRF!
+Let’s review the steps you can take to find your first SSRF:
+1. Spot the features prone to SSRFs and take notes for future reference.
+2. Set up a callback listener to detect blind SSRFs by using an online service, Netcat, or Burp’s Collaborator feature.
+3. Provide the potentially vulnerable endpoints with common internal
+addresses or the address of your callback listener.
+4. Check if the server responds with information that confirms the SSRF.
+Or, in the case of a blind SSRF, check your server logs for requests from
+the target server.
+5. In the case of a blind SSRF, check if the server behavior differs when
+you request different hosts or ports.
+6. If SSRF protection is implemented, try to bypass it by using the strategies discussed in this chapter.
+7. Pick a tactic to escalate the SSRF.
+8. Draft your first SSRF report!
 
 
 
