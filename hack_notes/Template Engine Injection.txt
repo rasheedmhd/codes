@@ -1,0 +1,66 @@
+Template Engine Injection
+Failing to validate user supplied input and 
+using it in your template files. 
+
+Injection can allow an attacker to pass and execute 
+arbitrary code in the language used to build the 
+templating engine
+
+eg Python and jinja2
+eg Ruby and Liquid by Spotify
+
+PREVENTION
+- Upgrade templating engines
+- Sanitize user input
+- prevent user supplied templates
+- use the templating engine provided sandbox
+Implement an allowlist for allowed attributes in templates. 
+Handleerrors properly and return a generic error page to the user. 
+
+Hunting for Template Injection
+Step 1: Look for User-Input Locations
+Step 2: Detect Template Injection by Submitting Test Payloads
+Step 3: Determine the Template Engine in Use
+https://portswigger.net/research/server-side-template-injection
+
+ESCALATING
+Your method of escalating the attack will depend on the template engine
+you’re targeting. To learn more about it, read the official documentation of
+the template engine and the accompanying programming language.
+
+Escaping the Sandbox by Using Python Built-in Functions
+GET /display_name?name="{{[].__class__.__bases__[0].__subclasses__()}}"
+Host: example.com
+
+Submitting Payloads for Testing
+{% for x in [].__class__.__bases__[0].__subclasses__() %}
+{% if 'warning' in x.__name__ %}
+{{x()._module.__builtins__['__import__']('os').system('touch template_injection_by_vickie
+.txt')}}
+{%endif%}
+{%endfor%}
+
+CTF Wiki, https://ctf-wiki.github.io/ctf-wiki/pwn/linux/sandbox/
+python-sandbox-escape/
+•  HackTricks, https://book.hacktricks.xyz/misc/basic-python/
+bypass-python-sandboxes/
+•  Programmer Help, https://programmer.help/blogs/python-sandbox-escape.html
+
+Automating Template Injection
+https://github.com/epinna/tplmap
+
+Finding Your First Template Injection!
+1. Identify any opportunity to submit user input to the application. 
+Mark down candidates of template injection for further inspection.
+2. Detect template injection by submitting test payloads. Use
+either payloads that are designed to induce errors, or engine-specific
+payloads designed to be evaluated by the template engine.
+3. If you find an endpoint that is vulnerable to template injection, 
+determine the template engine in use. This will help you build an exploit
+specific to the template engine.
+4. Research the template engine and programming language that the
+target is using to construct an exploit.
+5. Try to escalate the vulnerability to arbitrary command execution.
+6. Create a proof of concept that does not harm the targeted system. A
+good way to do this is to execute touch template_injection_by_YOUR_NAME
+.txt to create a specific proof-of-concept file.
