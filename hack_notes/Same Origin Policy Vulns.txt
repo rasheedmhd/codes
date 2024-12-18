@@ -1,0 +1,49 @@
+Same Origin Policy Vulns
+Happens with developers use a couple of tecniques to by pass
+the overly strict restrictions of SOP for their use case
+
+Tecniques
+1. CORS
+2. postMessage()
+3. JSONP 
+4. XSS - automatic SOP bypass
+
+Hunting for SOP Bypasses
+Step 1: Determine If SOP Relaxation Techniques Are Used
+check for signatures of the above
+- Access-Control-Allow-Origin headers
+- Inspect source, looking for message Event Listeners
+- scripts like
+<script src="https://a.example.com/user_info?callback=parseinfo"></script>
+<script src="https://a.example.com/user_info?jsonp=parseinfo"></script>
+
+Step 2: Find CORS Misconfiguration
+Access-Control-Allow-Origin response header is set to null?
+see bypassing cors misconfigs
+Step 3: Find postMessage Bugs
+- open an iframe, if not possible 
+- open window 
+var recipient_window = window.open("https://TARGET_URL", target_domain)
+recipient_window.postMessage("RANDOM MESSAGE", "*");
+Step 4: Find JSONP Issues
+See if you can embed a script tag on your site and request the 
+sensitive data wrapped in the JSONP payload:
+<script src="https://TARGET_URL?callback=parseinfo"></script>
+Step 5: Consider Mitigating Factors
+When the target site does not rely on cookies for authentication, these SOP
+bypass misconfigurations might not be exploitable. For instance, when the site
+uses custom headers or secret request parameters to authenticate requests,
+you might need to find a way to forge those to exfiltrate sensitive data
+
+Finding Your First SOP Bypass Vulnerability!
+1. Find out if the application uses any SOP relaxation techniques. 
+Is the application using CORS, postMessage, or JSONP? 
+are they others? search!
+2. If the site is using CORS, test the strength of the CORS allowlist 
+by submitting test Origin headers.
+3. If the site is using postMessage, test sending or receiving
+messages as an untrusted site.
+4. If the site is using JSONP, try to embed a script tag on your site and
+request the sensitive data wrapped in the JSONP payload.
+5. Determine the sensitivity of the information you can steal using the vulnerability, 
+and see if you can do something more.
