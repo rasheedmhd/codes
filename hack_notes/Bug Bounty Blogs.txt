@@ -2,14 +2,18 @@ Bug Bounty Blogs
 Patrik Fehrenbach's 
 https://wss.sh/en/blog/
 https://www.cyberark.com/
+https://www.netspi.com/blog/technical-blog/
 
+
+posts
 bbre.dev
 https://preview.mailerlite.com/n7m2n4a4s1
 https://members.bugbountyexplained.com/case-studies/
+https://www.netspi.com/blog/technical-blog/web-application-pentesting/uncovering-a-critical-vulnerability-through-chained-findings/
+https://www.netspi.com/blog/technical-blog/adversary-simulation/obfuscating-html-smuggling-with-web-assembly/
+https://portswigger.net/research/server-side-template-injection
 
-Build Vulns Program Comparism Website 
-
-
+Build Vulns Program Comparism Website
 Reports to read
 Stored XSS in product description
 https://hackerone.com/reports/1085546
@@ -18,6 +22,8 @@ HTML injection in packing slips can lead to physical theft
 https://hackerone.com/reports/1087122
 
 https://hackerone.com/filedescriptor/hacktivity?type=user
+
+
 
 Perfect Programs
 coinbase
