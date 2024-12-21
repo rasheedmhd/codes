@@ -3,7 +3,7 @@ Patrik Fehrenbach's
 https://wss.sh/en/blog/
 https://www.cyberark.com/
 https://www.netspi.com/blog/technical-blog/
-
+https://www.hackingarticles.in/penetration-testing/
 
 posts
 bbre.dev
