@@ -1,0 +1,41 @@
+Access Control Vulns
+
+Privilege Escalation
+Accessing information that you aren't authorized to have access to. 
+
+Horizontal access controls - accessing information that others of your account
+level have access to but you don't because maybe it is not your information
+
+I think it doesn't have to be others data only, for example, an app my give 
+you access to your transaction history be preventing you from deleting them
+but allowing admins to delete 
+
+Context-dependent access controls
+Not having access to modify information based on context on state.
+Example, not being able to modify payment prices after they have
+been made. 
+
+Vertical access controls - having access to information that your account isn't
+authorized to have. Example being a normal user than admin
+
+Causes 
+Unprotected functionality
+- access through search bar
+- endpoints might be available in exposed script files
+
+Parameter-based access control methods
+- determine the user's access rights or role at login, 
+- store this information in a user-controllable location eg
+A hidden field.
+A cookie.
+A preset query string parameter.
+
+Broken access control resulting from platform misconfiguration
+Some applications enforce access controls at the platform layer. they do this by restricting access to specific URLs and HTTP methods based on the user's role. For example, an application might configure a rule as follows:
+
+The four main access control models are:
+
+Discretionary access control (DAC)
+Mandatory access control (MAC)
+Role-based access control (RBAC)
+Rule-based access control (RuBAC)
