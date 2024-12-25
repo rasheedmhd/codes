@@ -1,5 +1,6 @@
 Server Side Request Forgery
-Impersonating server and make request on their behalf
+Tricking a server to make a request on your behalf.
+
 Possible through signature forgery, this allows them
 to presume a privileged position, bypass firewall 
 controls and gain access to internal networks 
