@@ -1,0 +1,80 @@
+Methodology
+Penetration Testing Executing Standard (PTES) 
+
+Information Gathering
+determine technology
+- inspect source code
+
+Threat modeling
+Understand target,
+prepare potential avenues of attack. 
+To determine the most effective types of attacks,
+understand the context and related risks. 
+
+Vulnerability analysis
+With enough information about the target 
+and a defined threat model, 
+Begin vulnerabilities discovery
+analyzing them, and attempting to exploit them
+
+Exploitation
+To exploit this, we need to be creative.
+We can search the internet for the various known bypasses and randomly throw them at the server,
+or we can be more surgical and study how Mod_Security and the two rules work. The rules that
+are often applied are those of the OWASP coreruleset.
+
+But, in general, it’s just like a cat-and-mouse game:
+
+Of course, it’s not the only bypass that exists. To find a different one with ease, just read the code, study
+which tags can trigger JavaScript in the various versions of HTML, and try
+
+We’ve realized
+that we need a set of skills, the basics of which help us right away and the others learn as we encounter
+them. Finally, we’ve realized that we need a resilient mindset that doesn’t shy away from challenges,
+pushes us to dig deeper when necessary, and spurs us to use our creativity to find new solutions
+
+
+Web Application Attack Surface
+- Firewell/Proxy/Load Balancer/Web Application Firewell
+- Web Servers and Web Application servers
+- Proprietary or third-party application code
+- Databases
+- Virtualization Systems
+- Operating Systems
+- Infrastructure and cloud
+
+Onofri's Methodology
+
+Information gathering: Finding helpful information for the subsequent phases, such as the
+applications installed and web server information:
+ PTES: Intelligence gathering
+ SP 800-115: Discovery (information gathering and scanning)
+ WSTG: Information gathering, configuration, deployment management testing, and weak
+cryptography for the system part (from Chapter 4)
+
+• Threat modeling: To understand which kind of attacks and vulnerabilities can be helpful
+considering the application, its technical aspect, and the interest of a threat actor:
+ PTES: Threat modeling
+ WSTG: Threat modeling from Chapter 2, which considers the tests from Chapter 4
+
+• Vulnerability analysis: We use testing techniques to identify and look at the vulnerabilities list:
+ PTES: Vulnerability analysis.
+ SP 800-115: Discovery (vulnerability analysis), looking for known vulnerabilities and using
+the testing techniques (white, black, and gray boxes) to find new vulnerabilities.
+ WSTG: In general, the entire process is both iterative and incremental. Understanding the
+initial objectives derived from threat modeling and intelligence gathering begins. Typically,
+we begin the process with an unauthenticated preliminary analysis, looking for low-hanging
+fruits. Then, we continue with the complete tests/attacks.
+
+• Exploitation: Where we can execute attacks and exploits. Once we are “in”, we have the
+initial access.
+ PTES: Exploitation.
+ SP 800-115: Attack (gaining access). Successfully exploiting an application can sometimes
+mean gaining access to an operating system. Often, the process is more complex.
+• Post-exploitation: When inside a system where we escalate our privileges and gain visibility, we
+gather more information. If it aligns with our goals, we extract the data we need. This process
+may further enable us to establish persistence or even initiate a pivot (a lateral movement). This
+phase, in which we seek to understand the different paths attackers take, is where the MITRE
+ATT&CK framework comes into play:
+ PTES: Post-exploitation
+ SP 800-115: Attack (gaining access)
