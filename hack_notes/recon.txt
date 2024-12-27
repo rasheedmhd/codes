@@ -45,3 +45,54 @@ TruffleHog (https://github.com/trufflesecurity/truffleHog/)
 - inspecting req headers in burp proxy
 - view html sc  
 tools - wapplyzer, builtwith, stackshare, retire.js
+
+
+OWASP WSTG - 4.1.X
+1 Conduct Search Engine Discovery Reconnaissance for Information Leakage
+- Google dorking
+- Use different search engines bc they index differently
+- Get robots.txt file
+2. Fingerprinting web servers
+- banner grab ( curl -I domain)
+- server response adds the server name and version
+- if server obscures name and version, study response header ordering
+Send Malformed Requests
+- study default response error msgs
+- tools - netcraft, nikto, nmap
+
+3 Review Webserver Metafiles for Information Leakage
+Identify hidden or obfuscated paths and functionality through the analysis of metadata files.
+Extract and map other information that could lead to a better understanding of the systems at hand
+- META tags
+- Robots.txt
+- Sitemaps
+- Security.txt
+- humans.txt
+curl -O -Ss https://www.google.com/robots.txt && head -n5 robots.txt
+
+3. Enumerate Applications on Webserver
+Enumerate the applications within the scope that exist on a web server.
+Different base urls - use site: operator
+Nonstandard ports - web apps can be hosted on different ports != 443/80
+nmap -sV
+nmap –Pn –sT –sV –p0-65535
+Virtual Hosts - DNS allows a single IP address to be associated with one or more symbolic names.
+
+5 Review Web Page Content for Information Leakage
+Review Web Page Comments and Metadata
+Identifying JavaScript Code and Gathering JavaScript Files
+Identifying Source Map Files
+Identify Redirect Responses which Leak Information
+
+
+
+
+
+
+
+
+
+
+
+
+
