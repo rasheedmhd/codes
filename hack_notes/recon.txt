@@ -84,7 +84,41 @@ Identifying JavaScript Code and Gathering JavaScript Files
 Identifying Source Map Files
 Identify Redirect Responses which Leak Information
 
+Identify Application Entry Points
+Identify possible entry and injection points through request and response analysis.
+pay attention to all HTTP requests as well as every parameter and form field that is passed to the application
+make special note of any hidden form fields that are being passed to the application
+Used Attack Surface Detector to end points and parameters that they receive
 
+Map Execution Paths Through Application
+ZAP spidering
+ZAP offers various automatic spidering options,
+which can be leveraged based on the tester’s needs:
+Spider
+Ajax Spider
+OpenAPI Support
+
+Fingerprint Web Application Framework
+Black-Box Testing
+There are several common locations to consider in order to identify frameworks or components:
+HTTP headers - X-Powered-By, X-Generator
+Cookies
+HTML source code
+Specific files and folders
+File extensions
+Error messages
+
+Map Application Arch
+Web Framework, Web Server, PaaS, Serverless, Microservices
+Database
+Port scanning the server and looking for any open ports associated with specific databases
+Triggering SQL (or NoSQL) related error messages (or finding existing errors from a search engine
+Load Balancers
+Content Delivery Network (CDN) [to read]
+If the majority of the ports are shown as “closed” (i.e, they return a RST packet in response to the initial SYN packet), this suggests that the server may not be protected by a firewall. If the ports are shown as “filtered” (i.e, no response is received when sending a SYN packet to an unused port), then a firewall is most likely to be in place.
+Network Intrusion Detection and Prevention System
+Web App firewall
+If a cloud-based WAF is in use, then it may be possible to bypass it by directly accessing the backend server, using the same methods discussed in the Content Delivery Network section.
 
 
 
