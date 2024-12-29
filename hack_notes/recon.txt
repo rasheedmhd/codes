@@ -176,6 +176,16 @@ A CORS preflight request is a CORS request that checks to see if the CORS protoc
 
 OPTIONS	List supported HTTP methods.	Perform a CORS Preflight request.
 
+Test HTTP Strict Transport Security
+The HTTP Strict Transport Security (HSTS) feature enables a web server to inform the user’s browser, via a special response header, that it should never establish an unencrypted HTTP connection to the specified domain servers. Instead, it should automatically establish all connection requests to access the site through HTTPS. This also prevents users from overriding certificate errors.
+
+Test Objectives
+Review the HSTS header and its validity.
+How to Test
+Confirm the presence of the HSTS header by examining the server’s response through an intercepting proxy.
+Use curl as follows:
+$ curl -s -D- https://owasp.org | grep -i strict-transport-security:
+
 
 
 
