@@ -1,50 +1,44 @@
-Recon
+NOTES ON RECONNAISSANCE
 1. Confirm that active recon is allowed
-2. Manual scope walk through - aim is to reveal the attack surface, all the end points we can launch an attack test
+2. Manual scope walk through - aim is to reveal the attack surface
 3. Uncover the tech and infra+structure of the application
 4. Google dork for info to advance your hacking, eg: searching for payloads
 
-Vuln Search
-https://www.cvedetails.com/documentation/
+Vuln Search:	https://www.cvedetails.com/documentation/
 
 SCOPE DISCOVERY
-1. whois and reverse whois
-2. nslookup
-3. certificates searching with crt.sh
-4. Enumerate subdomains
-Sublist3r - query search engines + subdomain dbs
-Gobuster - brute forcer
-Amass - uses DNS zone transfers, certificate parsing, search engines, and subdomain databases to
-find subdomains.
-Altdns - https://github.com/infosec-au/altdns/
-SubBrute - brute forcer
-Subfinder
-
-Wordlists
+1. Whois and Reverse Whois
+2. Nslookup
+3. Certificates searching with crt.sh
+4. Enumerate Subdomains
+   Sublist3r - query search engines + subdomain dbs
+   Gobuster  - brute forcer
+   Amass     - uses DNS zone transfers, certificate parsing, search engines
+   			   and subdomain databases to find subdomains.
+   Altdns    - https://github.com/infosec-au/altdns/
+   SubBrute  - brute forcer
+   Subfinder
+WORDLISTS
 https://github.com/danielmiessler/SecLists/
 https://github.com/assetnote/commonspeak2/
-
 5. Service Enumeration (port scanning)
 - nmap, masscan
-passive reconn
-Shodan
-Project Sonar
-Censys
+PASSIVE RECON:	Shodan . Project Sonar . Censys
 6. Crawl all pages - ZAP Spider
 7. Third Party Hosting 
 - Use google dorking to plus tools like lazys3
-https://buckets.grayhatwarfare.com/
-to discover open buckets, use aws cli to read the bucket contents
-https://github.com/nahamsec/lazys3/ - I can rewrite it in Rust/Go/TypeScript
+- Use https://buckets.grayhatwarfare.com/
+  to discover open buckets, use aws cli to read the bucket contents
+- Https://github.com/nahamsec/lazys3/ - I can rewrite it in Rust/Go/TypeScript
 8. Github Recon - tools 
 Gitrob (https://github.com/michenriksen/gitrob/)
 TruffleHog (https://github.com/trufflesecurity/truffleHog/) 
 9. OSINT
-10. Fingerprinting - 
-- nmap domain_name -sV
-- inspecting req headers in burp proxy
-- view html sc  
-tools - wapplyzer, builtwith, stackshare, retire.js
+10. Fingerprinting
+- Nmap domain_name -sV
+- Inspecting req headers in Burp proxy
+- View HTML source code
+- Wapplyzer . Builtwith . Stackshare . Retire.js . Whatruns . Whatweb
 
 
 OWASP WSTG - 4.1.X
@@ -53,100 +47,94 @@ OWASP WSTG - 4.1.X
 - Use different search engines bc they index differently
 - Get robots.txt file
 2. Fingerprinting web servers
-- banner grab ( curl -I domain)
-- server response adds the server name and version
-- if server obscures name and version, study response header ordering
+- Banner grab ( curl -I domain)
+- Server response adds the server name and version
+- If server obscures name and version, study response header ordering
 Send Malformed Requests
-- study default response error msgs
-- tools - netcraft, nikto, nmap
+- Study default server error response msgs
+- Tools: Netcraft . Nikto . Nmap
 
-3 Review Webserver Metafiles for Information Leakage
-Identify hidden or obfuscated paths and functionality through the analysis of metadata files.
-Extract and map other information that could lead to a better understanding of the systems at hand
-- META tags
-- Robots.txt
-- Sitemaps
-- Security.txt
-- humans.txt
+3. Review Webserver Metafiles for Information Leakage
+Identify hidden + obfuscated paths and functionality through metadata files analysis.
+Extract and map other information that could lead to a better understanding of the system
+- META tags . Robots.txt . Sitemaps . Security.txt . humans.txt
 curl -O -Ss https://www.google.com/robots.txt && head -n5 robots.txt
 
-3. Enumerate Applications on Webserver
-Enumerate the applications within the scope that exist on a web server.
-Different base urls - use site: operator
-Nonstandard ports - web apps can be hosted on different ports != 443/80
-nmap -sV
-nmap –Pn –sT –sV –p0-65535
-Virtual Hosts - DNS allows a single IP address to be associated with one or more symbolic names.
+4. Enumerate Applications on Webserver
+Enumerate the applications within the scope that exist on the web server.
+Different Base URLs: Site: operator
+Non Standard ports:   Web apps can be hosted on different ports != 443/80
+nmap -sV > nmap –Pn –sT –sV –p0-65535
+Virtual Hosts: DNS allows a single IP address to be associated with one or more symbolic names.
 
-5 Review Web Page Content for Information Leakage
+5. Review Web Page Content for Information Leakage
 Review Web Page Comments and Metadata
 Identifying JavaScript Code and Gathering JavaScript Files
 Identifying Source Map Files
 Identify Redirect Responses which Leak Information
 
-Identify Application Entry Points
+6. Identify Application Entry Points
 Identify possible entry and injection points through request and response analysis.
-pay attention to all HTTP requests as well as every parameter and form field that is passed to the application
-make special note of any hidden form fields that are being passed to the application
-Used Attack Surface Detector to end points and parameters that they receive
+Pay attention to all HTTP requests as well as every parameter and form field
+that is passed to the application.
+Make special note of any hidden form fields that are being passed to the application.
+Use Attack Surface Detector to uncover end points and parameters that they receive.
 
-Map Execution Paths Through Application
+7. Map Execution Paths Through Application
 ZAP spidering
 ZAP offers various automatic spidering options,
 which can be leveraged based on the tester’s needs:
-Spider
-Ajax Spider
-OpenAPI Support
+Spider . Ajax Spider . Check for OpenAPI Support
 
-Fingerprint Web Application Framework
-Black-Box Testing
-There are several common locations to consider in order to identify frameworks or components:
-HTTP headers - X-Powered-By, X-Generator
-Cookies
-HTML source code
-Specific files and folders
-File extensions
-Error messages
+8. Fingerprint Web Application Framework
+Several locations exists to consider to identify frameworks or components:
+HTTP headers . X-Powered-By . X-Generator . Cookies
+HTML source code    .    Specific files and folders
+File extensions     .    Error messages
 
-Map Application Arch
-Web Framework, Web Server, PaaS, Serverless, Microservices
-Database
-Port scanning the server and looking for any open ports associated with specific databases
-Triggering SQL (or NoSQL) related error messages (or finding existing errors from a search engine
+9. Map Application Architecture
+Web Framework  .  Web Server  .  Database
+PaaS  .  Serverless   .   Microservices
+Port scan server for any open ports associated with specific databases.
+Trigger SQL/NoSQL related error messages [ find existing errors from a search engine ]
 Load Balancers
 Content Delivery Network (CDN) [to read]
-If the majority of the ports are shown as “closed” (i.e, they return a RST packet in response to the initial SYN packet), this suggests that the server may not be protected by a firewall. If the ports are shown as “filtered” (i.e, no response is received when sending a SYN packet to an unused port), then a firewall is most likely to be in place.
+If the majority of the ports are shown as “closed”
+(i.e, they return a RST packet in response to the initial SYN packet),
+this suggests that the server may not be protected by a firewall.
+If the ports are shown as “filtered”
+(i.e, no response is received when sending a SYN packet to an unused port),
+then a firewall is most likely to be in place.
 Network Intrusion Detection and Prevention System
-Web App firewall
-If a cloud-based WAF is in use, then it may be possible to bypass it by directly accessing the backend server, using the same methods discussed in the Content Delivery Network section.
+Web App Firewall
+If a cloud-based WAF is in use, then it may be possible to bypass it
+by directly accessing the backend server, using the same methods discussed
+in the Content Delivery Network section.
 
-TESTING HTTP METHODS
+10. TESTING HTTP METHODS
 Enumerate supported HTTP methods.
-Test for access control bypass.
+Test for Access Control bypass.
 Test HTTP method overriding techniques.
 
-How to test
 Discover the Supported Methods
-
 ! all servers may respond to OPTIONS requests
 some may  return inaccurate information.
 Servers may support different methods for different paths.
 A method might not supported for the root / directory,
 doesn't indicate that it won’t be supported elsewhere.
+For reliability, make a request with that method type,
+and examine the server response. If the method is not permitted,
+the server will return a 405 Method Not Allowed status.
 
-For reliability, just make a equest with that method type,
-and examine the server response. If method not permitted,
-you get return a 405 Method Not Allowed status.
-
-Some servers treate unknown methods as equivalent to GET,
-so they may respond to arbitrary methods
+Some servers treat unknown methods as equivalent to GET,
+So they may respond to arbitrary methods
 This can occasionally be useful to evade a web application firewall,
 or any other filtering that blocks specific methods.
-
-Requests with arbitrary methods can also be made using curl with the -X option:
 curl -X FOO https://example.org
+
 Using PUT to upload files to older webservers
 curl https://example.org --upload-file test.html
+
 Using DELETE to delete files form a webserver
 curl https://example.org/test.html -X DELETE
 
