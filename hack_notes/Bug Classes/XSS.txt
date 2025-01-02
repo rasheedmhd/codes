@@ -12,7 +12,7 @@ if there is a possibility of XSS like DOM-XSS
 
 Look at cookie implementation to see how you can
 escalate an XSS by stealing user cookies 
-check httponly flg
+check httponly flag
 
 cheatsheet
 https://portswigger.net/web-security/cross-site-scripting/cheat-sheet
@@ -58,3 +58,13 @@ so on. Despite the potential damage XSS can cause on a site, fixing XSS
 vulnerabilities is often easy
 
 When they say they have fixed your issue, please test again to confirm that it has really be fixed. if it isn't fixed properly please point out to them to make a proper complete fix 
+
+XSS Polymorphism 
+- Changing your payload based of sanitation information received from the target
+- if your payload is getting sanitized, 
+how do you by pass the sanitization?
+Under the sanitization and craft a clever payload 
+that passes the sanitation
+- maybe pass malformed html/js payloads
+- see https://klikki.fi/yahoo-mail-stored-xss/
+- see https://mahmoudsec.blogspot.com/2015/09/how-i-found-xss-vulnerability-in-google.html

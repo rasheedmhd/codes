@@ -64,3 +64,9 @@ target is using to construct an exploit.
 6. Create a proof of concept that does not harm the targeted system. A
 good way to do this is to execute touch template_injection_by_YOUR_NAME
 .txt to create a specific proof-of-concept file.
+
+Some Templating engines
+1. Liquid https://shopify.github.io/liquid/
+2. Haml
+3. Erb
+4. Jinja2

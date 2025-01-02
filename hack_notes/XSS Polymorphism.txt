@@ -1,9 +1,0 @@
-XSS Polymorphism 
-- Changing your payload based of sanitation information received from the target
-- if your payload is getting sanitized, 
-how do you by pass the sanitization?
-Under the sanitization and craft a clever payload 
-that passes the sanitation
-- maybe pass malformed html/js payloads
-- see https://klikki.fi/yahoo-mail-stored-xss/
-- see https://mahmoudsec.blogspot.com/2015/09/how-i-found-xss-vulnerability-in-google.html
