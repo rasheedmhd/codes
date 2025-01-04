@@ -263,12 +263,3 @@ White-Box Testing
 Examine the application routing configuration, Most of the time, developers use regular expressions in application routing.
 
 https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/13-Test_for_Path_Confusion [ Learn about Web Cache Poisoning in Reference Links]
-
-
-
-
-
-
-
-
-

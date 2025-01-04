@@ -31,10 +31,8 @@ https://cheatsheetseries.owasp.org/index.html
 XSS Filter Evasion Cheat Sheet
 https://cheatsheetseries.owasp.org/cheatsheets/XSS_Filter_Evasion_Cheat_Sheet.html
 
-
 On ruling out false XSS with innerHTML 
-TIP:
-Scan source code for how innerHTML is used. 
+TIP: Scan source code for how innerHTML is used. 
 
 HTML specifies that a <script> tag inserted with innerHTML should not execute.
 https://www.w3.org/TR/2008/WD-html5-20080610/dom.html#innerhtml0
@@ -45,19 +43,21 @@ over which you have no control. For example:
 const name = "<img src='x' onerror='alert(1)'>";
 el.innerHTML = name; // shows the alert
 
-On report writing 
-For that reason, it is recommended that instead of innerHTML you use:
+Test image uploads with image URL in URL
 
+====================
+ On report writing |
+====================
+For that reason, it is recommended that instead of innerHTML you use:
 Node.textContent when inserting plain text, as this inserts it as raw text rather than parsing it as HTML.
 https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML#security_considerations
 
-
 XSS’s impact depends on a variety of factors: whether it’s stored or
-reflected, whether cookies are accessible, where the payload executes, and
-so on. Despite the potential damage XSS can cause on a site, fixing XSS
-vulnerabilities is often easy
+reflected, whether cookies are accessible, where the payload executes etc
+Despite the potential damage XSS can cause on a site, fixing XSS vulnerabilities is often easy
 
-When they say they have fixed your issue, please test again to confirm that it has really be fixed. if it isn't fixed properly please point out to them to make a proper complete fix 
+When they say they have fixed your issue, please test again to confirm that it has really be fixed. 
+if it isn't fixed properly, point out to them to make a proper complete fix.
 
 XSS Polymorphism 
 - Changing your payload based of sanitation information received from the target
