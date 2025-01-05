@@ -1,19 +1,29 @@
 XML External Entities
-- target application XML parsers
+- targets application XML parsers
 - difficult to understand and exploit
 - can lead to SSRF and DoS
 - Understand XML (allows arbitrary tag names)
 used for passing data btn entities 
 - used for 
-file uploads
-authentication 
+file uploads, authentication 
 cross application communication etc
+
 - contains DTD (document type definitions)
-used to define the xml document structure
+used to define the XML document structure
 declared in the document or loaded externally
 
-causes?
-use of old/vulnerable xml parsers
+Unlike HTML that has predefined tag names, XML
+doesn't have that all tag names are define
+arbitrarily by the author. 
+So there is the need for a meta data part of
+the XML File that tells the parser the signature
+of tags accepted. The DTD has a feature
+called External Entities where the parser
+is instructed to load XML/data from external sources
+like a file system or a web page
+
+Causes?
+Use of old/vulnerable XML parsers
 If the parser allows user-defined DTDs or user input within
 the DTD and is configured to parse and evaluate the DTD, attackers can
 declare their own external entities to achieve malicious results
@@ -21,7 +31,7 @@ declare their own external entities to achieve malicious results
 - XML documents can also use external entities to access either local or
 remote content with a URL.
 <!ENTITY file SYSTEM "http://example.com/index.html">
-- SYSTEM keyword preceedes external entities
+- SYSTEM keyword precedes external entities
 <!ENTITY file SYSTEM "file:///example.txt">
 
 VULN
@@ -30,11 +40,13 @@ might be able to disclose internal files, port-scan internal machines,
 or launch DoS attacks.
 
 Exploit
-Application allows user to upload xml files
-parses and displays back to user
+Application allows user to upload XML files
+Parses the file and displays back to user or 
+make request to external or internal Resources
+during parsing. 
 
 Applications are vulnerable to XXEs when the application accepts
-usersupplied XML input or passes user input into DTDs, which is then parsed
+user supplied XML input or parses user input into DTDs, which is then parsed
 by an XML parser, and that XML parser reads local system files or sends
 internal or outbound requests specified in the DTD.
 
@@ -60,16 +72,17 @@ the signature of an XML document: the string "<?xml".
 Step 2: Test for Classic XXE
 Once you’ve determined that the endpoints can be used to submit XML
 data, you can start to test for the presence of functionalities needed for
-XXE attacks. This usually involves sending a few trial-and-error XXE payloads and observing the application’s response.
+XXE attacks. This usually involves sending a few trial-and-error XXE payloads 
+and observing the application’s response.
 
 Step 3: Test for Blind XXE
-Instead of reading
-files from the server’s response, most blind XXE attacks steal data by having
-the target server make a request to the attacker’s server with the exfiltrated
-information.
+Instead of reading files from the server’s response, 
+most blind XXE attacks steal data by having the target server make 
+a request to the attacker’s server with the exfiltrated information.
 
 Step 4: Embed XXE Payloads in Different File Types
-Insert the XXE payload by adding a DTD directly into the file and referencing the external entity in the SVG image. You can then save the file as
+Insert the XXE payload by adding a DTD directly into the file and referencing 
+the external entity in the SVG image. You can then save the file as
 an .svg file and upload it to the server:
 
 Finding Your First XXE!
@@ -88,14 +101,6 @@ XXE attacks, try to exfiltrate a common system file, like /etc/hostname.
 6. If you cannot exfiltrate the entire file with a simple XXE payload,
 try to use an alternative data exfiltration method.
 7. See if you can launch an SSRF attack using the XXE.
-
-
-Using the following JavaScript within the Uber URL, Kettle escaped
-the AngularJS Sandbox and executed the alert function:
-https://developer.uber.com/docs/deep-linking?q=wrtz{{(_="".sub).call.call({}
-[$="constructor"].getOwnPropertyDescriptor(_.__proto__,$).value,0,"alert(1)")
-()}}zzzz
-MORAL: Search for sandbox escape payloads
 
 
 
