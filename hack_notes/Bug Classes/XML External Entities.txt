@@ -103,6 +103,11 @@ try to use an alternative data exfiltration method.
 7. See if you can launch an SSRF attack using the XXE.
 
 
+https://cwe.mitre.org/data/definitions/611.html
+https://www.youtube.com/watch?v=eHSNT8vWLfc
+https://cwe.mitre.org/data/definitions/611.html
+
+
 
 
 
