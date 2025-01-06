@@ -1,5 +1,5 @@
 HTTP Parameter Pollution
-This happens when you send extra http url parameters to the servers to observe
+This happens when you send extra HTTP URL parameters to the servers to observe
 how it handles them. 
 You can send custom parameters or duplicate parameter value
 
@@ -11,9 +11,12 @@ handle that situation in different ways. In Recon and fingerprinting
 you can make an educated guess on which server is used in the backend
 so you can make an educated guess as to what will happen with the 
 extra parameters you send.
-Apache + PHP = last occurence 
+Apache + PHP = last occurence
 Tomcat = first occurence
 ASP + IIS = all occurences
 more info Luca Carettoni and Stefano di Paolo
 
 https://id.vk.com/auth?v=1.46.0&app_id=7913379&uuid=6aacda8cf8&redirect_uri=https%3A%2F%2Fvk.com%2Fjoin&app_settings=W10%3D&action=eyJuYW1lIjoibm9fcGFzc3dvcmRfZmxvdyIsInBhcmFtcyI6eyJ0eXBlIjoic2lnbl91cCJ9fQ%3D%3D&scheme=space_gray
+
+HTTP Request Smuggling
+https://www.cgisecurity.com/lib/HTTP-Request-Smuggling.pdf
