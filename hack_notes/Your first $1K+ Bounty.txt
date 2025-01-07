@@ -7,19 +7,18 @@ Advice
 - allows you to scale your skills to go for a f100,000
 
 Stop aimlessly jumping from one program to another
-1. Browse through the bug bounty mmgt platform e.g hackerone 
+1. Browse through the bug bounty mmgt platform e.g Hackerone 
 select 3 explore them and choose only 1. 
 Keep in mind of the attack surface. 
-Ideally you want a program
-with a large attack surface, 
-based on assets and vulns scope.
+Ideally you want a program with a large attack surface, 
+based on assets and vuln classes.
 
-- What you hunt for should be driven by the platform. What vulns
-you look for should be based on the platform. 
+- What you hunt for should be driven by the platform. 
+What vulns you look for should be based on the platform. 
 If you do recon right, understand the target scope, you can make
 an informed decision for what to test on what scope 
 
-- Don't overcomplicate your setup
+- Don't over complicate your setup
 - Tools should make you more efficient not replace you
 
 2. First Week - Program Selection, refer to 1 above

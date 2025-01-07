@@ -6,7 +6,7 @@ Who is the app protecting?
 What is considered sensitive information?
 What mechanisms are in place to protect that sensitive information?
 How do I by pass these mechanism protecting the sensitive information?
-How do I access the sensitive informtion ?
+How do I access the sensitive information ?
 What functionalities does it have?
 
 For Reporting
