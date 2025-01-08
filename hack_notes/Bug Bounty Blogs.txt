@@ -5,6 +5,24 @@ https://www.cyberark.com/
 https://www.netspi.com/blog/technical-blog/
 https://www.hackingarticles.in/penetration-testing/
 
+IDEA - SOPRedirect, a redirect method that only redirects to
+path, not FQDN to prevent Open Redirects
+
+https://cablej.io/blog
+List
+https://whitton.io/articles/bug-bounties-101-getting-started/
+https://sakurity.com/
+https://www.josipfranjkovic.com/
+https://philippeharewood.com/
+Homakov hacks github to proof a point,
+how we got strong params in rails
+params
+	.require(:model_name)
+	.permit(:attrs)
+https://github.com/rails/rails/issues/5228/
+Brett BuerHaus
+https://buer.haus/
+
 posts
 bbre.dev
 https://preview.mailerlite.com/n7m2n4a4s1
@@ -37,4 +55,4 @@ Future
 Epic Games
 crypto.com
 spotify.com
-X.com3
+X.com

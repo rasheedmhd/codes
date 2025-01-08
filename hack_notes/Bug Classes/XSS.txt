@@ -7,6 +7,15 @@
 - like data:text/html;base64,PHNjcmlwdD5hbGVydCgnWFNTIGJ5IFZpY2tpZScpPC9zY3JpcHQ+"
 - or just pass the script 
 
+XSS Validation
+Client-Side and Server side
+A Web app can use both, determine 
+where the validations and sanitation are applied
+and mutate the payload accordingly
+
+Read Open Source Frameworks for static analysis
+of the XSS Prevention implementations
+
 Reading source code can help you detect 
 if there is a possibility of XSS like DOM-XSS
 
@@ -68,3 +77,15 @@ that passes the sanitation
 - maybe pass malformed html/js payloads
 - see https://klikki.fi/yahoo-mail-stored-xss/
 - see https://mahmoudsec.blogspot.com/2015/09/how-i-found-xss-vulnerability-in-google.html
+
+
+BROWSERS HACKERS HANDBOOK
+URL OBFUSCATION
+The following are ways in which to obfuscate a URL:
+■ URL Shorteners
+■ URL Redirectors
+■ URL- or ASCII-encoded characters
+■ Adding a number of extra, irrelevant query parameters with the malicious
+payload either in the middle or toward the end
+■ Using the @ symbol within a URL to add fake domain content
+■ Converting the hostname into an integer, for example http://3409677458

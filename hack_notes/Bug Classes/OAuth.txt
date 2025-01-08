@@ -1,0 +1,12 @@
+3 important parties
+- Resource Owner
+- Client
+- Resource Server
+
+Requests to  /oath/ to client
+Client redirects to the Resource Server with
+- client_id
+- redirect_uri
+- response type
+- scope
+- state unguessable value that prevents cross-site request forgeries
