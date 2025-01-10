@@ -1,0 +1,18 @@
+Preparing your Security tests
+Receive authorization - [ bug bounty ]
+Threat Model the API test - Mapping out the threats the API is exposed to
+
+API FEATURES TO TEST
+1 API authentication 
+test roles, users to assess privilege levels
+many of the detrimental vulnerabilities are discovered
+in authentication and authorization.
+2 WAFs 
+Learn the boundaries and bypass the WAF + discover Zero-Days
+Mobile Application Testing
+Auditing API Documentation
+Rate Limit Testing
+Restrictions and Exclusions - out of scope
+Security Testing Cloud APIs
+Follow their in scope and out of scope rules [ AWS, GCP, Azure ]
+Reporting and Remediation Testing 
