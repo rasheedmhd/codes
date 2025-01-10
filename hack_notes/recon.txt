@@ -6,6 +6,8 @@ NOTES ON RECONNAISSANCE
 
 Vuln Search:	https://www.cvedetails.com/documentation/
 
+Wordpress https://www.sitename.org/wp-json/wp/v2/users
+
 SCOPE DISCOVERY
 1. Whois and Reverse Whois
 2. Nslookup

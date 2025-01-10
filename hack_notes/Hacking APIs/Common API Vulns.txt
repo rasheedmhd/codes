@@ -1,0 +1,12 @@
+Information Disclosure
+When an API and its supporting software share sensitive information
+with unprivileged users
+
+Wordpress recon  https://www.sitename.org/wp-json/wp/v2/users
+
+Often, you can gather the most information by interacting with an API
+endpoint and analyzing the response
+
+Broken Object Level Authorization
+Accessing information you are not allowed to access. 
+Similar to IDORs 

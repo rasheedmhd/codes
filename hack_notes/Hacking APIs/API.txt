@@ -1,3 +1,14 @@
 Recon similar to web apps
+
+Recon
 Introspection
 Enumerate the API to discover end points
+Read the API’s public documentation if it has one
+Use https://swagger.io to search for internal API doc accidentally available
+Probe and read API error messages
+
+•  What access tokens are needed?
+•  Which endpoints require tokens and which do not?
+•  How are access tokens generated?
+•  Can users use the API to generate a valid token without logging in?
+•  Do access tokens expire when updating or resetting passwords?

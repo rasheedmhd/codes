@@ -1,0 +1,45 @@
+A query and manipulation language for APIs
+Allows you to query exactly the information that you need with no excess
+Very flexible to use by a very wide variety of applications and devices 
+
+On Communication
+Client 
+Query - HTTP POST req method 
+all queries begin with a definition of the operation’s root type,
+Response
+Query Parser - read and validate that the query is properly formatted and that the server can support it
+Schema - The kind of data a client can query for 
+Resolver Functions - are responsible for generating the response to the client’s query.
+Server
+Ext Databases 
+Schema as defined with a Schema definition Language (SDL)
+Basic structure is an Object (Composite Data Types)
+Objects can be linked together 
+
+type User {
+    username: String 
+    email: String
+    location: Location
+}
+
+type Location {
+    lat: Int
+    long: Int 
+}
+
+QUERY ROOT TYPES
+query 
+mutation
+subscription
+
+you can think of GraphQL as a query layer that sits
+between the client (such as a browser running on a user’s mobile phone
+or laptop) and the application logic
+
+What Problems Does GraphQL Solve?
+Resource over-fetching and under-fetching 
+
+Even though GraphQL applications mostly use POST,
+you should test a GraphQL application for the support of the GET method,
+as it can open up opportunities to identify and abuse vulnerabilities such
+as cross-site request forgery
