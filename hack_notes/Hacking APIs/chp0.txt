@@ -16,3 +16,108 @@ Restrictions and Exclusions - out of scope
 Security Testing Cloud APIs
 Follow their in scope and out of scope rules [ AWS, GCP, Azure ]
 Reporting and Remediation Testing 
+
+ANATOMY OF WEB APIs
++ API gateways sit btn the consumer and the provider 
+The Consumer is the client part of the client/server model 
+The Provider is the server part of the client/server model 
+
+The Server/Producer can be a Monolith or a Microservices arch
+The consumer is not concerned with the arch of the Provider
+all it cares and knows about is the API Gateways 
+
+CRUD operations are offered by the API Gateway to the consumer
+
+Standard WEB API types 
+RESTful API
+[ props ]
+- uniform API surface
+- cacheable 
+- stateless 
+- client/server model 
+- Layered system
+- [ Code on demand ]
+
+Authorization
+Authorization headers are used to pass a token or credentials to the API provider.
+types => API Token, AWS-HMAC-SHA256, Base64 
+content-type => application/json, application/xml, application/x-www-form-urlencoded 
+
+Middleware (X) Headers
+X-<anything> headers are known as middleware headers and can serve all sorts of purposes.
+
+Encoded Data 
+When the string “hAPI hacker” is encoded it becomes the following:
+UTF-8          =>  \x68\x41\x50\x49\x20\x68\x61\x63\x6B\x65\x72
+UTF-16         =>  \u{68}\u{41}\u{50}\u{49}\u{20}\u{68}\u{61}\u{63}\u{6b}\u{65}\u{72}
+base64-encoded =>  aEFQSSBoYWNrZXI=
+
+GraphQL 
+Sample query 
+query {
+    users {
+        username
+        email 
+        firstName
+        LastName
+    }
+}
+
+Sample Response 
+{
+    "data": {
+        "users": {
+            "username": "hapi_hacker",
+            "email": "hapihacker@email.com",
+            "firstName": "dansel",
+            "LastName": "capricorn"
+        }
+    }
+}
+
+if a consumer only needs a specific value from
+the API provider, the consumer will need to filter out the excess data. With
+GraphQL, a consumer can use a single request to get the exact data they
+want. 
+
+Based on CRUD even though used POST method
+POST subdivided into 
+query (Read / GET )
+mutation (Create, Delete, Update / PUT PATCH DELETE)
+subscription (Read -> Send data when an operation/event occurs)
+
+Schemas: are collections of the data that can be queried with the given service
+
+API Specifications 
+OpenAPI Specification 3.0 (OAS), previously known as Swagger, is one of
+the leading specifications for RESTful APIs
+RAML - RESTful API Modeling Language
+
+API Data Interchange Formats
+JSON, XML, YAML
+
+API authentication
+1 HTTP basic authentication, in
+which the consumer includes their username and password in a header or
+the body of a Request
+Encoding and Decoding base64
+$ echo "username:password"|base64
+dXNlcm5hbWU6cGFzc3dvcmQK
+$ echo "dXNlcm5hbWU6cGFzc3dvcmQK"|base64 -d
+username:password
+
+2 API Keys
+It is common for an API provider to instead use basic authentication once, for the first
+request, and then issue an API key or some other token for all other requests.
+
+3 JSON Web Tokens 
+JWTs are generally secure but can be implemented in ways that will
+compromise that security. API providers can implement JWTs that do not
+use encryption, which means you would be one base64 decode away from
+being able to see what is inside the token.
+
+HMAC
+A hash-based message authentication code (HMAC) is the primary API authentication 
+method used by Amazon Web Services (AWS).
+
+OAuth 2.0
