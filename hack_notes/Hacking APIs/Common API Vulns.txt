@@ -1,4 +1,5 @@
 Information Disclosure
+======================
 When an API and its supporting software share sensitive information
 with unprivileged users
 
@@ -8,5 +9,70 @@ Often, you can gather the most information by interacting with an API
 endpoint and analyzing the response
 
 Broken Object Level Authorization
+=================================
 Accessing information you are not allowed to access. 
 Similar to IDORs 
+
+What is the hardest thing about bug bounty for beginners?
+
+I am starting bug bounty this year and I am super focused on hitting $100k
+What is one thing that you would say is the hardest thing to overcome to hit this goal?
+
+Broken User Authentication
+==========================
+Any weakness within the API authentication process. 
+These vulnerabilities typically occur when an API provider
+either doesn’t implement an authentication protection mechanism or
+implements a mechanism incorrectly.
+
+Excessive Data Exposure
+=======================
+Excessive data exposure is when an API endpoint responds with 
+more information than is needed to fulfill a request. 
+
+Lack of Resources and Rate Limiting
+===================================
+When testing an API that is supposed to have rate limiting, the first thing
+you should check is that rate limiting works, and you can do so by sending
+a barrage of requests to the API. If rate limiting is functioning, you should
+receive some sort of response informing you that you’re no longer able to
+make additional requests, usually in the form of an HTTP 429 status code.
+
+Broken Function Level Authorization
+===================================
+Broken function level authorization (BFLA) is a vulnerability where a user of
+one role or group is able to access the API functionality of another role or
+group
+
+To discover BFLA, find admin API docs, send reqs as an unprivileged user that 
+test admin functions and capabilities
+
+403 Forbidden response from Access Controls 
+
+If API docs for privileged actions is not available, discover or 
+reverse engineer the endpoints used to perform privileged actions
+
+Mass Assignment
+===============
+When an API consumer includes more parameters in
+requests than the application intended and the application adds these
+parameters to code variables or internal objects
+
+Security Misconfigurations
+==========================
+All the mistakes developers could make within the supporting security 
+configurations of an API. If a security misconfiguration is severe enough, 
+it can lead to sensitive information exposure or a complete system takeover. 
+
+Includes
+misconfigured headers, transit encryption, 
+Using default accounts eg admin:admin, 
+Accepting unnecessary HTTP methods
+No input sanitization, verbose error messaging
+
+
+Injections
+==========
+Injection flaws exist when a request is passed to the API’s supporting infrastructure 
+and the API provider doesn’t filter the input to remove unwanted
+characters (a process known as input sanitization).

@@ -12,3 +12,14 @@ Probe and read API error messages
 •  How are access tokens generated?
 •  Can users use the API to generate a valid token without logging in?
 •  Do access tokens expire when updating or resetting passwords?
+
+Testing for Access Control and Information Leaks
+- Most API use tokens for auth
+Problems with tokens includes
+1 No server validations when tokens are received from consumer
+2 Improperly issued tokens which can lead to guessing tokens, insufficient randomization
+3 Improper or weak encryption
+4 Too long time of invalidation
+
+In GraphQL, a common misconfiguration is allowing lower-privileged
+users to modify a piece of data that they should not via a mutation request.
