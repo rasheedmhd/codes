@@ -65,7 +65,7 @@ configurations of an API. If a security misconfiguration is severe enough,
 it can lead to sensitive information exposure or a complete system takeover. 
 
 Includes
-misconfigured headers, transit encryption, 
+Misconfigured headers, Transit encryption, 
 Using default accounts eg admin:admin, 
 Accepting unnecessary HTTP methods
 No input sanitization, verbose error messaging

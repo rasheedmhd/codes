@@ -43,3 +43,9 @@ Even though GraphQL applications mostly use POST,
 you should test a GraphQL application for the support of the GET method,
 as it can open up opportunities to identify and abuse vulnerabilities such
 as cross-site request forgery
+
+GraphQL vs Rest
+GraphQL req are always made to one end point /graphql or /graph  
+GraphQL used POST for all req
+REST uses different HTTP verb for different end points and different action
+GraphQL returns 200 Ok even is the req failed, it still returns the 500 range of codes for server errors
