@@ -1,25 +1,35 @@
 Access Control Vulns
+IDORs are a subset of Broken Access Control Vulns 
 
-Privilege Escalation
+Privilege Escalation PE
+=======================
 Accessing information that you aren't authorized to have access to. 
 
+Lateral PE 
+==========
 Horizontal access controls - accessing information that others of your account
 level have access to but you don't because maybe it is not your information
 
-I think it doesn't have to be others data only, for example, an app my give 
-you access to your transaction history be preventing you from deleting them
-but allowing admins to delete 
+I think it doesn't have to be others data only, for example, an app gives
+you access to your transaction history but preventing you from deleting them
+but allowing admins to delete.
 
 Context-dependent access controls
-Not having access to modify information based on context on state.
-Example, not being able to modify payment prices after they have
-been made. 
+==================================
+Not having access to modify information based on context/state.
+Example, not being able to modify payment prices after they have been made. 
 
-Vertical access controls - having access to information that your account isn't
-authorized to have. Example being a normal user than admin
+Vertical access controls
+========================
+Having access to information that your account isn't
+authorized/permitted to have. A variant of this can be accessing 
+functionalities that you aren't permitted access to. Also known 
+as Broken Functions Access / BFLA (Broken Function Level Access)
+Example: 
+A normal user accessing information &/ functions only available to admins
 
 Causes 
-Unprotected functionality
+Unprotected Functionality
 - access through search bar
 - endpoints might be available in exposed script files
 
@@ -31,26 +41,61 @@ A cookie.
 A preset query string parameter.
 
 Broken access control resulting from platform misconfiguration
-Some applications enforce access controls at the platform layer. they do this by restricting access to specific URLs and HTTP methods based on the user's role. For example, an application might configure a rule as follows:
+Some applications enforce access controls at the platform layer. 
+They do this by restricting access to specific URLs and HTTP methods based on the user's role. 
+For example, an application might configure a rule as follows:
 
 The four main access control models are:
-
 Discretionary access control (DAC)
 Mandatory access control (MAC)
 Role-based access control (RBAC)
 Rule-based access control (RuBAC)
 
 Broken access control resulting from platform misconfiguration
-Some applications enforce access controls at the platform layer. they do this by restricting access to specific URLs and HTTP methods based on the user's role.
+Some applications enforce access controls at the platform layer,
+by restricting access to specific URLs and HTTP methods based on the user's role.
 
-Some websites tolerate different HTTP request methods when performing an action. If an attacker can use the GET (or another) method to perform actions on a restricted URL, they can bypass the access control that is implemented at the platform layer.
+HTTP Verb Tampering
+===================
+Some websites tolerate different HTTP request methods when performing an action. 
+If an attacker can use the GET (or another) method to perform actions on a restricted URL, 
+they can bypass the access control that is implemented at the platform layer.
 
+TYPES OF BAC identifiers
+Composite ID
+User chosen fields/values/identifiers (eg email, username etc)
+Numerical IDs 
+UUIDs / GUIDs 
+[
+    UUIDs are typically represented as a string of hexadecimal digits, 
+    divided into five groups separated by hyphens, like this:
+    550e8400-e29b-41d4-a716-446655440000
+]
+Natural Keys ( Ghana Card No, Social Security No)
+Hashes 
+
+PERMISSIONS MAPPING TABLE
+Once you've chosen your target, create two lists. On the left, create a list of user roles. 
+On the right, create a list of actions that can be performed in the application. 
+For example, for a simple blog application, it may look like this
+|------------------------|------------------------------------------------|--------------------|
+| User Roles             | Actions             | Should Have Access       | Does Have Access   |
+|------------------------|------------------------------------------------|--------------------|
+| Unauthenticated        | Create a new blog   |                          |
+| Editor                 | Read blogs          |                          |
+| Administrator          | Update a blog post  |                          |
+|                        | Delete a blog post  |                          |
+|------------------------|------------------------------------------------|--------------------|
+For a larger, more complex application, permission mapping can be extremely
+ repetitive and tedious, but having the patience to be comprehensive and thorough pays dividends.
 
 How to prevent access control vulnerabilities
-Access control vulnerabilities can be prevented by taking a defense-in-depth approach and applying the following principles:
+Access control vulnerabilities can be prevented by taking a defense-in-depth approach 
+and applying the following principles:
 
 Never rely on obfuscation alone for access control.
 Unless a resource is intended to be publicly accessible, deny access by default.
 Wherever possible, use a single application-wide mechanism for enforcing access controls.
-At the code level, make it mandatory for developers to declare the access that is allowed for each resource, and deny access by default.
+At the code level, make it mandatory for developers to declare the access 
+that is allowed for each resource, and deny access by default.
 Thoroughly audit and test access controls to ensure they work as designed.
