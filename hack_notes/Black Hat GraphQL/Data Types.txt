@@ -1,0 +1,101 @@
+Data Types
+GraphQL’s types define the custom objects and data structures that make
+up a GraphQL schema.
+
+Object
+Enum 
+Scalar 
+Union 
+Interface
+Input 
+
+OBJECTS
+=======
+Custom object types are groups of one or more fields that define domain- or
+application-specific objects.
+Example: 
+type PasteObject {
+    id:        ID!
+    title:     String
+    content:   String
+    public:    Boolean
+    userAgent: String
+    ipAddr:    String
+    ownerId:   Int
+    burn:      Boolean
+    owner:     OwnerObject
+}
+Appending "!" character on a field types makes it non-nullable
+
+Scalars
+=======
+Scalars include several core built-in value types, such as ID, Int, Float, String,
+and Boolean.
+
+Enums
+=====
+Enums, or enumeration types, are fields used to return a single string value
+from a list of possible values
+Syntax: 
+enum UserSortEnum {
+    ID
+    EMAIL
+    USERNAME
+    DATE_JOINED
+}
+
+USAGE:
+input UserOrderType {
+    sort: UserSortEnum!
+}
+
+type UserObject {
+    id: Int!
+    username: String!
+}
+
+type Query {
+    users(limit: Int, order: UserOrderType): UserObject!
+}
+
+Interfaces 
+==========
+interface SearchItem {
+    keywords: [String!]
+}
+type UserObject implements SearchItem {
+    id: ID!
+    username: String!
+    keywords: [String!]
+}
+type PasteObject implements SearchItem {
+    id: ID!
+    title: String
+    content: String
+    keywords: [String!]
+    --snip--
+}
+type Query {
+    search(keyword: String): [SearchItem!]!
+}
+
+Inputs 
+======
+Input types are essentially the
+same as object types, but they can be used only as inputs for arguments
+mutation newUser($input: UserInput!) {
+        createUser(userData: $input) {
+            user {
+            username
+        }
+    }
+}
+
+USAGE:
+{
+    "input": {
+        "username": "tom",
+        "password": "secret",
+        "email": "tom@example.com"
+    }
+}
