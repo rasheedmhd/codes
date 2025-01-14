@@ -1,0 +1,44 @@
+Introspection
+=============
+A built-in tool that empowers clients to discover actions they can take using
+a GraphQL API. Introspection lets clients query a GraphQL server for
+information about its underlying schema, which includes data like queries,
+mutations, subscriptions, directives, types, fields, and more.
+
+The introspection system has seven introspection types that
+we can use to query the schema
+
+_Schema     : all information about the schema of a GraphQL service
+_Type       : all information about a type 
+_TypeKind   : provides the different kinds of types (scalars, objects, interface, union, enum, and so on)
+_Field      : provides all information for each field of an object or interface type
+_InputValue : provides field and directive argument information
+_EnumValue  : provides one of the possible values of an enum
+_Directive  : information on both custom and built-in directives
+
+
+Validation and Execution
+All GraphQL query requests are tested for their validity against the schema
+and type system before they are executed and resolved by the server.
+
+The GraphQL spec outlines several validation types. 
+These include
+document, operation, 
+field, argument, 
+fragment, value, 
+directive, and variable validations.
+
+COMMON WEAKNESSES
+Specification Rule and Implementation Weaknesses
+GraphQL’s specification defines rules, design principles, and standard practices. If you ever want to develop your own GraphQL implementation, this
+is the document your implementation should conform to, including the way
+it formats its responses, validates arguments, and so on
+
+Yet complying with these rules is the developer’s responsibility, which
+is where discrepancies may happen. In fact, the GraphQL spec doesn’t care
+about how implementations conform to the spec
+
+1 Denial of Service
+2 Information Disclosure
+3 Authentication and Authorization Flaws
+4 Injections 
