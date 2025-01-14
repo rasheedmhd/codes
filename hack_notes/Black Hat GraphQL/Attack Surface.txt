@@ -1,0 +1,150 @@
+Attack Surface 
+All the available vectors an attacker can you to compromise the 
+CIA (confidentiality, Integrity and Availability) of a system.
+
+Attack surfaces are dynamic: Especially in the increasing cloud 
+services nature of the internet.
+
+Some Parts of a GraphQL query
+Operation type 
+Operation name/label 
+Top-Level Field 
+Arguments - of [ Top Level Field, Directive, Field ]
+Value 
+Field 
+Directive
+
+Operation Types
+query {
+    # reads data from the server
+}
+
+Example of a Mutation that modifies and then reads data 
+from the server.
+mutation {
+    editPaste(id: 1, content: "My first mutation!") {
+        paste {
+            id
+            title
+            content
+        }
+    }
+}
+
+Mutations
+=========
+mutations are almost exactly like query fields. Two things make
+them slightly different:
+• Top-level fields under the mutation root are allowed to have side effects /
+make modifications.
+• Top-level mutation fields must be executed serially by the server, while
+other fields could be executed in parallel.
+
+Subscriptions 
+==============
+The subscription operation works bidirectionally: it allows clients to retrieve
+real-time data from a server, and allows servers to send updates to clients.
+typically carried a cross WebSockets 
+GraphQL doesn't specify which communication protocol to use hence others
+use other protocols
+WebSocket connections are prone to cross-site WebSocket hijacking (CSWSH)
+vulnerabilities, which happen when the server does not validate the origin of
+a client in the handshake process.
+WebSocket connections can also be vulnerable to man-in-the-middle (MITM) attacks when the transport of messages isn’t
+carried over an encrypted channel such as Transport Layer Security (TLS).
+
+Operation Names
+================
+operation names are labels used to uniquely identify an operation
+in certain contexts. They are chosen arbitrarily and the function body could
+do a completely different thing done what it name says. 
+Because operation names are client-driven inputs, they could also
+potentially be used as attack vectors for injection. Some implementations
+of GraphQL allow special characters in operation names. Blind XSS ?
+
+Fields
+=======
+A field is a single piece of information available within an operation’s selection set, 
+or the list encapsulated between the curly brackets
+Field suggestions helps us with typos, calling fields that don't exist.
+
+Arguments
+=========
+ can be implemented at various
+levels—namely, in fields and directives
+
+Aliases
+========
+Allow clients to change a field’s response key to something other
+than the original field’s name. 
+For example, here we use myalias as an alias for the title field name:
+query {
+    pastes {
+        myalias:title
+    }
+}
+Used here to prevents conflicts that leads to errors
+Query {
+    queryOne:pastes(public: false) {
+        title
+    }   
+    queryTwo:pastes(public: true) {
+        title
+    }
+}
+
+Fragments
+=========
+Provides reusability of same set of fields in a GraphQL query
+for readability and to avoid field repetition. 
+You can define a fragment once and use it whenever you need that particular set of fields.
+fragment CommonFields on PasteObject {
+    title
+    content
+}
+Usage
+query {
+    pastes {
+        ...CommonFields
+    }
+}
+
+
+Variables
+=========
+You can supply variables to operations as argument values by declaring them
+within the GraphQL document. They avoid costly string building during runtime.
+Variables are defined at the top of an operation, after the operation
+name. 
+query publicPastes($status: Boolean!){
+    pastes(public: $status){
+        id
+        title
+        content
+    }
+}
+
+Directives
+=========== 
+Directives allow you to decorate, or change the behavior of, a field within a
+document. Affects field validation, processing, or execution by the application. 
+2 Types Query Level and 
+Schema Level 
+Examples:
+@skip @include @deprecated @specifiedBy 
+The @skip, @include, @deprecated, and @specifiedBy directives are required;
+GraphQL server implementations must support them to be considered spec
+compliant.
+One example of a widely adopted custom directive is
+@computed. This powerful schema-level directive saves implementers from
+having to create resolver functions for fields that can be computed from the
+values of other fields in the schema. Listing 3-10 shows how the @computed
+directive can merge the firstName and lastName fields into the fullName field.
+Attackers mind, if the server uses @computed a malicious script can be provided
+partially in fields and @computed could compute them into something malicious
+
+type User {
+    firstName: String
+    lastName: String
+    fullName: String @computed(value: "$firstName $lastName")
+}
