@@ -1,0 +1,48 @@
+If the API is for select customers or internal use, you’ll have to rely
+on other clues: naming conventions, HTTP response header information
+such as Content-Type: application/json, HTTP responses containing JSON/
+XML, and information about the JavaScript source files that power the
+application.
+
+Passive Recon
+OSINT
+Google Dorking 
+Programmableweb.com 
+Shodan.io 
+Amass 
+amass enum -passive -d <domain_name> |grep api
+amass enum -passive -d glassdoor.com |grep api
+amass intel -addr <target IP addresses>
+amass intel -d <target domain> –whois
+amass enum -active -brute -w /usr/share/wordlists/API_superlist -d <target domain> -dir
+<directory name>
+Exposed Information on Github 
+- gitrob 
+- code ctrl+f for api and tokens and sensitive info 
+- issues, active and merged, PRs 
+
+Active Recon 
+- opportunistic exploitation 
+- detections and scanning
+- hands on analysis
+- targeted scanning 
+
+Nmap 
+The Nmap general detection scan uses default
+scripts and service enumeration against a target and then saves the output
+in three formats for later review (-oX for XML, -oN for Nmap, -oG for greppable, or -oA for all three formats)
+
+$ nmap -sC -sV <target address or network range> -oA nameofoutput
+The Nmap all-port scan will quickly check all 65,535 TCP ports for running services, application versions, and host operating system in use:
+$ nmap -p- <target address> -oA allportscan
+
+Find robots.txt 
+Finding Sensitive Information with Chrome DevTools
+Burp Proxy Intercept 
+OWASP ZAP for spidering 
+ZAP Manual explore
+Gobuster 
+$ gobuster dir -u http://192.168.195.132:8000 -w /home/hapihacker/api/wordlists/common_apis_160
+Kiterunner
+kr scan http://192.168.195.132:8090 -w ~/api/wordlists/data/kiterunner/routes-large.kite
+kr brute <target> -w ~/api/wordlists/data/automated/nameofwordlist.txt
