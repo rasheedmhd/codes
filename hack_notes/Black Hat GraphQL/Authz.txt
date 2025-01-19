@@ -119,3 +119,40 @@ Tools like BatchQL leverage array-based query batching to send multiple
 operations in a single request.
 
 https://github.com/dolevf/Black-Hat-GraphQL/blob/master/ch07/password-brute-force.graphql.
+
+mutation {
+    alias1: login(username: "admin", password: "admin") {
+        accessToken
+    }
+    ...
+    aliasN: login(username: "admin", password: "password") {
+        accessToken
+    }
+}
+
+If a security control protects the API by banning clients from
+making more than, say, five HTTP login requests per minute, 
+We can make an attack that evades such logic by sending only a 
+single HTTP request while performing 10 login attempts/actions
+
+Brute-Forcing Passwords with CrackQL
+-t target 
+-i input
+-q query 
+-- verbose 
+-b batch for cases where GraphQL cost analysis blocks large queries
+
+Other uses. 
+Using a list of possible one-time password tokens to
+- brute-force twofactor authentication. 
+- perform account enumeration attacks, by automating 
+the scanning for valid emails or usernames
+- fuzz for unique object identifiers to exploit IDORs vulns,
+
+Using Allow-Listed Operation Names
+Certain in-band GraphQL implementations may make some queries and
+mutations publicly available for unauthenticated clients, such as those for
+login or account registration
+
+Forging and Leaking JWT Credentials
+When they JWT aren’t encrypted, they may leak sensitive data.
