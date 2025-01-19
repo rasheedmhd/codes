@@ -84,4 +84,43 @@ Get a suitable word list for the target
 # python3 -m clairvoyance http://localhost:5013/graphql
 -w ~/high-frequency-vocabulary/30k.txt -o clairvoyance-dvga-schema.json
 # cd ~/clairvoyance
-python3 -m clairvoyance https://flyby-router-demo.herokuapp.com/ -w ../high-frequency-vocabulary/30k.txt -o clairvoyance-apollo-schema.json
+python3 -m clairvoyance https://flyby-router-demo.herokuapp.com/ 
+-w ../high-frequency-vocabulary/30k.txt -o clairvoyance-apollo-schema.json
+
+
+Abusing Error Messages
+Error Message structure
+Message
+Location
+Path - references a particular field and is used to determine 
+Extensions - extend the message, location, and path fields 
+whether a null result is intentional or caused by a runtime error
+Most information disclosure weaknesses
+occur in the message field
+
+Enabled Debug Mode 
+Some impl have debug on by default
+- might be through env vars 
+- parameters : see Magento's 
+?XDEBUG _SESSION_START=PHPSTORM
+- cookies 
+Not All impl support 
+Many also support tracing, tracking the amount of time it 
+takes for GraphQL to complete a query and adds that data 
+to the extensions key 
+http://example.com/graphql?debug=1
+Some impl log debug msgs to the console be sure to 
+monitor the console tab
+
+Inferring Information from Stack Traces
+Various GraphQL endpoints on the same server
+could have different configuration settings. 
+For example, DVGA’s /graphql endpoint does not throw
+stack traces to client requests that raise an error.
+However, the /graphiql does 
+
+Leaking Data by Using GET-Based Queries
+some GraphQL implementations allow
+clients to execute queries using the GET method
+Because GET requests transmit data as query parameters in the URL,
+they risk exposing sensitive information.
