@@ -1,0 +1,121 @@
+Authentication and Authorization
+Hackers have defeated both authentication and authorization
+defenses by taking advantage of 
+Weak passwords 
+Default credentials 
+Forged tokens
+Flawed account recovery processes
+Replay attacks 
+And poor rate limit controls.
+
+Spec does say how to impl authz 
+Implementors cook their own thing 
+Following 2 archs 
+in-band 
+ac are done in the GraphQL API 
+- more prone to vulnerabilities
+- increases the API complexity and attack surface
+- duplicates auth logic on endpoints
+out-of-band 
+ac are done on a separate internal web service
+
+Best Practice 
+Delegate all authz to the business logic layer
+that sits btn the GraphQL API layer and the DB
+The business logic layer should serve as the 
+single truth of all auth business domain rules
+
+Common approaches 
+HTTP Basic Auth 
+Authorization: Basic <base64 encoded username + password>
+- Lacks confidentiality
+- Lacks a logout feature to invalidate active sessions 
+
+OAuth 2.0 
+https://datatracker.ietf.org/doc/html/rfc6749.
+
+JWT JSON Web Tokens
+https://datatracker.ietf.org/doc/html/rfc7519
+A common attack against applications using JWT involves setting the alg
+header parameter to none. If an application accepts unsigned JWT tokens,
+hackers can tamper with their JWT token to identify as another user or perform sensitive actions.
+
+GraphQL Modules 
+Prevalent in JS based impls
+separates GraphQL schemas into
+smaller, reusable modules that act as middleware. Developers can then
+use these to wrap their resolvers
+
+GraphQL Shield 
+https://the-guild.dev/graphql/shield/docs
+Allow developers to define rules that either permit or deny client access. 
+When performing a code review, look for the GraphQL Shield component 
+called the fallbackRule. 
+This rule can determine whether a request should be allowed or denied by 
+default whenever a rule is not defined. 
+By default, fallbackRule is set to allow. 
+https://the-guild.dev/graphql/shield/docs/rules#logic-rules
+
+Scheme Directives 
+might use custom schema-level directives to apply
+both authentication and authorization controls on 
+certain operations and fields. 
+By decorating schema components, these custom directives 
+can control what clients can and can’t do in the API.
+
+IP-Based Auth
+they might opt to use an allow list of source IP addresses
+to authorize clients. In this technique, the server checks the client IP
+address included in a network request against a list of addresses or network
+range (such as 10.0.0.0/24).
+
+
+Testing Auth 
+An impl might allow harmless queries by Unauthenticated Users
+- Make a canary req to detect the authentication layer
+HTTP STATUS codes
+=================
+Most GraphQL impls returns a 200 OK status code, even when the query contains typos or errors. 
+However, if you receive a 403 Forbidden Error, it’s possible that out-of-band authentication 
+and authorization control, like a gateway or a WAF, has blocked your request
+Error Messages
+================
+EM                        Possible authentication implementation
+Authentication credentials 
+are missing.
+Authorization header is 
+required and must
+contain a value.          OAuth 2.0 Bearer with JSON Web Token
+
+Not Authorised!           GraphQL Shield
+
+Not logged in             GraphQL Modules
+Auth required
+API key is required      
+
+Invalid token!           graphql-directive-auth
+Invalid role!
+
+
+Authentication-Related Fields
+Another great way to detect an authentication layer is to use introspection
+queries to identify any authentication-related query or mutation operations.
+{
+        __schema {
+            mutationType {
+                name
+                kind
+            fields {
+                name
+                description
+            }
+        }
+    }
+}
+
+Brute-Forcing Passwords by Using Query Batching
+There are two types of batch operations: array-based and alias-based.
+Tools like BatchQL leverage array-based query batching to send multiple
+operations in a single request.
+
+https://github.com/dolevf/Black-Hat-GraphQL/blob/master/ch07/password-brute-force.graphql.
