@@ -1,0 +1,104 @@
+Injection vulnerabilities occur when an application accepts and processes
+untrustworthy input without any sanitization. 
+
+Sanitization is a security
+measure that involves checking input and removing potentially dangerous
+characters from it.
+
+An application could accidentally introduce injection vulnerabilities in
+a variety of ways, including the following:
+•  The application does not implement security checks on the input it
+receives.
+•  The application uses insecure libraries (such as a parser) to process
+user input.
+•  The application passes the received user input to a third system, which
+doesn’t implement security checks on the input.
+•  The application accepts input and displays it to the client without transforming it in any way
+
+Causes
+- Allowing clients to manipulate data through interfaces 
+such as the arguments of queries, mutations, or subscriptions. 
+
+- allowing clients to only read data might
+have vulnerabilities in certain interfaces, such as query filters. 
+
+. Such a trust model assumes that input coming into the GraphQL API from other
+internal systems on the same network is safe, while input that originates
+from external sources is unsafe. This approach is very common, 
+but designing systems in this way can backfire
+
+For each of these interfaces, you should ask yourself a few important questions:
+•  Is the application verifying the incoming client input at all?
+•  Does the application accept dangerous characters?
+•  Does the application throw exceptions when unexpected characters are
+sent as part of a query?
+•  Does GraphQL check the value type passed to the arguments?
+•  Can we infer from the GraphQL server response (or out-of-band
+response) whether an injection attempt was successful?
+
+The Injection Attack Surface
+Query Arguments
+operations such as queries, mutations, and subscriptions can be
+designed to accept arguments
+What happens if we pass -1/-<N>
+Sometimes APIs interpret -1 value as return all, in
+which case the server will return the entire list of objects. HUH?
+query {
+    pastes(limit: 100) {
+        id
+        ipAddr
+    }
+}
+
+String: Experiment with malicious payloads
+mutation {
+        createPaste(content: "Some content", title:"Some title", public: false) {
+        paste {
+            id
+            ipAddr
+        }
+    }
+}
+
+Field Arguments
+Just like top-level fields, GraphQL fields in selection sets can also take arguments. 
+Example: 
+query {
+    users {
+        username(capitalize: true)
+        id
+    }
+}
+
+Query Directive Arguments
+query {
+    pastes {
+        id
+        ipAddr @show_network(style: "cidr")
+    }
+}
+Return a list of the directives in the schema
+query GetDirectives {
+        __schema {
+        directives {
+            name
+            description
+            locations
+        }
+    }
+}
+
+Operation Names
+check whether the GraphQL API allows special characters
+as part of the operation name, as this could turn out to be an injectable
+interface.
+
+Interesting potential injection vectors because
+applications can use them in many ways
+Some use cases
+- Debugging and Logging
+- Analytics
+- Databases (+ cache db)
+- Admin dashboards 
+
+INPUT ENTRY POINTS
