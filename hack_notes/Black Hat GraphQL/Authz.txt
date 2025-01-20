@@ -156,3 +156,47 @@ login or account registration
 
 Forging and Leaking JWT Credentials
 When they JWT aren’t encrypted, they may leak sensitive data.
+
+
+Testing Authorization
+Finding Schema Directives
+Developers sometimes impl authorization with schema directives. 
+You can identify these schema directives if you
+- have access to the API’s SDL files. 
+- also you can send a specialized introspection query
+
+{
+    __schema {
+            directives {
+            name
+            args {
+                name
+            }
+        }
+    }
+}
+look for names like @authorize, @authorization, @authz
+
+Finding Authentication Directives in the Schema
+You’ll find scanning the schema for @auth directives useful in white-box
+penetration tests, which provide you with the SDL files. But in black-box
+tests that provide no access to the schema, you might know that the password
+field exists, for example, but not that the @auth directive applies to it.
+
+Enumerating Paths with graphql-path-enum
+When implementing in-band authorization, 
+a developer might accidentally protect only some of these queries. As such,
+determine all possible paths to a given object type.
+Schemas can be very large, so you’ll find it helpful to automate the process
+of identifying all paths to a given object type.
+
+graphql-path-enum expects two important arguments: 
+1 The introspection JSON response
+2 The name of an object type we want to test for authorization issues.
+
+Tut:
+1 Run intro query. 2 Copy Response. 3 Pass resp path to tool and 
+ask it to search to paths leading to the object
+./graphql-path-enum -i introspection.json -t PasteObject
+
+Brute-Forcing Arguments and Fields with CrackQL

@@ -42,3 +42,8 @@ onerror=alert;throw 1;
 onerror=eval;throw'=alert\x281\x29';
 Neither of these examples contains suspicious parentheses. However for them
 to work, their injection point has to exist within an attribute of an HTML element.
+
+Inserting a NULL byte anywhere before a blocked expression
+can cause some filters to stop processing the input and therefore not identify
+the expression. For example:
+%00<script>alert(1)</script>
