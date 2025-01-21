@@ -141,3 +141,14 @@ BENCHMARK and SLEEP for MySQL databases, WAITFOR DELAY and WAITFOR TIME
 for Microsoft SQL Server, or pg_sleep for PostgreSQL databases, and
 then performing a response-timing analysis to identify whether the
 injection was successful.
+
+Automating SQL Injection
+When performing a SQLi test, you can take any potential GraphQL
+query and use an asterisk (*) to mark a specific position where SQLmap
+should inject payloads. For example, consider the following snippet:
+query {
+    pastes(filter:"test*") {
+        id
+    }
+}
+sqlmap -r request.txt —dbms=sqlite —tables
