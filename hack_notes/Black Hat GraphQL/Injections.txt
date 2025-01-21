@@ -102,3 +102,42 @@ Some use cases
 - Admin dashboards 
 
 INPUT ENTRY POINTS
+To test for SQLi you need end points to inject payloads
+1. User Altair to read docs from introspection
+2. If introspection is disabled use clairvoyance to fuzz 
+and build up the schema 
+
+SQL INJECTIONS 
+SQLi in GraphQL can be introduced through any interface that accepts
+client input. 
+
+SQLi Impact
+Confidentiality - leaked info, potential PII 
+Integrity - Modifications to data 
+Availability - Deletions of data 
+
+Types 
+Classic SQLi
+Error-based SQLi is used to identify SQLi vulnerabilities through error
+observation
+Union-based SQLi is used to identify SQLi vulnerabilities by leveraging
+the UNION SQL operator. 
+
+Blind SQL Injection
+In blind SQLi, we are given no visible indications that a vulnerability exists.
+Time-based SQLi forces the application to wait for a certain amount
+of time before returning a response. 
+Boolean-based SQLi allows us to infer whether the application is vulnerable 
+to SQLi by constructing a payload that will return a Boolean result such
+as true or false. 
+
+Testing for SQLi
+Submitting characters like single (') or double (") quotes and observing
+how the application handles unexpected inputs and errors.
+•  Fuzzing input fields and observing application errors that may indicate
+database query failures.
+•  Submitting SQL commands that introduce delays, such as by using
+BENCHMARK and SLEEP for MySQL databases, WAITFOR DELAY and WAITFOR TIME
+for Microsoft SQL Server, or pg_sleep for PostgreSQL databases, and
+then performing a response-timing analysis to identify whether the
+injection was successful.
