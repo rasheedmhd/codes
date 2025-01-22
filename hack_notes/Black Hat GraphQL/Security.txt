@@ -1,3 +1,16 @@
 Rate Limiting 
 1 Complexity based 
 2 Time based 
+
+Summary 
+• Rate limiting GraphQL requires more thought than a typical endpoint based API.
+• A complexity or time-based approach is your best choice for rate limiting
+clients.
+• Timeouts are a must to avoid long-running queries taking up too much
+server time.
+• Query depth is not as important as advertised, complexity and node count
+is often enough.
+• Authorizing object types is often simpler and less error-prone than authorizing fields.
+• Disabling introspection is a good idea for private APIs, but should be
+avoided for public APIs.
+• Persisted queries are a very powerful concept, especially for internal APIs.
