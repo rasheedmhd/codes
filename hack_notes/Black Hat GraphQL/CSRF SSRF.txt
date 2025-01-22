@@ -93,3 +93,30 @@ length. If the length is equal to that of a normal token (for example,
 allowing an attacker to brute-force them. For example, they
 might be short in length, use a predictable pattern, or employ a weak
 cryptographic algorithm.
+
+SERVER SIDE REQUEST FORGERY 
+1 Provide internal api addresses
+2 guess internal sys DNs 
+
+TYPES 
+blind semi-Blind, full-read 
+Detecting blind
+- request made by server , HTTP, TCP etc
+- timing delays on attacker's server 
+
+Searching for Vulnerable Operations, Fields, and Arguments
+Examine all possible operations,whether they’re mutations or queries.
+SSRF typically affects one|+ vulnerable GraphQL arguments that accept values,
+such as scalars.
+
+Prevention
+Searching for Vulnerable Operations, Fields, and Arguments
+When testing GraphQL servers for SSRF, examine all possible operations,
+whether they’re mutations or queries. As you might expect, SSRF typically
+affects one or more vulnerable GraphQL arguments that accept values,
+such as scalars.
+
+Input Validation - allow list and block list 
+Network segmentation, staging shouldn't access prod 
+Threat Modelling in dev 
+Least privilege principle 
