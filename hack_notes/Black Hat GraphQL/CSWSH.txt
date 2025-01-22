@@ -1,0 +1,41 @@
+Cross-Site WebSocket Hijacking
+If an attacker can hijack a user’s session by getting their hands on session
+cookies that grant special privileges on an application, they can perform
+actions using the victim’s privileges and access their sensitive data. CSWSH
+is a CSRF vulnerability that impacts the handshake part of WebSocket communications, 
+which use cookie-based authentication. Because GraphQL
+APIs can use WebSocket for subscription operations, they risk being vulnerable to CSWSH
+
+CSWSH can occur when a WebSocket connection handshake doesn’t
+include an anti-CSRF token to prevent attackers from performing crossorigin requests
+
+1 Find Subscription operations 
+query {
+    __schema {
+        subscriptionType {
+            fields {
+                name
+            }
+        }
+    }
+}
+
+Obviously if introspection is turned off 
+use clairvoyance or other means of schema info retrieval like sending __typename etc
+
+2 Hijack a Subscription query 
+i From the attacker’s perspective, we’ll open a Netcat TCP listener on port 4444, 
+where we’ll receive the exfiltrated response. 
+ii Simulate a user falling victim to a social-engineering attack by dropping an HTML file into
+the browser so it loads the JavaScript code, 
+ii Hijacking the user’s session to 
+iii Perform a WebSocket handshake and subscribe to the paste event. 
+iv Create a new paste/object in DVGA/vuln app for the subscription query to pick up.
+v Finally, we’ll read the exfiltrated response obtained by Netcat
+
+https://github.com/dolevf/Black-Hat-GraphQL/blob/master/ch09/websockets_hijack.html 
+$ netcat -vlp 4444
+The -vlp flags we pass to Netcat tell it to listen (-l) in verbose mode (-v) on port (-p) 4444
+Decoding the exfiltrated URL encoded data captured by netcat 
+echo 'ADD-STRING-HERE' | python3 -c "import sys;
+from urllib.parse import unquote; print(unquote(sys.stdin.read()));"
