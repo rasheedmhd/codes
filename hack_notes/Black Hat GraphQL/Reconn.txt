@@ -144,3 +144,6 @@ nmap --script=graphql-introspection -iL hosts.txt -sV -p 5013
 
 Full fledged Introspection script 
 https://github.com/dolevf/Black-Hat-GraphQL/blob/master/queries/introspection_query.txt
+
+SecList GraphQL 
+https://github.com/danielmiessler/SecLists/blob/fe2aa9e7b04b98d94432320d09b5987f39a17de8/Discovery/Web-Content/graphql.txt
