@@ -39,3 +39,25 @@ The -vlp flags we pass to Netcat tell it to listen (-l) in verbose mode (-v) on 
 Decoding the exfiltrated URL encoded data captured by netcat 
 echo 'ADD-STRING-HERE' | python3 -c "import sys;
 from urllib.parse import unquote; print(unquote(sys.stdin.read()));"
+
+ws = new WebSocket("wss://target/graphql", "graphql-ws")
+ws.onopen = function start(event) {
+  var GQL_CALL = {
+    extensions: {},
+    query: `
+        {
+            __schema {
+                _types {
+                    name
+                }
+            }
+        }`,
+  }
+
+  var graphqlMsg = {
+    type: "GQL.START",
+    id: "1",
+    payload: GQL_CALL,
+  }
+  ws.send(JSON.stringify(graphqlMsg))
+}

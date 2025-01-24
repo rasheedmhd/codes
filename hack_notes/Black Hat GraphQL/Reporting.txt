@@ -1,0 +1,13 @@
+How to survive a Penetration Test as a GraphQL developer
+- Methods on securing Graph APIs 
+1 Access Control 2 Anti-Automation 3 Server-Side Validation Checks 4 Verbose Error Messaging
+https://www.planes.studio/blog/how-to-survive-a-penetration-test-as-a-graph-ql-developer
+
+Impl a secure GraphQL python server
+- Input Validation is hard, in python you must build a custom validation sys
+- PyJQ to help pass error messages 
+- You can't turn off introspection in Graphene
+https://www.abhaybhargav.com/from-the-trenches-diy-security-perspectives-of-graphql/
+
+Rate limits and node limits for the GraphQL API
+https://docs.github.com/en/graphql/overview/rate-limits-and-node-limits-for-the-graphql-api
