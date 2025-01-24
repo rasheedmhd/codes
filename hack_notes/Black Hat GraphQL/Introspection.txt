@@ -2,8 +2,8 @@ Introspection
 =============
 A built-in tool that empowers clients to discover actions they can take using
 a GraphQL API. Introspection lets clients query a GraphQL server for
-information about its underlying schema, which includes data like queries,
-mutations, subscriptions, directives, types, fields, and more.
+information about its underlying schema, which includes data like 
+queries, mutations, subscriptions, directives, types, fields, and more.
 
 The introspection system has seven introspection types that
 we can use to query the schema
@@ -43,16 +43,28 @@ about how implementations conform to the spec
 3 Authentication and Authorization Flaws
 4 Injections 
 
+Overcoming Disabled Introspection
 Use InQL for for Introspection is disabled
-Detect disabled introspection 
-Exploit non-production environments - bc of security differences
+
+1 Detect disabled introspection 
+2 Exploit non-production environments 
+- bc of security differences
+- Check dev/stage envs for graphiql end points 
+- with introspection enabled
 
 
 Bypassing introspection
-if __schema fails try 
+1 Exploiting the __type Meta-field
+if __schema fails
 query S {
   __schema {
       __typename
+  }
+}
+try 
+{
+  __type(name:"Query") {
+    name
   }
 }
 
@@ -74,7 +86,7 @@ the WAF blocking the intro req might be searching for
 the __schema meta-field and blocking it, like in AWS 
 AppSync's case 
 
-Use Field Suggestions 
+2 Use Field Suggestions 
 The Edit Distance Algorithm 
 To determine whether a typo is similar to a valid object, field, or argument
 in the schema, GraphQL implementations rely on the simple edit-distance
@@ -84,7 +96,7 @@ suggestions whenever introspection is disabled.
 If merged, this pull request would
 make it difficult to abuse field suggestions when introspection is disabled
 
-Using Field Stuffing 
+3 Using Field Stuffing 
 We can use field stuffing to
 potentially discover sensitive information like passwords, keys, and PII by
 guessing and passing these potential field names into a query request that
@@ -93,7 +105,7 @@ Take into consideration variable naming conventions
 snake_case or lowerCamelCase 
 Stuff field meta-tags 
 
-Automating Field Suggestion and Stuffing Using Clairvoyance
+4 Automating Field Suggestion and Stuffing Using Clairvoyance
 Get a suitable word list for the target 
 # cd ~/clairvoyance
 # python3 -m clairvoyance http://localhost:5013/graphql
