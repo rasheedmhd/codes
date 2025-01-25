@@ -186,3 +186,5 @@ systemDebug(arg:"; uptime")
 Automated Testing with Commix
 commix --url="http://127.0.0.1:5013/graphql"
 --data='{"query":"query{systemDebug(arg:\"test \")}"}' -p arg
+
+https://www.petecorey.com/blog/2017/06/12/graphql-nosql-injection-through-json-types/
