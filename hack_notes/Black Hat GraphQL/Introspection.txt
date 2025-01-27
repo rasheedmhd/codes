@@ -30,7 +30,8 @@ directive, and variable validations.
 
 COMMON WEAKNESSES
 Specification Rule and Implementation Weaknesses
-GraphQL’s specification defines rules, design principles, and standard practices. If you ever want to develop your own GraphQL implementation, this
+GraphQL’s specification defines rules, design principles, and standard practices. 
+If you ever want to develop your own GraphQL implementation, this
 is the document your implementation should conform to, including the way
 it formats its responses, validates arguments, and so on
 
@@ -73,6 +74,8 @@ try
     "query": "query{__schema
     {queryType{name}}}"
 }
+
+{"query": "query{__schema{queryType{name}}}"}
 
 
 Errors
