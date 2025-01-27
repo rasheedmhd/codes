@@ -1,3 +1,11 @@
+Summary 
+1. Detect the GraphQL API end point
+2. Detect the server impl 
+3. Match server impl with the Threat Matrix 
+4. Nmap 
+5. GraphW00f
+
+
 GraphQL Questions to Impact
 ===========================
 Does the web server even have a GraphQL API? 
