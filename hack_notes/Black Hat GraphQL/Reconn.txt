@@ -4,6 +4,9 @@ Summary
 3. Match server impl with the Threat Matrix 
 4. Nmap 
 5. GraphW00f
+6. Detect GraphiQL Explorer and Playground
+7. Fingerprint with curl -I
+8. Spectre to Generate SDL Documentation
 
 
 GraphQL Questions to Impact
@@ -100,8 +103,7 @@ query {
 
 When GraphQL servers accept queries using GET, you can pass the
 query parameter along with the GraphQL query (in this case, the query{__typename}) 
- \With this in mind, 
-we can automate the detection of GraphQL by using Nmap fairly easily. 
+With this in mind, we can automate the detection of GraphQL by using Nmap fairly easily. 
 Example 
 # nmap -p 5013 -sV --script=http-grep --script-args='match="__typename",
 http-grep.url="/graphql?query=\{__typename\}"' localhost
