@@ -1,0 +1,10 @@
+blorgh/.bundle/
+blorgh/doc/
+blorgh/log/*.log
+blorgh/pkg/
+blorgh/tmp/
+blorgh/test/dummy/db/*.sqlite3
+blorgh/test/dummy/db/*.sqlite3-*
+blorgh/test/dummy/log/*.log
+blorgh/test/dummy/storage/
+blorgh/test/dummy/tmp/
