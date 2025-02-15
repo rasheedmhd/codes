@@ -7,8 +7,10 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
 
-      table.string('name', 255).notNullable() // Add this
-      table.text('description').nullable() // Add this
+      // TO DO: Test that update with non unique name fails at
+      // the db level
+      table.string('name').unique().notNullable()
+      table.text('description').nullable()
 
       table.timestamp('created_at', { useTz: true }).defaultTo(this.now())
       table.timestamp('updated_at', { useTz: true }).defaultTo(this.now())
