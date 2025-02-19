@@ -27,6 +27,13 @@ cheatsheet
 https://portswigger.net/web-security/cross-site-scripting/cheat-sheet
 https://github.com/masatokinugawa/filterbypass/wiki/Browser's-XSS-Filter-Bypass-Cheat-Sheet
 
+Everything about web application firewalls (WAFs) from a security perspective. 🔥
+https://github.com/0xInfection/Awesome-WAF
+
+Payloads All The Things
+A list of useful payloads and bypasses for Web Application Security. Feel free to improve with your payloads and techniques !
+https://swisskyrepo.github.io/PayloadsAllTheThings/XSS%20Injection/#other-ways
+
 https://html5sec.org/
 
 polyglot

@@ -5,6 +5,9 @@ Possible through signature forgery, this allows them
 to presume a privileged position, bypass firewall 
 controls and gain access to internal networks 
 
+AWS 
+http://169.254.169.254/latest/meta-data
+
 PREVENTION
 Impl Allow / block list 
 

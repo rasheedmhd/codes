@@ -47,3 +47,5 @@ Inserting a NULL byte anywhere before a blocked expression
 can cause some filters to stop processing the input and therefore not identify
 the expression. For example:
 %00<script>alert(1)</script>
+
+https://d3adend.org/xss/ghettoBypass
