@@ -45,13 +45,12 @@ Subscriptions
 The subscription operation works bidirectionally: it allows clients to retrieve
 real-time data from a server, and allows servers to send updates to clients.
 typically carried a cross WebSockets 
-GraphQL doesn't specify which communication protocol to use hence others
-use other protocols
-WebSocket connections are prone to cross-site WebSocket hijacking (CSWSH)
-vulnerabilities, which happen when the server does not validate the origin of
-a client in the handshake process.
-WebSocket connections can also be vulnerable to man-in-the-middle (MITM) attacks when the transport of messages isn’t
-carried over an encrypted channel such as Transport Layer Security (TLS).
+GraphQL doesn't specify which communication protocol to use hence others use other protocols
+
+WebSocket connections are prone to Cross-Site WebSocket Hijacking (CSWSH) vulnerabilities, 
+which happen when the server does not validate the origin of a client in the handshake process.
+WebSocket connections can also be vulnerable to man-in-the-middle (MITM) attacks when the transport 
+of messages isn’t carried over an encrypted channel such as Transport Layer Security (TLS).
 
 Operation Names
 ================
