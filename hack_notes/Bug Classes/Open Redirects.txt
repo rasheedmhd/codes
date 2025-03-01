@@ -24,12 +24,12 @@ blocks known indicators of malicious redirects / characters often used
 in URL OR attacks  
 
 Determining hostname portions of URLs can be hard to get right, allowing 
-OR to be prevalent
+OP to be prevalent
 
 HUNTING 
 Step 1: Look for Redirect Parameters
 - redirect, redir next, from, back_to,
-- use proxy and/or zap dir tra
+- use proxy and/or zap dir traversal
 - record all parameters used for redirections 
 - search for http response codes 3xx
 
@@ -123,3 +123,25 @@ window’s location property through the Document Object Model (DOM).
 window.location = https://www.google.com/
 window.location.href = https://www.google.com
 window.location.replace(https://www.google.com)
+
+
+\/yoururl.com
+\/\/yoururl.com
+\\yoururl.com
+//yoururl.com
+//theirsite@yoursite.com
+/\/yoursite.com
+https://yoursite.com%3F.theirsite.com/
+https://yoursite.com%2523.theirsite.com/
+https://yoursite?c=.theirsite.com/ (use # \ also)
+//%2F/yoursite.com
+////yoursite.com
+https://theirsite.computer/
+https://theirsite.com.mysite.com
+/%0D/yoursite.com (Also try %09, %00, %0a, %07)
+/%2F/yoururl.com
+/%5Cyoururl.com
+//google%E3%80%82com
+
+
+https://console.neon.tech/realms/prod-realm/protocol/openid-connect/registrations?client_id=neon-console&redirect_uri=https%3A%2F%2Fconsole.neon.tech%2Fauth%2Fkeycloak%2Fcallback&response_type=code&scope=openid+profile+email&state=QRRnn_9LVoAnEjGh5oPM5g%3D%3D%2C%2C%2C
