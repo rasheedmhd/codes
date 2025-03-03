@@ -1,3 +1,15 @@
+CLOSED TABS 
+https://graphql.org/learn/schema/
+https://hasura.io/learn/
+https://the-guild.dev/graphql/tools/docs/generate-schema
+https://medium.com/apollo-stack/graphql-at-facebook-by-dan-schafer-38d65ef075af#.jduhdwudr
+
+
+
+
+
+
+
 Attack Surface 
 All the available vectors an attacker can you to compromise the 
 CIA (confidentiality, Integrity and Availability) of a system.
