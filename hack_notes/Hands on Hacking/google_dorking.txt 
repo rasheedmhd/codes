@@ -1,0 +1,73 @@
+inurl:"/includes/api/" intext:"index of /"
+inurl:"/wp-json/wp/v2/users"
+intitle:"index of" api_key OR "api key" OR apiKey -pool
+
+Use ProgrammableWeb API search tool
+Shodan
+search example "ewise.com" "content-type: application/json"
+
+Amass
+amass viz -enum -d3 -dir <directory name>
+ amass enum -active -brute -w /dir/to/wordlists/API_superlist -d <target domain> -dir
+<directory name>
+amass enum -passive -d <target domain>
+amass enum -active -d <target domain>
+amass intel -d <target IP addresses> -whois
+
+Github
+search code
+issues
+Pull requests
+
+Nmap 
+nmap -sC -sV <t ad> -oA output
+nmap -p- <t ad> -oA allPortScan
+
+Finding Hidden Paths in Robots.txt
+
+Finding Sensitive Information with Chrome DevTools
+Select the Network tab and then refresh
+the page.
+Now look for interesting files (you may even find one titled “API”).
+Right-click any JavaScript files that interest you and click Open in Sources
+Panel 
+
+With DevTools open, click the Memory tab. Under Select Profiling
+Type, choose Heap Snapshot. Then, under Select JavaScript VM Instance,
+choose the target to review. Next, click the Take Snapshot button
+
+use the Chrome DevTools Performance tab to record certain
+actions (such as clicking a button) and review them over a timeline broken
+down into milliseconds. This lets you see if any event you initiate on a given
+web page is making API requests in the background
+
+Validating APIs with Burp Suite
+
+Crawling URIs with OWASP ZAP
+Manual Explore
+
+Brute-Forcing URIs with Gobuster
+ gobuster dir -u http://192.168.195.132:8000 -w /path/to/api/wordlists/common_apis_160
+
+ Discovering API Content with Kiterunner
+ ./kr scan <t ad> -w wordlist/routes-large.kite
+
+ One of the coolest Kiterunner features is the ability to replay requests.
+Thus, not only will you have an interesting result to investigate, you will also
+be able to dissect exactly why that request is interesting. In order to replay a
+request, copy the entire line of content into Kiterunner, paste it using the kb
+replay option, and include the wordlist you used:
+$ kr kb replay "GET 414 [ 183, 7, 8] http://192.168.50.35:8888/api/privatisations/
+count 0cf6841b1e7ac8badc6e237ab300a90ca873d571" -w ~/api/wordlists/data/kiterunner/routeslarge.kite
+
+Blind Target Nmap scan steps 
+nmap -sV -sC 
+followed by all port scan
+nmap -p- 
+The results of your initial Nmap scans reveal a web application running on port 8080, which should lead to the next logical step: a hands-on
+analysis of the web app. Visit all ports that sent HTTP responses to Nmap
+(namely, ports 8000, 8025, 8080, 8087, and 8888
+
+Now use DevTools to investigate the JavaScript source files on this
+page. Visit the Network tab and refresh the page so the source files populate. Select a source file that interests you, right-click it, and send it to the
+Sources panel.
