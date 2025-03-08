@@ -1,0 +1,7 @@
+Categories
+==========
+Scheme
+Slash
+BackSlash 
+URL Encoded confusion 
+
