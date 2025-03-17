@@ -116,10 +116,21 @@ https://theirsite.com.mysite.com
 //google%E3%80%82com
 
 
+From https://whitton.io/articles/messenger-site-wide-csrf/
+The way I normally check for these is as follows:
 
+1 Perform the request without modifying the parameters, so we can see what the expected result is
+2 Remove the CSRF token completely (in this case, the fb_dtsg parameter)
+3 Modify one of the characters in the token (but keep the length the same)
+4 Remove the value of the token (but leave the parameter in place)
+5 Convert to a GET request
 
+If any of the above steps produce the same result as #1 then we know that the end-point is likely to be vulnerable 
+(there are some instances where you might get a successful response, 
+but in fact no data has been modified and therefore the token hasn’t been checked).
 
-
+Related Bug Findings 
+https://whitton.io/articles/messenger-site-wide-csrf/ : Read
 
 
 
