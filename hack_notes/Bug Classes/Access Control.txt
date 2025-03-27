@@ -12,7 +12,7 @@ level have access to but you don't because maybe it is not your information
 
 I think it doesn't have to be others data only, for example, an app gives
 you access to your transaction history but preventing you from deleting them
-but allowing admins to delete.
+but allowing admins to delete.N
 
 Context-dependent access controls
 ==================================
