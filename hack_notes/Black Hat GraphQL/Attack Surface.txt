@@ -60,27 +60,33 @@ of messages isn’t carried over an encrypted channel such as Transport Layer Se
 
 Operation Names
 ================
-operation names are labels used to uniquely identify an operation
-in certain contexts. They are chosen arbitrarily and the function body could
-do a completely different thing done what it name says. 
+Are labels used to uniquely identify an operation in certain contexts. 
+
+They are chosen arbitrarily and the function body could do a completely different thing than what its name says. 
+
 Because operation names are client-driven inputs, they could also
-potentially be used as attack vectors for injection. Some implementations
-of GraphQL allow special characters in operation names. Blind XSS ?
+potentially be used as attack vectors for injection. 
+Some implementations of GraphQL allow special characters in operation names. 
+Applications can store these names, in logs, other backend systems. Blind XSS ?
 
 Fields
 =======
-A field is a single piece of information available within an operation’s selection set, 
-or the list encapsulated between the curly brackets
-Field suggestions helps us with typos, calling fields that don't exist.
+A field is a single piece of information available within an operation’s selection set.
+Fields can contain other fields in their selection sets, this can give rise to cyclic 
+references that can lead to DoS. Graphql-path-enum can help us discover and exploit these.
+
+Field suggestions helps us with typos when we call fields that don't exist.
 
 Arguments
 =========
-can be implemented at various levels — namely, in fields and directives
+Can be implemented at various levels — namely, in fields and directives.
+Arguments are unordered, which means that changing their order does not change the logic of the query.
+
+Impl differences can lead to vulnerabilities, since they are not specified in th spec document.
 
 Aliases
 ========
-Allow clients to change a field’s response key to something other
-than the original field’s name. 
+Allow clients to change a field’s response key to something other than the original field’s name. 
 For example, here we use myalias as an alias for the title field name:
 query {
     pastes {
@@ -112,6 +118,7 @@ query {
         ...CommonFields
     }
 }
+Fragments can be constructed in a way that they reference each other leading to DoS 
 
 
 Variables
@@ -157,3 +164,5 @@ type User {
     lastName: String
     fullName: String @computed(value: "$firstName $lastName")
 }
+
+Impl differences can lead to vulnerabilities, since they are not specified in th spec document.
