@@ -1,6 +1,8 @@
 Open Redirects 
 - parameter based redirects
 - referer header based redirects
+- meta tags 
+- DOM window location
 
 When finger printing shows that the app is built with rails, 
 check to confirm whether redirects are done using
@@ -30,7 +32,7 @@ HUNTING
 Step 1: Look for Redirect Parameters
 - redirect, redir next, from, back_to,
 - use proxy and/or zap dir traversal
-- record all parameters used for redirections 
+- record all parameters used for redirection
 - search for http response codes 3xx
 
 Step 2: Use Google Dorks to Find Additional Redirect Parameters
@@ -62,17 +64,17 @@ Perform action if it is required
 Step 4: Test for Referer-Based Open Redirects
 
 Bypassing Open-Redirect Protection
-1. Using Browser Autocorrec
+1. Using Browser Auto correct
 
 2. Exploiting Flawed Validator Logic
 https://example.com/login?redir=https://example.com.attacker.com/example.com
 
 3. Using Data URLs
-data URLs use the data: scheme to embed small files in a URL.
-This is a piece of JavaScript code wrapped between HTML <script>
-tags. It sets the location of the browser to https://example.com, forcing the
-browser to redirect there. You can insert this data URL into the redirection
-parameter to bypass blocklists:
+Data URLs use the data: scheme to embed small files in a URL.
+JavaScript code wrapped between HTML <script>
+tags. It sets the location of the browser to https://example.com, 
+forcing the browser to redirect there. 
+You can insert this data URL into the redirection parameter to bypass blocklists:
 https://example.com/login?redir=data:text/html;base64,
 PHNjcmlwdD5sb2NhdGlvbj0iaHR0cHM6Ly9leGFtcGxlLmNvbSI8L3NjcmlwdD4=
 
@@ -93,13 +95,9 @@ both start and end with example.com. Most browsers will interpret example
 .com%252f as the username portion of the URL. But if the validator overdecodes the URL, it will confuse example.com as the hostname portion:
 
 ESCALATING
-Open redirects can, <=  <=
-therefore, help you maximize the impact of vulnerabilities like server-side
-request forgery (SSRF), 
-If a site utilizes an
-allowlist to prevent SSRFs and allows requests to only a list of predefined
-URLs, an attacker can utilize an open redirect within those allowlisted
-pages to redirect the request anywhere.
+Open redirects can help you maximize the impact of vulnerabilities like server-side request forgery (SSRF), 
+If a site utilizes an allowlist to prevent SSRFs and allows requests to only a list of predefined
+URLs, an attacker can utilize an open redirect within those allowlisted pages to redirect the request anywhere.
 
 SSRF, OAuth vulns
 
@@ -113,9 +111,8 @@ Finding Your First Open Redirect!
 Meta tags
 HTML <meta> tags and JavaScript can redirect browsers. 
 HTML <meta> tags can tell browsers to a web page and 
-make a GET request to a URL defined in the tag’s
-content attribute. Here is what one might look like:
-<meta http-equiv="refresh" content="0; url=https://www.google.com/">
+make a GET request to a URL defined in the tag’s content attribute. 
+Here is what one might look like: <meta http-equiv="refresh" content="0; url=https://www.google.com/">
 
 An attacker can also use JavaScript to redirect users by modifying the
 window’s location property through the Document Object Model (DOM).
