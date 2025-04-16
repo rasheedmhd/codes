@@ -40,6 +40,9 @@ Submitting Payloads for Testing
 {%endif%}
 {%endfor%}
 
+To enable an XSS attack, you would have to disable escaping explicitly, as follows:
+{{ "<script>" | safe }}
+
 CTF Wiki, https://ctf-wiki.github.io/ctf-wiki/pwn/linux/sandbox/
 python-sandbox-escape/
 •  HackTricks, https://book.hacktricks.xyz/misc/basic-python/
