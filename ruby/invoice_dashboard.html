@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invoice Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-pink-50 p-6 font-sans">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div class="bg-white shadow rounded-xl p-4 text-center">
+        <p class="text-gray-500">Total Clients</p>
+        <p class="text-2xl font-bold">30</p>
+      </div>
+      <div class="bg-blue-100 shadow rounded-xl p-4 text-center">
+        <p class="text-gray-600">Invoices</p>
+        <p class="text-2xl font-bold">38</p>
+      </div>
+      <div class="bg-yellow-100 shadow rounded-xl p-4 text-center">
+        <p class="text-gray-600">Invoiced</p>
+        <p class="text-2xl font-bold">$456.00k</p>
+      </div>
+      <div class="bg-pink-100 shadow rounded-xl p-4 text-center">
+        <p class="text-gray-600">Paid</p>
+        <p class="text-2xl font-bold">49.45k</p>
+      </div>
+    </div>
+
+    <!-- Charts and Graphs -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Bar Chart -->
+      <div class="col-span-2 bg-white shadow rounded-xl p-4">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-lg font-semibold">Invoices Over Time</h2>
+          <select class="border border-gray-300 rounded px-2 py-1">
+            <option>Last 6 months</option>
+            <option>Yearly</option>
+          </select>
+        </div>
+        <!-- Placeholder chart -->
+        <div class="h-64 bg-gray-100 flex items-center justify-center text-gray-400">
+          [Insert Bar Chart Here]
+        </div>
+      </div>
+      <!-- Pie Chart -->
+      <div class="bg-white shadow rounded-xl p-4">
+        <h2 class="text-lg font-semibold mb-4">Outstanding Invoices</h2>
+        <!-- Placeholder pie chart -->
+        <div class="h-64 bg-gray-100 flex items-center justify-center text-gray-400">
+          [Insert Pie Chart Here]
+        </div>
+        <div class="mt-4 text-sm text-gray-600">
+          <p><span class="inline-block w-3 h-3 bg-pink-300 rounded-full mr-2"></span> Michelle</p>
+          <p><span class="inline-block w-3 h-3 bg-blue-200 rounded-full mr-2"></span> Grace Gray</p>
+          <p><span class="inline-block w-3 h-3 bg-yellow-200 rounded-full mr-2"></span> Ananya</p>
+          <p><span class="inline-block w-3 h-3 bg-red-300 rounded-full mr-2"></span> Patel</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- All Invoices Table -->
+    <div class="mt-8 bg-white shadow rounded-xl p-4">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-semibold">All Invoices</h2>
+        <button class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">+ New Invoice</button>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm text-left">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="p-2">Invoice Number</th>
+              <th class="p-2">Client</th>
+              <th class="p-2">Contract Name</th>
+              <th class="p-2">Date</th>
+              <th class="p-2">Amount</th>
+              <th class="p-2">Status</th>
+              <th class="p-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-t">
+              <td class="p-2 text-yellow-500 font-semibold">FD1DACT6-0017</td>
+              <td class="p-2">
+                <div class="flex items-center space-x-2">
+                  <img src="https://via.placeholder.com/24" class="rounded-full" />
+                  <div>
+                    <p>Ronald Richards</p>
+                    <p class="text-xs text-gray-500">sara.cruz@example.com</p>
+                  </div>
+                </div>
+              </td>
+              <td class="p-2">Dionne Russell</td>
+              <td class="p-2">5/30/14</td>
+              <td class="p-2">$928.41</td>
+              <td class="p-2">
+                <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Paid</span>
+              </td>
+              <td class="p-2">
+                <button class="text-gray-500 hover:text-gray-700">👁</button>
+              </td>
+            </tr>
+            <tr class="border-t">
+              <td class="p-2 text-yellow-500 font-semibold">FD1DACT6-0017</td>
+              <td class="p-2">
+                <div class="flex items-center space-x-2">
+                  <img src="https://via.placeholder.com/24" class="rounded-full" />
+                  <div>
+                    <p>Ronald Richards</p>
+                    <p class="text-xs text-gray-500">sara.cruz@example.com</p>
+                  </div>
+                </div>
+              </td>
+              <td class="p-2">Dionne Russell</td>
+              <td class="p-2">5/30/14</td>
+              <td class="p-2">$928.41</td>
+              <td class="p-2">
+                <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded">Overdue</span>
+              </td>
+              <td class="p-2">
+                <button class="text-gray-500 hover:text-gray-700">👁</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
