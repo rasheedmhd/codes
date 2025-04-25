@@ -1,0 +1,22 @@
+TE.TE 
+
+A scenerio where both the back end and front end server 
+support Transfer-Encoding but one can be induced to ignore 
+the header by obfuscating the header value. 
+
+Obfuscating Payloads 
+Transfer-Encoding: xchunked
+
+Transfer-Encoding : chunked
+
+Transfer-Encoding: chunked
+Transfer-Encoding: x
+
+Transfer-Encoding:[tab]chunked
+
+[space]Transfer-Encoding: chunked
+
+X: X[\n]Transfer-Encoding: chunked
+
+Transfer-Encoding
+: chunked
