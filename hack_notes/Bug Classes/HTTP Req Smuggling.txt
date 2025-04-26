@@ -1,8 +1,41 @@
+Core Concepts 
+HTTP/1.1 allows sending multiple requests in a single HTTP connection.
+requests are aligned sequentially and the servers parsers the headers to 
+determine a request begins and ends and where another starts. 
+
+This of course is harmless but with the modern natures of systems, 
+distributed and communicated with each using HTTP, a semantic gap is 
+created where there is a gap btn a front-end server and a back-end 
+server and these two/more servers tend to parse these HTTP requests 
+slightly differently. 
+
+On Transfer-Encoding and Content-Length
+If a message is received with both a Transfer-Encoding header field and a Content-Length header field, the latter MUST be ignored.
+Whenever we find a way to hide the Transfer-Encoding header from one server in a chain it will fall back to using the Content-Length and we can desynchronize the whole system
+
 TE.TE 
 
 A scenerio where both the back end and front end server 
 support Transfer-Encoding but one can be induced to ignore 
 the header by obfuscating the header value. 
+
+Sample Request
+POST / HTTP/1.1
+Host: example.com
+Content-Length: 6
+Transfer-Encoding: chunked
+
+0\r\n
+G\r\n
+\r\n
+POST / HTTP/1.1
+Host: example.com
+
+
+0 (1 byte)
+\r\n (carriage return + line feed, 2 bytes)
+G (1 byte)
+\r\n (carriage return + line feed, 2 bytes)
 
 Obfuscating Payloads 
 Transfer-Encoding: xchunked
