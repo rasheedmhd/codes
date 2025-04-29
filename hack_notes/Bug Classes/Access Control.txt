@@ -12,7 +12,7 @@ level have access to but you don't because maybe it is not your information
 
 I think it doesn't have to be others data only, for example, an app gives
 you access to your transaction history but preventing you from deleting them
-but allowing admins to delete.N
+but allowing admins to delete.
 
 Context-dependent access controls
 ==================================
@@ -40,7 +40,7 @@ A hidden field.
 A cookie.
 A preset query string parameter.
 
-Broken access control resulting from platform misconfiguration
+Broken Access Control resulting from platform misconfiguration
 Some applications enforce access controls at the platform layer. 
 They do this by restricting access to specific URLs and HTTP methods based on the user's role. 
 For example, an application might configure a rule as follows:
@@ -50,10 +50,6 @@ Discretionary access control (DAC)
 Mandatory access control (MAC)
 Role-based access control (RBAC)
 Rule-based access control (RuBAC)
-
-Broken access control resulting from platform misconfiguration
-Some applications enforce access controls at the platform layer,
-by restricting access to specific URLs and HTTP methods based on the user's role.
 
 HTTP Verb Tampering
 ===================
@@ -87,7 +83,7 @@ For example, for a simple blog application, it may look like this
 |                        | Delete a blog post  |                          |
 |------------------------|------------------------------------------------|--------------------|
 For a larger, more complex application, permission mapping can be extremely
- repetitive and tedious, but having the patience to be comprehensive and thorough pays dividends.
+repetitive and tedious, but having the patience to be comprehensive and thorough pays dividends.
 
 How to prevent access control vulnerabilities
 Access control vulnerabilities can be prevented by taking a defense-in-depth approach 

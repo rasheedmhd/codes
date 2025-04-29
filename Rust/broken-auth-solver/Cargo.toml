@@ -1,0 +1,10 @@
+[package]
+name = "broken-auth-solver"
+version = "0.1.0"
+edition = "2024"
+
+
+[dependencies]
+reqwest = { version = "0.12", features = ["cookies", "gzip", "brotli", "stream", "http2", "rustls-tls"] }
+tokio = { version = "1.36", features = ["full"] }
+futures = "0.3"
