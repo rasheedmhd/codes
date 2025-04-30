@@ -97,4 +97,4 @@ learn_roda/public/assets
 
 # Ignore master key for decrypting credentials and more.
 learn_roda/config/master.key
-
+Rust/broken-auth-solver/.idea
