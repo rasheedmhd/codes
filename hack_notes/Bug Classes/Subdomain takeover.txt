@@ -1,0 +1,73 @@
+1 host subdomain.domain.com 
+2 dig domain.com  / subdomain.domain.com 
+3 whois IP_ADDR | "org-name" / "OrgName" 
+"org-name" : Github 
+"OrgName"  : Cloudflare 
+
+Second-order subdomain takeovers
+
+Second-order subdomain takeovers, what I like to refer to as "broken link hijacking", are vulnerable subdomains which do not necessarily belong to the target but are used to serve content on the target's website. This means that a resource is being imported on the target page, for example, via a blob of JavaScript and the hacker can claim the subdomain from which the resource is being imported. Hijacking a host that is used somewhere on the page can ultimately lead to stored cross-site scripting, since the adversary can load arbitrary client-side code on the target page. 
+
+
+Discovery 
+DNS Dumpster and VirusTotal, index subdomains that have been crawled in the past allowing you to collect and sort the results quickly without much effort.
+
+Scraping does not only consist of using indexing pages, remember to check the target’s GIT repositories, Content Security Policy headers, source code, issue trackers, etc. The list of sources is endless, and I constantly discover new methods for increasing my results.
+
+Tools
+DNSDUmpster
+Amass 
+Sublist3r 
+Subfinder https://github.com/projectdiscovery/subfinder
+Massdns 
+Altdns https://github.com/infosec-au/altdns
+
+Wordlist 
+https://gist.github.com/jhaddix/86a06c5dc309d08580a018c66354a056
+
+Fingerprinting 
+
+Altdns
+In order to recursively brute force subdomains, take a look at Shubham Shah's Altdns script. 
+Running your custom word list after fingerprinting 
+
+
+Filtering 
+The first task that I love automating is filtering out live subdomains from a list of hosts. When scraping for subdomains, some results will be outdated and no longer reachable; therefore, we need to determine which hosts are live. Please keep in mind, as we will see later, just because a host does not resolve, does not necessarily mean it cannot be hijacked.
+
+Steps 
+Discovery
+|    |___ bruteforce
+|    |___ scrap 
+|
+|____ subdomains.txt 
+    |___ extract live subdomains 
+        |___ live_subdomains.txt 
+
+
+Screenshotting
+gowitness https://github.com/sensepost/gowitness
+
+For taking screenshots, my go-to tool is currently EyeWitness. This tool generates an HTML document containing all the screenshots, response bodies, and headers from your list of hosts.
+
+$ ./EyeWitness -f live.txt -d out --headless
+
+EyeWitness can be a little too heavy for some cases and you might only want to store the page's contents via a simple GET request to the top-level directory of the subdomain. For cases like these, I use Tom Hudson's meg. meg sends requests concurrently and then store the output into plain-text files
+
+$ meg -d 10 -c 200 / live.txt
+
+Extra Mile Looking
+Whenever you encounter dead DNS records, do not just assume that you cannot hijack that subdomain. As Frans points out, the host command might return an error, but running dig will unveil the dead records.
+
+Exploitation 
+When determining plausible attack scenarios with a misconfigured subdomain, 
+it is crucial to understand how the subdomain interacts with the base name and the target's core service.
+Cookies
+
+subdomain.example.com can modify cookies scoped to example.com. 
+This is important to remember as this could potentially allow you to hijack a victim's session on the base name.
+
+curl -sI https://hackerone.com | grep -i "content-security-policy"
+
+However, whatever you do, do not publish anything on the index page
+It is best practice to serve an HTML file on a hidden path containing a secret message in an HTML comment. That should be enough to demonstrate the issue when initially contacting the programme about your finding.

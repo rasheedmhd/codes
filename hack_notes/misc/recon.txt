@@ -20,7 +20,7 @@ SCOPE DISCOVERY
    SubBrute  - brute forcer
    Subfinder
 
-+ Screenshotting [ gowitness + eyewitness + aquatone + HTTPScreenshot ]
++ Screenshotting [ gowitness + eyewitness + aquatone + HTTPScreenshotter ]
 + Content Discovery (Burp Intruder on Pro)
 + Test to uncover the tech stack
 + Map the functionalities of the app 
@@ -30,11 +30,11 @@ SCOPE DISCOVERY
 ignore all other possibilities and focus entirely on your end goal. 
 You only stop and begin testing if you find something that leads to your goal. 
 3 OWASP 
-==================
-To date, I’ve had the most success after exploring a target, understanding the functionality it provides, and mapping that functionality to
-vulnerability types for testing. But areas that I continue to explore, and
-encourage you to look into as well, are automation and documenting your
-methodology.
+================== zseano from zseano's methodology
+To date, I’ve had the most success after exploring a target, 
+understanding the functionality it provides, and mapping that functionality to
+vulnerability types for testing. But areas that I continue to explore, and encourage 
+you to look into as well, are automation and documenting your methodology.
 ==================
 
 
