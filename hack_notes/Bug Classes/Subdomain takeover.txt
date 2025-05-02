@@ -47,6 +47,8 @@ Discovery
 
 Screenshotting
 gowitness https://github.com/sensepost/gowitness
+gowitness scan file -f filename
+gowitness scan file -f epic_domains --write-db --write-jsonl
 
 For taking screenshots, my go-to tool is currently EyeWitness. This tool generates an HTML document containing all the screenshots, response bodies, and headers from your list of hosts.
 
