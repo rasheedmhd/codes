@@ -73,3 +73,95 @@ curl -sI https://hackerone.com | grep -i "content-security-policy"
 
 However, whatever you do, do not publish anything on the index page
 It is best practice to serve an HTML file on a hidden path containing a secret message in an HTML comment. That should be enough to demonstrate the issue when initially contacting the programme about your finding.
+
+CNAME subdomain takeover 
+Domain name (e.g., sub.example.com) uses a CNAME record to another domain 
+(e.g., sub.example.com CNAME anotherdomain.com).
+At some point in time, anotherdomain.com expires and is available for registration by anyone.
+Since the CNAME record is not deleted from example.com DNS zone, anyone who registers 
+anotherdomain.com has full control over sub.example.com until the DNS record is present.
+
+NS subdomain takeover. 
+If the base domain of canonical domain name of at least one NS record is available for registration, 
+the source domain name is vulnerable to subdomain takeover.
+
+MX subdomain takeover
+MX subdomain takeover has the lowest impact. Since MX records are used only to receive e-mails, 
+gaining control over canonical domain name in MX record only allows an attacker to receive e-mails 
+addressed to source domain name.
+
+
+I use the following regexes to test the correct canonical name:
+# {bucketname}.s3.amazonaws.com
+^[a-z0-9\.\-]{0,63}\.?s3.amazonaws\.com$
+
+# {bucketname}.s3-website(.|-){region}.amazonaws.com (+ possible China region)
+^[a-z0-9\.\-]{3,63}\.s3-website[\.-](eu|ap|us|ca|sa|cn)-\w{2,14}-\d{1,2}\.amazonaws.com(\.cn)?$
+
+# {bucketname}.s3(.|-){region}.amazonaws.com
+^[a-z0-9\.\-]{3,63}\.s3[\.-](eu|ap|us|ca|sa)-\w{2,14}-\d{1,2}\.amazonaws.com$
+
+# {bucketname}.s3.dualstack.{region}.amazonaws.com
+^[a-z0-9\.\-]{3,63}\.s3.dualstack\.(eu|ap|us|ca|sa)-\w{2,14}-\d{1,2}\.amazonaws.com$
+
+http -b GET http://{SOURCE DOMAIN NAME} | grep -E -q '<Code>NoSuchBucket</Code>|<li>Code: NoSuchBucket</li>' && echo "Subdomain takeover may be possible" || echo "Subdomain takeover is not possible"
+
+$ amass enum -active -d owasp.org -brute -w /root/dns_lists/deepmagic.com-top50kprefixes.txt -ip -dir amass4owasp -config /root/amass/config.yaml -o amass_results_owasp.txt
+-w https://github.com/danielmiessler/SecLists.git
+https://0xpatrik.com/takeover-proofs/
+
+$ amass -active -brute -o hosts.txt -d yahoo.com
+amass -active -brute -o neon -d neon.tech 
+
+
+FFUF
+ffuf -ac -v -u https://domain/FUZZ -w wordlist.txt.
+
+DNSGEN dnsgen
+Basic Usage
+# Basic domain permutation
+dnsgen domains.txt
+
+# With custom wordlist and output file
+dnsgen -w custom_wordlist.txt -o results.txt domains.txt
+
+# Using fast mode for quick assessment
+dnsgen -f domains.txt
+
+# Pipe with massdns for resolution
+cat domains.txt | dnsgen - | massdns -r resolvers.txt -t A -o J --flush 2>/dev/null
+
+Integration with MassDNS
+Get clean resolved domains:
+
+# Generate and resolve
+dnsgen hosts.txt > wordlist.txt
+massdns -r resolvers.txt -o S wordlist.txt | grep -e ' A ' | \
+  cut -d 'A' -f 1 | rev | cut -d "." -f1 --complement | \
+  rev | sort | uniq > resolved_domains.txt
+
+
+
+Altdns Usage
+# altdns -i subdomains.txt -o data_output -w words.txt -r -s results_output.txt
+
+subfinder -d neon.tech -w subdomains-top1million-110000.txt -o found.txt
+amass enum -d neon.tech -brute -w subdomains-top1million-110000.txt -o neon_subs.txt
+
+Gobuster 
+Examples
+gobuster dns -d mysite.com -t 50 -w common-names.txt
+Normal sample run goes like this:
+gobuster dns -d google.com -w ~/wordlists/subdomains.txt
+
+Show IP sample run goes like this:
+gobuster dns -d google.com -w ~/wordlists/subdomains.txt -i
+
+Base domain validation warning when the base domain fails to resolve. This is a warning rather than a failure in case the user fat-fingers while typing the domain.
+gobuster dns -d yp.to -w ~/wordlists/subdomains.txt -i
+
+Wildcard DNS is also detected properly:
+gobuster dns -d 0.0.1.xip.io -w ~/wordlists/subdomains.txt
+
+If the user wants to force processing of a domain that has wildcard entries, use --wildcard:
+gobuster dns -d 0.0.1.xip.io -w ~/wordlists/subdomains.txt --wildcard
