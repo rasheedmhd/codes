@@ -46,3 +46,28 @@ $ gobuster dir -u http://192.168.195.132:8000 -w /home/hapihacker/api/wordlists/
 Kiterunner
 kr scan http://192.168.195.132:8090 -w ~/api/wordlists/data/kiterunner/routes-large.kite
 kr brute <target> -w ~/api/wordlists/data/automated/nameofwordlist.txt
+
+# Just have a list of hosts and no wordlist
+kr scan hosts.txt -A=apiroutes-210328:20000 -x 5 -j 100 --fail-status-codes 400,401,404,403,501,502,426,411
+
+# You have your own wordlist but you want assetnote wordlists too
+kr scan target.com -w routes.kite -A=apiroutes-210328:20000 -x 20 -j 1 --fail-status-codes 400,401,404,403,501,502,426,411
+
+# Bruteforce like normal but with the first 20000 words
+kr brute https://target.com/subapp/ -A=aspx-210328:20000 -x 20 -j 1
+
+# Use a dirsearch style wordlist with %EXT%
+kr brute https://target.com/subapp/ -w dirsearch.txt -x 20 -j 1 -exml,asp,aspx,ashx -D
+
+When you have a single target
+# single target
+kr scan https://target.com:8443/ -w routes.kite -A=apiroutes-210228:20000 -x 10 --ignore-length=34
+
+# single target, but you want to try http and https
+kr scan target.com -w routes.kite -A=apiroutes-210228:20000 -x 10 --ignore-length=34
+
+# a list of targets
+kr scan targets.txt -w routes.kite -A=apiroutes-210228:20000 -x 10 --ignore-length=34
+
+Vanilla Bruteforcing 
+kr brute https://target.com -A=raft-large-words -A=apiroutes-210228:20000 -x 10 -d=0 --ignore-length=34 -ejson,txt
