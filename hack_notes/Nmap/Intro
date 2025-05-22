@@ -1,0 +1,54 @@
+nmap 
+-h 
+-sn ping scan 
+-Pn host discovery process to check whether the target is online
+-sn --traceroute include traceroute information 
+
+execute an NSE script without port scanning our targets
+-sn --script <dns-brute | broadcast-ping | etc>
+
+Port Scanning 
+Ports marked as open or filtered are of special interest as they represent
+services running on the target host
+nmap scanme.nmap.org 
+• Open: Open indicates that a service is listening for connections on this port.
+• Closed: Closed indicates that the probes were received, but it was concluded that
+there was no service running on this port.
+• Filtered: Filtered indicates that there were no signs that the probes were received
+and the state could not be established. This could indicate that the probes are being
+dropped by some kind of filtering.
+• Unfiltered: Unfiltered indicates that the probes were received but a state could not
+be established.
+• Open/Filtered: This indicates that the port was filtered or open but the state could
+not be established.
+• Closed/Filtered: This indicates that the port was filtered or closed but the state
+could not be established
+
+nmap --dns-servers 8.8.8.8,8.8.4.4 scanme.nmap.org
+-n to skip --dns-servers 8.8.8.8,8.8.4.4
+
+Scanning Specific Port Ranges
+• Port list separated by commas: $ nmap -p80,443 localhost
+• Port range denoted with hyphens: $ nmap -p1-100 localhost
+• Alias for all ports from 1 to 65535: # nmap -p- localhost
+• Specific ports by protocol: # nmap -pT:25,U:53 <target>
+• Service name: # nmap -p smtp <target>
+• Service name with wildcards: # nmap -p smtp* <target>
+• Only ports registered in the Nmap services database: # nmap -p[1-65535] <target>
+
+Selecting Network Interface
+#nmap -e <interface> <target>
+#nmap -e eth2 scanme.nmap.org
+
+IP address ranges
+nmap -p25,80 -O -T4 192.168.1.1/24 scanme.nmap.org/24
+
+nmap 192.168.1.1 192.168.1.2 192.168.1.3 =  nmap 192.168.1.1-3
+nmap 192.168.1.1 192.168.1.* : * = 1 - 255
+Excluding hosts in ranges 
+nmap 192.168.1.1-255 --exclude 192.168.1.1
+or better pass a file
+nmap --exclude-file dontscan.txt 192.168.1.1-255
+
+Loading targets from a file: Nmap -iL <filename>
+nmap -iL targets.txt

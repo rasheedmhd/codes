@@ -1,0 +1,154 @@
+Passive Recon 
+Phase One: Cast a wide net
+Google dorking
+Shodan
+Programmable web 
+
+
+Investigate attack surface
+DNS Dumpster 
+OWASP Amass 
+
+
+Phase Two: Adapt and Focus
+Next, take your findings from phase one and adapt your 
+OSINT efforts to the information gathered
+
+Phase Three: Document the Attack Surface
+Take notes of potential vulnerable features. 
+Document all interesting findings. 
+Create a task list of the passive reconnaissance findings 
+that could prove useful throughout the rest of the attack.
+
+Google Hacking 
+inurl:"/wp-json/wp/v2/users"
+intitle:"index.of" intext:"api.txt"
+inurl:"/includes/api/" intext:"index of /"
+ext:php inurl:"api.php?action="
+intitle:"index of" api_key OR "api key" OR apiKey -pool
+
+
+Shodan
+hostname:"targetname.com"
+"content-type: application/xml"
+"200 OK"
+"wp-json"
+
+"example.com" "content-type: application/json"
+
+Amass
+amass enum -passive -d example.com | grep api
+
+Use the intel command to collect SSL certificates, s
+earch reverse Whois records, and find ASN IDs associated with your target. 
+amass intel -addr <target IP addresses>
+
+If this scan is successful, it will provide you with domain names. 
+These domains can then be passed to intel with the whois option to perform a
+reverse Whois lookup:
+$ amass intel -d <target domain> –whois
+
+Once you have a list of interesting domains, 
+Use enum to begin enumerate subdomains. 
+Use -passive option, for Amass to refrain from directly interacting with your target:
+amass enum -passive -d <target domain>
+
+Active enum scan performs much of the same scan as the passive one, 
+but it will add domain name resolution, attempt DNS zone transfers, and grab SSL certificate information:
+amass enum -active -d <target domain>
+
+Add -brute option to brute-force subdomains, 
+-w to specify the API_superlist wordlist
+-dir option to send the output to the directory of your choice:
+
+amass enum -active -brute -w /usr/share/wordlists/API_superlist -d <target domain> -dir <directory name>
+
+-viz to visualize relationships between the data Amass returns
+amass viz -enum -d3 -dir <directory name>
+
+Github
+code
+issues
+pr
+tech stack
+
+
+Active Recon
+Phase Zero: Opportunistic Exploitation
+If you discover a vulnerability at any point in the active recon process, you
+should take the opportunity to attempt exploitation.
+
+Phase One: Detection Scanning
+The goal of detection scanning is to reveal potential starting points for your
+investigation. As soon as your scan detects these services, 
+let the scan continue to run and move into phase two
+
+Phase Two: Hands-on Analysis
+Hands-on analysis is the act of exploring the web application using a
+browser and API client. Examine the web page, intercept requests, 
+look for API links and documentation, and develop an understanding 
+of the business logic involved.
+
+Consider the Applications for 3 perspectives
+1 guest(public unauthenticated user)
+2 authenticated user
+3 administrators
+
+Phase Three: Targeted Scanning
+Refine your scans and use tools that are specific to your target. 
+Focus on the specific type of API, its version, the web application type, 
+any service versions discovered, whether the app is on HTTP
+or HTTPS, any active TCP ports, and other information gleaned from
+understanding the business logic
+
+Baseline Scanning with Nmap
+nmap -sC -sV <target address or network range> -oA nameofoutput
+nmap -p- <target address> -oA allportscan
+
+Finding Hidden Paths in Robots.txt
+Robots.txt
+
+Finding Sensitive Information with Chrome DevTools
+open Chrome DevTools
+Select the Network tab and then refresh the page.
+Now look for interesting files (you may even find one titled “API”).
+Right-click any JavaScript files that interest you and click 
+Open in Sources Panel to view their source code. 
+Alternatively, click XHR to find see the Ajax requests being made.
+
+click the Memory tab. 
+Under Select Profiling
+Type, choose Heap Snapshot. 
+Then, under Select JavaScript VM Instance,
+choose the target to review. 
+Next, click the Take Snapshot button
+
+Try searching for terms using the common API path terms, like “api,”
+“v1,” “v2,” “swagger,” “rest,” and “dev.” If you need additional inspiration, check
+out the Assetnote API wordlists (http://wordlists.assetnote.io)
+
+Memory module can help you discover the existence of APIs and their paths. 
+Additionally, you can use it to compare different memory snapshots. 
+This can help you see the API paths used in authenticated and unauthenticated states, 
+in different parts of a web application, and in its different features.
+
+use the Chrome DevTools Performance tab to record certain actions 
+(such as clicking a button) and review them over a timeline broken down into milliseconds. 
+This lets you see if any event you initiate on a given
+web page is making API requests in the background.
+Simply click the circular record button, perform actions on a web page, and stop the recording. 
+Then you can review the triggered events and investigate the initiated actions.
+
+
+Validating APIs with Burp Suite
+Intercept and send requests to Repeater,
+Send and interpret responses, codes and body
+Test nonexistent resources 
+
+Crawling URIs with OWASP ZAP
+Refer to tutorial
+
+Brute-Forcing URIs with Gobuster/Kiterunner
+gobuster dir -u http://192.168.195.132:8000 -w /home/hapihacker/api/wordlists/common_apis_160
+gobuster dir -u http://targetaddress/ -w /usr/share/wordlists/api_list/common_apis_160 -x
+200,202,301 -b 302
