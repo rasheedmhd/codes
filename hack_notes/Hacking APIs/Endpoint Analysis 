@@ -1,0 +1,71 @@
+Find Request Information 
+
+Find Request Information
+Before you craft requests to an API, you’ll need an understanding of its
+endpoints, request parameters, necessary headers, authentication requirements, and administrative functionality. Documentation will often point
+us to those elements. Therefore, to succeed as an API hacker, you’ll need
+to know how to read and use API documentation
+
+Find Information in Documentation
+Example endpoints 
+https://example.com/docs
+https://example.com/api/docs
+https://docs.example.com
+https://api-docs.example.com
+https://dev.example.com/docs
+https://developer.example.com/docs
+https://api.example.com/docs
+https://example.com/developers/documentation
+
+Import Available/found API Specification 
+OAS - Open API Specification 
+
+Manually build API collection
+
+Build a collection by Proxy 
+
+Adding API Authentication Requirements to Postman
+OAuth tokens
+Bearer Token 
+HTTP Basic Auth 
+JWTs
+
+Analyze functionality
+Proxying Kiterunner’s results through Burp Suite so you can replay interesting requests
+kr kb replay -w ~/api/wordlists/data/kiterunner/routes-large.kite
+--proxy=http://127.0.0.1:8080 "GET 403 [ 48, 3, 1] http://192.168.50.35:8090/api/
+picture/detail.php 0cf6889d2fba4be08930547f145649ffead29edb"
+
+Testing Intended Use
+•  What sorts of actions can I take?
+•  Can I interact with other user accounts?
+•  What kinds of resources are available?
+•  When I create a new resource, how is that resource identified?
+•  Can I upload a file? Can I edit a file?
+
+Performing Privileged Actions
+administrative actions should have
+authorization requirements, but never assume that they actually do. My
+recommendation is to test these actions in several phases: first as an unauthenticated user, 
+then as a low-privileged user, and finally as an administrative user.
+
+Analyze API responses
+First check that you are receiving the responses you expect. API documentation can sometimes provide examples of what you could receive as a
+response. However, once you begin using the API in unintended ways, you
+will no longer know what you’ll get as a response, which is why it helps to first
+use the API as it was intended before moving into attack mode. Developing a
+sense of regular and irregular behavior will make vulnerabilities obvious.
+
+Finding Information Disclosure
+Finding Security Misconfigurations 
+- verbose error messages 
+- poor transit encryption 
+
+Finding Excessive Data Exposures
+Use Postman collection runner 
+
+Finding Business Logic Flaws
+If the documentation tells you not to perform action X, perform action X
+If the documentation tells you that data sent in a certain format isn’t validated,
+upload a reverse shell payload and try to find ways to execute it
+If the documentation tells you that all file formats are accepted

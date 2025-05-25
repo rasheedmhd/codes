@@ -33,14 +33,13 @@ hostname:"targetname.com"
 "content-type: application/xml"
 "200 OK"
 "wp-json"
-
 "example.com" "content-type: application/json"
 
 Amass
 amass enum -passive -d example.com | grep api
 
-Use the intel command to collect SSL certificates, s
-earch reverse Whois records, and find ASN IDs associated with your target. 
+Use the intel command to collect SSL certificates, 
+search reverse Whois records, and find ASN IDs associated with your target. 
 amass intel -addr <target IP addresses>
 
 If this scan is successful, it will provide you with domain names. 
@@ -109,6 +108,7 @@ Finding Hidden Paths in Robots.txt
 Robots.txt
 
 Finding Sensitive Information with Chrome DevTools
+Network Tab
 open Chrome DevTools
 Select the Network tab and then refresh the page.
 Now look for interesting files (you may even find one titled “API”).
@@ -116,6 +116,7 @@ Right-click any JavaScript files that interest you and click
 Open in Sources Panel to view their source code. 
 Alternatively, click XHR to find see the Ajax requests being made.
 
+Memory Tab
 click the Memory tab. 
 Under Select Profiling
 Type, choose Heap Snapshot. 
@@ -132,6 +133,7 @@ Additionally, you can use it to compare different memory snapshots.
 This can help you see the API paths used in authenticated and unauthenticated states, 
 in different parts of a web application, and in its different features.
 
+Performance Tab
 use the Chrome DevTools Performance tab to record certain actions 
 (such as clicking a button) and review them over a timeline broken down into milliseconds. 
 This lets you see if any event you initiate on a given

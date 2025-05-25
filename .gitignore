@@ -98,3 +98,9 @@ learn_roda/public/assets
 # Ignore master key for decrypting credentials and more.
 learn_roda/config/master.key
 Rust/broken-auth-solver/.idea
+Rust/broken-auth-solver/target 
+Rust/cmdlr/.idea
+Rust/cmdlr/recho/target
+Rust/cmdlr/recho/Cargo.lock
+# Ignore the Cargo.lock file for libraries.
+# See
