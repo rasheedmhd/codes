@@ -5,9 +5,6 @@ import Html exposing (Html, div, text, h1)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Http
-import Json.Decode as Decode exposing (Decoder, string)
-
-
 
 -- MAIN
 
@@ -41,7 +38,7 @@ type Msg
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
-update msg model =
+update msg _ =
     case msg of
         GotResponse result ->
          case result of
