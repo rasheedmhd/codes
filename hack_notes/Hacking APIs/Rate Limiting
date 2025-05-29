@@ -1,0 +1,29 @@
+A Note on Lax Rate Limits
+Stay under the limit Rate, you can throttle your fuzzer's speed
+
+Path By Pass
+If you reach the rate limit for this request, try altering the URL path
+with string terminators or various upper- and lowercase letters, like so:
+POST /api/myprofile%00
+POST /api/myprofile%20
+POST /api/myProfile
+POST /api/MyProfile
+POST /api/my-profile
+
+You might also
+achieve the same result by including meaningless parameters in the path:
+POST /api/myprofile?test=1
+
+Origin Header Spoofing
+Some API providers use headers to enforce rate limiting. 
+X-Forwarded-For
+X-Forwarded-Host
+X-Host
+X-Originating-IP
+X-Remote-IP
+X-Client-IP
+X-Remote-Addr
+
+Next, try either sending every possible origin header at once or including them in individual requests. 
+API defenders may also include the UserAgent header 
+https://github.com/danielmiessler/SecLists/blob/master/Fuzzing/User-Agents/UserAgents.fuzz.txt
