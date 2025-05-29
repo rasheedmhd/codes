@@ -6,6 +6,55 @@ request.
 fine-tune your brute-force attack is to generate
 passwords specific to your target.
 
-Passowrd Brute force attacls
+Passowrd Brute force attacks
 wfuzz -d '{"email":"a@email.com","password":"FUZZ"}' --hc 405 -H 'Content-Type: application/
 json' -z file,/home/hapihacker/rockyou.txt http://192.168.195.130:8888/api/v2/auth
+
+-d   : fuzz content that is sent in the body of a POST request.
+--hc : hides responses with certain response codes
+
+Password Reset and Multifactor Authentication Brute-Force Attacks
+Begin by capturing a request for the relevant process, such as a password reset process. In the following request, you can see that the consumer
+includes an OTP in the request body, along with the username and new
+password. Thus, to reset a user’s password, we’ll need to guess the OTP.
+
+Password Spraying 
+Let’s say you know that an API authentication process has
+a lockout policy in place and will only allow 10 login attempts. You could
+craft a list of the nine most likely passwords (one less password than the
+limit) and use these to attempt to log in to many user accounts
+
+Here is a short password-spraying list I might generate if I were attacking an
+endpoint for Twitter employees:
+Winter2021!
+Spring2021!
+QWER!@#$
+Password1!
+March212006!
+July152006!
+Twitter@2022
+JPD1976!
+Dorsey@2021
+
+Including Base64 Authentication in Brute-Force Attacks
+cluster fork burp intruder 
+
+Brute-Forcing Predictable Tokens
+
+JWT Web Tokens Attack 
+None Attack 
+Switch algorithm 
+This can be done by erasing the signature altogether and leaving the last period in place
+If this isn’t successful, attempt to alter the algorithm header field to "none". 
+if the provider uses RS256 but doesn’t limit the acceptable algorithm values, 
+we could alter the algorithm to HS256. 
+This is useful, as RS256 is an asymmetric encryption scheme, 
+meaning we need both the provider’s private key and a public key in order to accurately hash the JWT signature. 
+Meanwhile, HS256 is symmetric encryption, so only one key is used for both the signature and verification of the token. 
+If you can discover the provider’s RS256 public key and
+then switch the algorithm from RS256 to HS256, there is a chance you may
+be able to leverage the RS256 public key as the HS256 key
+
+The JWT Crack Attack
+Attempts to crack the secret used for the JWT signature hash, giving us full control over the process 
+of creating our own valid JWTs

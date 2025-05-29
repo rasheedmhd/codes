@@ -1,0 +1,48 @@
+Use tools like WafWoof, nmap, W3af to detect firewalls 
+Identify the signatures/Characters that trigger the WAF 
+and find ways to replace them
+
+1 Use Burner Accounts
+2 Use String Terminators 
+when you’re able to successfully send a null byte, it is
+interpreted by many backend programming languages as a signifier toApplying Evasive Techniques and Rate Limit Testing 271
+stop processing
+
+%00
+0x00
+//
+; 
+% 
+! 
+?
+[]
+%5B%5D
+%09
+%0a
+%0b
+%0c
+%0e
+
+Some wordlists out there can be used for general fuzzing attempts,
+such as SecLists’ metacharacters list (found under the Fuzzing directory)
+and the Wfuzz bad characters list (found under the Injections directory)
+
+3 Case Switching
+<sCriPt>alert('supervuln')</scrIpT>
+SeLeCT * RoM all_tables
+sELecT @@vErSion
+
+4 Encoding Payloads
+For the most part, the URL encoding has the best chance of being
+interpreted by the targeted application, but HTML or base64 could often
+work as well.
+focus on mostly likely to get blocked chars like 
+< > ( ) [ ] { } ; ' / \ |
+%3cscript%3ealert %28%27supervuln%27%28%3c%2fscript %3e
+%3c%73%63%72%69%70%74%3ealert('supervuln')%3c%2f%73%63%72%69%70%74%3e
+
+Automating Evasion with Burp Suite Intruder
+- refer to notes 
+Automating Evasion with Wfuzz
+- refer to notes 
+https://github.com/0xInfection/Awesome-WAF
