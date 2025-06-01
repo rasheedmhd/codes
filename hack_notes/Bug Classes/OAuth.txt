@@ -1,3 +1,12 @@
+Recon 
+Look for "Sign in / Sign up with <social-media, mostly, github, google etc> buttons
+Proxy Sign in and Sign Up request in Proxy to inspect looking for markers, query
+parameters used mostly for oauth like client_id, redirect_uri, scope, state 
+Check directories for
+/.well-known/oauth-authorization-server
+/.well-known/openid-configuration
+
+
 3 important parties
 - Resource Owner
 - Client
@@ -10,3 +19,95 @@ Client redirects to the Resource Server with
 - response type
 - scope
 - state unguessable value that prevents cross-site request forgeries
+
+Exploiting OAuth authentication vulnerabilities
+Vulnerabilities in the client application
+    Improper implementation of the implicit grant type LABS
+    Flawed CSRF protection LABS
+Vulnerabilities in the OAuth service
+    Leaking authorization codes and access tokens LABS
+    Flawed scope validation
+    Unverified user registration
+
+Improper implementation of the implicit grant type
+Example: Where the client decides to persist a state of the user that owns the 
+access token that is has been granted. 
+Sending a post req to its backend server with a payload 
+containing the access token and additional info like Email, Id etc 
+
+Flaw CSRF Protection
+Where the state parameter, is not sent to the server or easily manipulated. 
+It potentially means that an attacker can initiate an OAuth flow themselves before tricking 
+a user's browser into completing it, similar to a traditional CSRF attack
+
+Leaking authorization codes and access tokens via Open Redirect 
+using state or nonce protection does not necessarily prevent these attacks 
+because an attacker can generate new values from their own browser.
+
+By stealing a valid code or token, the attacker may be able to access the victim's data.
+potentially leading to an account take over 
+More seriously, the attacker could potentially log in as the victim user on 
+any client application that is registered with this OAuth service. 
+
+If the OAuth service fails to validate this URI properly, an attacker may be able 
+to construct a CSRF-like attack, tricking the victim's browser into initiating 
+an OAuth flow that will send the code or token to an attacker-controlled redirect_uri
+
+In the authorization code flow, an attacker can potentially steal the victim's code before it is used. 
+They can then send this code to the client application's legitimate /callback endpoint 
+(the original redirect_uri) to get access to the user's account. 
+In this scenario, an attacker does not even need to know the client secret or the resulting access token. 
+As long as the victim has a valid session with the OAuth service,
+the client application will simply complete the code/token exchange on the attacker's behalf 
+before logging them in to the victim's account. 
+
+
+Flawed redirect_uri validation
+When auditing an OAuth flow, you should try experimenting with the 
+redirect_uri parameter to understand how it is being validated.
+
+If you can append extra values to the default redirect_uri parameter, 
+you might be able to exploit discrepancies between the parsing of the URI 
+by the different components of the OAuth service.
+Test with SSRF bypass payloads 
+Server-Side parameter pollution 
+you should try submitting duplicate redirect_uri
+https://default-host.com &@foo.evil-user.net#@bar.evil-user.net/
+
+Some servers also give special treatment to localhost
+test with localhost.evil-user.net
+
+You shouldn't limit your testing to just the redirect_uri parameter in isolation. 
+Experiment with different combinations of changes to several parameters. 
+Sometimes changing one parameter can affect the validation of others. 
+Eg: changing the response_mode from query to fragment can sometimes completely 
+alter the parsing of the redirect_uri, allowing you to submit URIs that would otherwise be blocked. 
+if you notice that the web_message response mode is supported, 
+this often allows a wider range of subdomains in the redirect_uri
+
+Stealing codes and access tokens via a proxy page
+try to work out whether you can change the redirect_uri parameter to 
+point to any other pages on a whitelisted domain. 
+you may be able to use directory traversal tricks to supply any arbitrary path on the domain. Something like this:
+https://client-app.com/oauth/callback/../../example/path
+Other techniques 
+Dangerous JavaScript that handles query parameters and URL fragments
+XSS vulnerabilities
+HTML injection vulnerabilities
+
+Flawed scope validation
+Scope upgrade: authorization code flow - authorization code grant type 
+Where the client adds additional scopes to in the token grant phase, and if 
+the Resource server fails to get the scope that was initially granted by the 
+resource owner to the client 
+
+Once they have stolen an access token, they can send a normal browser-based request 
+to the OAuth service's /userinfo endpoint, manually adding a new scope parameter in the process.
+
+Ideally, the OAuth service should validate this scope value against 
+the one that was used when generating the token, but this isn't always the case. 
+If the added scope doesn't exceed the access level of the previously granted scope, 
+he is granted permission to the added scope
+
+Unverified user registration - highly unlikely for these modern popular oauth providers/servers 
+
