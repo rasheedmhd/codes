@@ -7,33 +7,35 @@ Check directories for
 /.well-known/openid-configuration
 
 
-3 important parties
+4 important parties
 - Resource Owner
 - Client
+- Authorization Server 
 - Resource Server
 
 Requests to  /oath/ to client
 Client redirects to the Resource Server with
 - client_id
 - redirect_uri
-- response type
+- response_type
 - scope
-- state unguessable value that prevents cross-site request forgeries
+- state(recommended) unguessable value that prevents cross-site request forgeries
 
 Exploiting OAuth authentication vulnerabilities
 Vulnerabilities in the client application
-    Improper implementation of the implicit grant type LABS
-    Flawed CSRF protection LABS
+    Improper implementation of the implicit grant type
+    Flawed CSRF protection
 Vulnerabilities in the OAuth service
-    Leaking authorization codes and access tokens LABS
+    Leaking authorization codes and access tokens
     Flawed scope validation
     Unverified user registration
 
 Improper implementation of the implicit grant type
-Example: Where the client decides to persist a state of the user that owns the 
-access token that is has been granted. 
+Example: Where the client decides to persist a state of the user 
+that owns the access token that is has been granted. 
 Sending a post req to its backend server with a payload 
 containing the access token and additional info like Email, Id etc 
+We can intercept this request and modify the email's etc 
 
 Flaw CSRF Protection
 Where the state parameter, is not sent to the server or easily manipulated. 
@@ -69,14 +71,12 @@ redirect_uri parameter to understand how it is being validated.
 If you can append extra values to the default redirect_uri parameter, 
 you might be able to exploit discrepancies between the parsing of the URI 
 by the different components of the OAuth service.
-Test with SSRF bypass payloads 
-Server-Side parameter pollution 
-you should try submitting duplicate redirect_uri
+- Test with SSRF bypass payloads 
+- Server-Side parameter pollution 
+- you should try submitting duplicate redirect_uri
 https://default-host.com &@foo.evil-user.net#@bar.evil-user.net/
-
 Some servers also give special treatment to localhost
-test with localhost.evil-user.net
-
+- test with localhost.evil-user.net
 You shouldn't limit your testing to just the redirect_uri parameter in isolation. 
 Experiment with different combinations of changes to several parameters. 
 Sometimes changing one parameter can affect the validation of others. 
@@ -88,8 +88,8 @@ this often allows a wider range of subdomains in the redirect_uri
 Stealing codes and access tokens via a proxy page
 try to work out whether you can change the redirect_uri parameter to 
 point to any other pages on a whitelisted domain. 
-you may be able to use directory traversal tricks to supply any arbitrary path on the domain. Something like this:
-https://client-app.com/oauth/callback/../../example/path
+you may be able to use directory traversal tricks to supply any arbitrary path on the domain. 
+Something like this: https://client-app.com/oauth/callback/../../example/path
 Other techniques 
 Dangerous JavaScript that handles query parameters and URL fragments
 XSS vulnerabilities
@@ -109,5 +109,74 @@ the one that was used when generating the token, but this isn't always the case.
 If the added scope doesn't exceed the access level of the previously granted scope, 
 he is granted permission to the added scope
 
-Unverified user registration - highly unlikely for these modern popular oauth providers/servers 
+Unverified user registration - highly unlikely for these modern popular oauth providers/servers
 
+
+OAuth Dirty Dancing to steal codes & tokens
+the idea is to end up on some form of error page or similar that 
+still loads third-party Javascript for us to leak the tokens.
+
+Breaking State Intentionally
+1. Intercept the redirect response from the authorization server
+and modify the state, at this point the code/token has already 
+been created if the user was logged in already to the authorization server
+2. Because the client set the state and needs to verify that the state is valid,
+it will error out/reject the state/request and now the attacker has the correct state
+3. Attacker can then send the right state and code to the client callback endpoint
+and trick the client to complete the access token request and grant and then 
+proceeding to log the attacker into the victim's account.
+
+if an attacker can send a login-flow-link to a victim tainted with a valid state of the attacker, 
+the OAuth-dance will fail for the victim and the code will never be sent to the OAuth-provider. 
+The code will still be possible to use if the attacker can get it.
+
+Attacker starts a sign-in flow on the website using “Sign in with X”.
+Attacker uses the state-value and constructs a link for the victim to sign in with the OAuth-provider but with the attacker’s state.
+Victim gets signed-in with the link and redirected back to the website.
+Website validates the state for the victim and stops processing the sign-in flow since it’s not a valid state. Error page for victim.
+Attacker finds a way to leak the code from the error page.
+Attacker can now sign in with their own state and the code leaked from the victim.
+
+Response-type/Response-mode switching
+Changing response-types or response-modes of the OAuth-dance will effect in what 
+way the codes or tokens are sent back to the website, 
+which most of the time causes unexpected behavior.
+https://labs.detectify.com/writeups/account-hijacking-using-dirty-dancing-in-sign-in-oauth-flows/#response-type-response-mode-switching
+
+
+Redirect-uri case shifting
+Some OAuth-providers allows case-shifting in the path of the redirect_uri
+If the whitelisted routes are case-sensitive, case shifting will cause a non happy path 
+...
+response_type=id_token&
+redirect_uri=https://example.com/CaLlBaCk&
+...
+
+response_type=code won't work easily because of the additional redirect_uri validation 
+at the resource server before token grant but in a response_type=token|id_token, since
+there is no need to hit the resource server, this trick works 
+
+Chaining an Open Redirect + Path traversal can lead to leaking 
+access tokens or codes. A dirty dance 
+
+Redirect-uri parameter appending
+Some OAuth-providers allow additional query or fragment parameters to be added to the redirect_uri. 
+You can use this by triggering a non-happy path by providing the same parameters that will be appended to the URL
+response_type=code&
+redirect_uri=https://example.com/callback%3fcode=xxx%26
+becomes
+https://example.com/callback?code=xxx&code=real-code
+response_type=code&
+redirect_uri=https://example.com/callback%23id_token=xxx%26
+becomes 
+https://example.com/callback#id_token=xxx&id_token=real-id_token
+Depending on the javascript that fetches the fragment parameters when multiple 
+parameters of the same name are present, this could also end up in a non-happy path.
+
+Redirect-uri leftovers or misconfigurations
+the start-page also as a valid redirect_uri. 
+For example, if redirect_uri=https://auth.example.com/callback
+redirect_uri=https://example.com/
+redirect_uri=https://example.com
+redirect_uri=https://www.example.com/
+redirect_uri=https://www.example.com
