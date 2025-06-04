@@ -1,0 +1,56 @@
+https://portswigger.net/web-security/host-header/exploiting
+
+Inject host override headers
+
+X-Host
+X-Forwarded-Server
+X-HTTP-Host-Override
+Forwarded
+
+Although X-Forwarded-Host is the de facto standard for this behavior, 
+you may come across other headers that serve a similar purpose, including: 
+Example 
+GET /example HTTP/1.1
+Host: vulnerable-website.com
+X-Forwarded-Host: bad-stuff-here
+
+Exploitation
+Password Reset Poisoning
+Web Cache Deception 
+
+Exploiting classic server-side vulnerabilities
+
+Every HTTP header is a potential vector for exploiting classic server-side vulnerabilities, 
+and the Host header is no exception. For example, you should try the usual SQL injection probing techniques via the Host header. 
+If the value of the header is passed into a SQL statement, this could be exploitable. 
+
+Accessing restricted functionality
+
+For fairly obvious reasons, it is common for websites to restrict access to certain functionality to internal users only. 
+However, some websites' access control features make flawed assumptions that allow you to bypass these restrictions by 
+making simple modifications to the Host header. This can expose an increased attack surface for other exploits. 
+
+Accessing internal websites with virtual host brute-forcing
+1 Companies mistakenly host public and private, internal website on the same server
+2 an attacker can typically access any virtual host on any server that they have access to, provided they can guess the hostnames.
+www.example.com: 12.34.56.78
+intranet.example.com: 10.0.0.132
+
+Routing-based SSRF
+see https://portswigger.net/research/cracking-the-lens-targeting-https-hidden-attack-surface
+Routing-based SSRF, on the other hand, relies on exploiting the intermediary components that are
+prevalent in many cloud-based architectures. This includes in-house load balancers and reverse proxies. 
+If they are insecurely configured to forward requests based on an unvalidated Host header, 
+they can be manipulated into misrouting requests to an arbitrary system of the attacker's choice. 
+
+o do this, you'll need to identify private IP addresses that are in use on the target's internal network. 
+In addition to any IP addresses that are leaked by the application, you can also scan hostnames belonging 
+to the company to see if any resolve to a private IP address. If all else fails, you can still identify 
+valid IP addresses by simply brute-forcing standard private IP ranges, such as 192.168.0.0/16
+
+Connection State Attacks
+ you may occasionally encounter servers that only perform thorough validation on the first request they receive over a new connection. 
+ In this case, you can potentially bypass this validation by sending an innocent-looking 
+ initial request then following up with your malicious one down the same connection. 
+
+ SSRF via a malformed request line

@@ -1,0 +1,14 @@
+System Modelling
+Where we ask, what are we building
+and as hackers, 
+We ask what are we hacking?
+
+Threat Identification
+Where we ask, what can go wrong?
+Threat Category	          Violates	       Examples
+Spoofing	                Authenticity	   An attacker steals the authentication token of a legitimate user and uses it to impersonate the user.
+Tampering	                Integrity	       An attacker abuses the application to perform unintended updates to a database.
+Repudiation	              Non-repudiability	An attacker manipulates logs to cover their actions.
+Information Disclosure	  Confidentiality	 An attacker extract data from a database containing user account info.
+Denial of Service	        Availability	   An attacker locks a legitimate user out of their account by performing many failed authentication attempts.
+Elevation of Privileges	  Authorization	   An attacker tampers with a JWT to change their role.

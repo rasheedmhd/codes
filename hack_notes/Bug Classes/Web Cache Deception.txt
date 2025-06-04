@@ -1,3 +1,127 @@
+Web Caches + CDNS 
+Cache keys
+cache Busters 
+URL discrepancies 
+- delimiters
+- 
+Spring : Semilcon (;)
+Rails : Dot (.)
+OpenLiteSpeed : Null encoded byte (%00)
+Nginx : New encoded byte (%0a)
+
+Detecting Origin Delimiters 
+1. Identify a non-cacheable request.
+2. Send the same request appending a random suffix at the end of the path 
+Eg: abc / ? # % 
+3. Send the same request appending a delimiter before the random suffix at the end of the path 
+Eg: abc / ? # % 
+If the messages are identical, the character or string is used as a delimiter.
+Use Burp Intruder 
+
+Detecting Cache Delimiters 
+Cache servers often don't use delimiters aside from ?
+1. Identify cacheable req 
+2. Send same req with a potential delimiter, compare the resp 
+GET /static-endpoint<DELIMITER><Random>
+
+Normalization
+URL parsers are used by both the cache and origin server to extract paths for endpoint mapping,
+cache keys, and rules. First, path delimiters are identified to locate the start and end of the
+pathname. Once the path is extracted, it's normalized to its absolute form by decoding characters
+and removing dot-segments
+
+Encoding 
+Sometimes, a delimiter character needs to be sent for interpretation by the application rather than
+the HTTP parser. For such cases, the URI RFC defines URL encoding, which allows characters to
+be encoded to avoid modifying the meaning of the pathname.
+
+Detecting decoding behaviors
+To test if a character is being decoded, compare a base request with its encoded version.
+Encode chars individually
+example:
+/home/index → /%68%6f%6d%65%2f%69%6e%64%65%78
+
+Dot-segment normalization
+It's possible to exploit dot-segment normalization by leveraging the discrepancies between parsers
+to modify the behavior of the cache rules and obtain crafted keys. 
+
+Detecting dot-segment normalization
+To detect normalization in the origin server, issue a non-cacheable request (or a request with a
+cache buster) to a known path, then send the same message with a path traversal sequence:
+GET /home/index?cacheBuster
+GET /aaa/../home/index?cacheBuster or 
+GET /aaa\..\home/index?cacheBuster
+
+Normalization discrepancies
+The following tables illustrate how different HTTP servers and web cache proxies normalize the
+path /hello/..%2fworld. Some resolve the path to /world, while others don't normalize it at
+all.
+
+Exploiting Web Cache Deception 
+Static file extensions / URL Mapping discrepancies
+This is where the cache rule says the proxy should cache all files that ends with 
+one of the static extensions it supports 
+- Here you add /test.js : A /(sometimes encoded) a random string and a static file extensions
+refer to the proxy static file extensions list 
+
+How/Why it happens 
+Proxy sees and pays attention to a.css
+Server sees and ignores a.css
+Cache Proxy       Origin Server
+/myAccount$a.css  /myAccount$a.css
+[If you are sending # in the browser, you need to encode it. 
+Browsers don't send fragments to servers]
+/myAccount%23a.css  /myAccount#a.css 
+Sometimes the Cache Proxy/LB decodes before forwarding 
+LB: /myAccount%25%32%33a.css CP: /myAccount%23a.css  OS: /myAccount#a.css 
+
+Static directories
+Eg: Where to find them
+/static
+/assets
+/wp-content
+/media
+/templates
+/public
+/shared
+
+Exploiting static directories with delimiters
+If a char is used as a delimiter by the OS but not by the cache and the cache
+normalizes the path before applying a static directory rule, 
+you can hide a path traversal segment after the delimiter, which the cache will resolve:
+
+GET /<Dynamic_Resource><Delimiter><Encoded_Dot_Segment><Static_Directory>
+CP normalizes req, applying the path traversal so it sees /static/any 
+OS uses $ as delimiter so it ignores $/..%2Fstatic/any and seerver /myAccount
+CP applying static directory rules caches /myAccount as /static/any 
+Browser                        Cache Proxy      Origin Server
+/myAccount$/..%2Fstatic/any    /static/any      /myAccount
+
+Remember to test, the behavior of the CP 
+
+Exploiting static directories with normalization
+The OS normalizes the path before mapping the endpoint but the 
+cache doesn't normalize the path before evaluating the cache rules, 
+You can add a path traversal segment that will only be processed by the OS:
+
+GET /<Static_Directory><Encoded_Dot_Segment><Dynamic_Resource>
+CP doesn't normalize encoding, forwards to OS
+OS normalizes path traversal dot segments and server /myAccount 
+CP caches response thinking it is under /static/
+Browser                 Cache Proxy                 Origin Server
+/static/..%2FmyAccount  /static/..%2FmyAccount      /myAccount
+
+Static files
+Some files, like /robots.txt, /favicon.ico, and /index.html, 
+
+Exploiting static files
+Use the technique used in static directories where
+the CP normalizes the req and there is a delimiter at backend. 
+The static directory is replaced by the filename and a cache buster
+
+GET /<Dynamic_Resource><Delimiter><Encoded_Dot_Segment><Static_File>
+Browser                         Cache Proxy     Origin Server
+/myAccount/..%2Frobots.txt      /robots.txt     /myAccount
 
 Web cache deception lab delimiter list
 
@@ -33,6 +157,9 @@ _
 |
 }
 ~
+%00
+%0A
+%09
 %21
 %22
 %23
