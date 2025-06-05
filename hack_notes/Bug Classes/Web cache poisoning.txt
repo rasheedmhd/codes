@@ -1,19 +1,32 @@
-Web cache poisoning
-
-A cache poisoning attack uses an HTTP request to trick an origin web server into responding
-with a harmful resource that has the same cache key as a clean request. 
+Web Cache Poisoning
+A cache poisoning attack uses an HTTP request to trick an origin web server into 
+responding with a harmful resource that has the same cache key as a clean request. 
 As a result, the poisoned resource gets cached and served to other users.
 
-A Content Delivery Network (CDN) like Cloudflare relies on cache keys to compare new requests against cached resources. 
-The CDN then determines whether the resource should be served from the cache or requested directly from the origin web server.
+Cache Keys
+A CDN like Cloudflare relies on cache keys to compare new requests against cached resources. 
+The CDN then determines whether the resource should be served from the cache or 
+requested directly from the origin web server.
 
-However, injecting a payload is not the only possible vector for this vulnerability. Other possibilities include :
+However, injecting a payload is not the only possible vector for this vulnerability. 
+Other possibilities include :
+A denial-of-service attack through headers like “x-forwarded-scheme”: 
+Using this header generally returns a 302 error to the current page in https. 
+If the response is cached, this causes an infinite loop making the page inaccessible.
+Using an illegal header such as “\”, which means that the server will respond to a 400 error page. 
+If this page is cached, it will be inaccessible to other users.
 
-A denial-of-service attack through headers like “x-forwarded-scheme”: Using this header generally returns a 302 error to the current page in https. If the response is cached, this causes an infinite loop making the page inaccessible.
-Using an illegal header such as “\”, which means that the server will respond to a 400 error page. If this page is cached, it will be inaccessible to other users.
+The cache key is a selected set of HTTP request elements (parts of the request line and the headers) and their values. 
+If all the values in a cache key match those of a previous request, 
+the cache assumes it can return the cached response associated with that request, 
+without the need to get a new response from the web server. 
+Parts of the HTTP request that are included in the cache key are called keyed inputs, 
+and the rest are unkeyed inputs. 
+Almost all cache keys include at least the path and host, but other header values may also be used. 
+Sometimes, only selected parts and parameters of the path are keyed, rather than the entire path
 
-The cache key is a selected set of HTTP request elements (parts of the request line and the headers) and their values. If all the values in a cache key match those of a previous request, the cache assumes it can return the cached response associated with that request, without the need to get a new response from the web server. Parts of the HTTP request that are included in the cache key are called keyed inputs, and the rest are unkeyed inputs. Almost all cache keys include at least the path and host, but other header values may also be used. Sometimes, only selected parts and parameters of the path are keyed, rather than the entire path
 
+Prevention
 Only cache files that are truly static
 Review the caching configuration for your origin web server and ensure you are caching 
 files that are static and do not depend on user input in any way. 
@@ -21,9 +34,9 @@ files that are static and do not depend on user input in any way.
 Which file extensions does Cloudflare cache for static content?
 How Do I Tell Cloudflare What to Cache?
 Do not trust data in HTTP headers
-Client-side vulnerabilities are often exploited through HTTP headers, including cross-site scripting (XSS). 
+Client-side vulnerabilities are often exploited through HTTP headers, 
+including cross-site scripting (XSS). 
 In general, you should not trust the data in HTTP headers and as such:
-
 Do not rely on values in HTTP headers if they are not part of your cache key.
 Never return HTTP headers to users in cached content.
 Do not trust GET request bodies

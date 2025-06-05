@@ -1,10 +1,13 @@
 Web Caches + CDNS 
+
 Cache keys
+
 cache Busters 
+
 URL discrepancies 
 - delimiters
 - 
-Spring : Semilcon (;)
+Spring : Semicolon (;)
 Rails : Dot (.)
 OpenLiteSpeed : Null encoded byte (%00)
 Nginx : New encoded byte (%0a)
