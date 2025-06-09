@@ -1,0 +1,30 @@
+Regular Nmap Diffing
+For all our clients, one of the first things we do is set up different monitoring
+scripts. These are usually just quick bash scripts that email us daily diffs of a
+client's network.
+
+Build a better network diff scanner:
+Build a better port list than the default nmap (i.e. nmap default
+misses ports like Redis 6379/6380 and others)
+Implement nmap banners
+Keep historical tracking of ports
+Build email alerting/notification system
+Check out diff Slack Alerts: http://bit.ly/2H1o5AW
+
+HTTPScreenshotter
+Shodan 
+Censys - Find where victim servers are located in cloud services
+
+Manually Parsing SSL Certificates 
+
+Finding Sub domains
+Some servers do not respond by IP. They could be on shared
+infrastructure and only respond by fully qualified domains. This is
+very common to find on cloud infrastructure. So you can nmap all
+day, but if you can’t find the subdomain, you won't really know what
+applications are behind that IP.
+
+Knockpy
+Sublist3r
+SubBrute
+Github 

