@@ -1,0 +1,86 @@
+bash --version 
+en 
+echo ${SHELL}
+ps -ef 
+df --human-readable
+
+Elements of a Bash script
+#!/bin/bash -x
+#!/bin/bash -r 
+#!/bin/bash -e
+#!/bin/bash -u
+#!/bin/bash -o pipefail
+#!/bin/bash -v
+# -x: Print commands and their arguments  
+
+bash -r myscript.sh
+you can pass arguments to a interpreter in the shebang line or as arguments to the script
+# -r: Restrict the script from using any shell builtins
+# -e: Exit immediately if a command exits with a non-zero status
+# -u: Treat unset variables as an error
+# -o pipefail: Return the exit status of the last command in a pipeline that failed
+# -v: Print shell input lines as they are read
+# -n: Read commands but do not execute them (syntax check)
+# -i: Run the shell in interactive mode
+# -c: Read commands from the command line
+# -l: Run the shell as a login shell
+# -s: Read commands from standard input
+# -D: Enable debugging mode
+# -x: Enable debugging mode (print commands and their arguments
+
+
+
+Execution 
+chmod u+x helloworld.sh
+
+set -x # Enable debugging mode
+set +x # Disable debugging mode
+
+
+variables 
+my_var="Hello, World!"
+echo $my_var
+# ${} is more clear and is recommended for complex variable names
+echo ${my_var}
+# command substitution syntax
+current_date=$(date)
+echo "Current date is: $current_date"
+
+Unassigned variables
+unset my_var
+# This will not print anything since my_var is unset
+# Using an unset variable will not cause an error, but it will return an empty string
+
+Arithmetic Operations Syntax
+num1=10
+num2=5
+sum=$((num1 + num2))
+echo "Sum: $sum"
+# Using let command
+let "sum = num1 + num2"
+let sum="num1 + num2"  
+# Using expr command
+sum=$(expr $num1 + $num2)
+# Using bc command for floating point arithmetic
+bc <<< "scale=2; $num1 / $num2"
+# Using awk for arithmetic
+awk "BEGIN {print $num1 / $num2}"
+# Using printf for formatted output
+printf "Sum: %d\n" "$sum"
+
+# Sets an array
+IP_ADDRESSES=(192.168.1.1 192.168.1.2 192.168.1.3)
+# Prints all elements in the array
+echo "${IP_ADDRESSES[*]}"
+# Prints the first element in the array
+echo "${IP_ADDRESSES[0]}"
+# Prints the length of the array
+echo "${#IP_ADDRESSES[@]}"
+# Adds an element to the array
+IP_ADDRESSES+=("127.0.0.1")
+# Removes an element from the array
+IP_ADDRESSES=("${IP_ADDRESSES[@]/127.0.0.1}")
+# Loops through the array
+for ip in "${IP_ADDRESSES[@]}"; do
+  echo "IP: $ip"
+done
