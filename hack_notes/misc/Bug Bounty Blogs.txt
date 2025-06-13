@@ -4,6 +4,7 @@ https://wss.sh/en/blog/
 https://www.cyberark.com/
 https://www.netspi.com/blog/technical-blog/
 https://www.hackingarticles.in/penetration-testing/
+https://danaepp.com/
 
 IDEA - SOPRedirect, a redirect method that only redirects to
 path, not FQDN to prevent Open Redirects

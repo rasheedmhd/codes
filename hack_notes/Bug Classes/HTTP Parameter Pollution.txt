@@ -14,9 +14,4 @@ extra parameters you send.
 Apache + PHP = last occurence
 Tomcat = first occurence
 ASP + IIS = all occurences
-more info Luca Carettoni and Stefano di Paolo
 
-https://id.vk.com/auth?v=1.46.0&app_id=7913379&uuid=6aacda8cf8&redirect_uri=https%3A%2F%2Fvk.com%2Fjoin&app_settings=W10%3D&action=eyJuYW1lIjoibm9fcGFzc3dvcmRfZmxvdyIsInBhcmFtcyI6eyJ0eXBlIjoic2lnbl91cCJ9fQ%3D%3D&scheme=space_gray
-
-HTTP Request Smuggling
-https://www.cgisecurity.com/lib/HTTP-Request-Smuggling.pdf

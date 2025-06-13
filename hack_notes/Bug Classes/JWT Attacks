@@ -1,0 +1,53 @@
+Accepting arbitrary signatures
+JWT libraries typically provide one method for verifying tokens and another that just decodes them. For example, the Node.js library jsonwebtoken has verify() and decode().
+
+Occasionally, developers confuse these two methods and only pass incoming tokens to the decode() method. This effectively means that the application doesn't verify the signature at all.
+
+
+Accepting tokens with no signature
+JWTs can be signed using a range of different algorithms, but can also be left unsigned. In this case, the alg parameter is set to none, which indicates a so-called "unsecured JWT". Due to the obvious dangers of this, servers usually reject tokens with no signature. However, as this kind of filtering relies on string parsing, you can sometimes bypass these filters using classic obfuscation techniques, such as mixed capitalization and unexpected encodings.
+
+Note
+Even if the token is unsigned, the payload part must still be terminated with a trailing dot.
+
+
+Brute-forcing secret keys
+Some signing algorithms, such as HS256 (HMAC + SHA-256), use an arbitrary, standalone string as the secret key. Just like a password, it's crucial that this secret can't be easily guessed or brute-forced by an attacker. Otherwise, they may be able to create JWTs with any header and payload values they like, then use the key to re-sign the token with a valid signature.
+
+When implementing JWT applications, developers sometimes make mistakes like forgetting to change default or placeholder secrets. They may even copy and paste code snippets they find online, then forget to change a hardcoded secret that's provided as an example. In this case, it can be trivial for an attacker to brute-force a server's secret using a wordlist of well-known secrets.
+
+https://github.com/wallarm/jwt-secrets/blob/master/jwt.secrets.list
+
+You just need a valid, signed JWT from the target server and a wordlist of well-known secrets. You can then run the following command, passing in the JWT and wordlist as arguments:
+
+hashcat -a 0 -m 16500 <jwt> <wordlist>
+
+JWT header parameter injections
+According to the JWS specification, only the alg header parameter is mandatory. 
+
+Injecting self-signed JWTs via the jwk parameter
+The JSON Web Signature (JWS) specification describes an optional jwk header parameter, which servers can use to embed their public key directly within the token itself in JWK format.
+
+Ideally, servers should only use a limited whitelist of public keys to verify JWT signatures. However, misconfigured servers sometimes use any key that's embedded in the jwk parameter.
+
+You can exploit this behavior by signing a modified JWT using your own RSA private key, then embedding the matching public key in the jwk header.
+
+Injecting self-signed JWTs via the jku parameter
+Instead of embedding public keys directly using the jwk header parameter, some servers let you use the jku (JWK Set URL) header parameter to reference a JWK Set containing the key. When verifying the signature, the server fetches the relevant key from this URL.
+
+Injecting self-signed JWTs via the kid parameter
+If this parameter is also vulnerable to directory traversal, an attacker could potentially force the server to use an arbitrary file from its filesystem as the verification key.
+
+{
+    "kid": "../../path/to/file",
+    "typ": "JWT",
+    "alg": "HS256",
+    "k": "asGsADas3421-dfh9DGN-AFDFDbasfd8-anfjkvc"
+}
+
+If the server stores its verification keys in a database, the kid header parameter is also a potential vector for SQL injection attacks.
+
+You could theoretically do this with any file, but one of the simplest methods is to use /dev/null, which is present on most Linux systems. As this is an empty file, reading it returns an empty string. Therefore, signing the token with a empty string will result in a valid signature.
+
+JWT algorithm confusion
+Even if a server uses robust secrets that you are unable to brute-force, you may still be able to forge valid JWTs by signing the token using an algorithm that the developers haven't anticipated. This is known as an algorithm confusion attack.
