@@ -84,3 +84,47 @@ IP_ADDRESSES=("${IP_ADDRESSES[@]/127.0.0.1}")
 for ip in "${IP_ADDRESSES[@]}"; do
   echo "IP: $ip"
 done
+
+Control Commands
+& Sends a command to the background
+&& Used as a logical AND The second command in the expression will
+be evaluated only if the first command evaluates to true
+( and ) Used for command grouping
+; Used as a list terminator A command following the terminator will run
+after the preceding command has finished, regardless of whether it
+evaluates to true or not
+;; Ends a case statement
+| Redirects the output of a command as input to another command
+|| Used as a logical OR The second command will run if the first one
+evaluates to false
+
+Redirection Operators
+Operator Description
+> Redirects stdout to a file
+>> Redirects stdout to a file by appending it to the existing content
+&> or >& Redirects stdout and stderr to a file
+&>> Redirects stdout and stderr to a file by appending them to the existing
+content
+< Redirects input to a command
+<< Called a here document, or heredoc, redirects multiple input lines
+to a command
+| Redirects output of a command as input to another command
+
+Special Variables Related to Positional Arguments
+Variable Description
+$0 The name of the script file
+$1, $2, $3, Positional arguments
+$# The number of passed positional arguments
+$* All positional arguments
+$@ All positional arguments, where each argument is individually quoted
+
+
+
+Exit Codes
+0 success
+1 failed 
+126 command found but !executable
+127 command not found 
+$? - get error code
+
+/dev/null - sink /  a special device file that discards any data sent to it. 
