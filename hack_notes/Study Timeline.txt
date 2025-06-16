@@ -1,0 +1,119 @@
+Wed 13 Dec 2024
+Studied Cross Site Request Forgery
+
+Thu 12 Dec 2024
+Studied SAML and dig a CTF from the At Mo Web Apps book
+discovered a lot of resources and added to study later
+
+Studied 
+HTML injection and Content Spoofing
+IDORs
+
+Fri 13 Dec 2024
+Carriage Return Line Feed
+SQL injection
+
+Sat 14 Dec 2024
+Race Conditions
+
+Sun 15 Dec 2024
+Server Side Request Forgery
+
+Mon 16 Dec 2024
+Insecure Deserialization
+XML External Entities (Skimming)
+
+Tue 17 Dec 2024
+Template injection (Skimming)
+
+Wed 18 Dec 2024
+Application logic Errors 
+and Broken Access Control
+Remote Code Execution 
+Same Origin Policy Vulnerabilities
+Single Sign On Security Issues
+Information Disclosure
+Conducting code reviews
+
+Thu 19 Dec 2024
+Automating vulns discovery using fuzzers
+
+Sun 22 Dec 2024
+Portswiger Access Control and Privilege Escalation
+https://portswigger.net/web-security/access-control
+- Completed Labs - 
+IDORs, 
+Unprotected Admin Panel, 
+Unprotected admin functionality with unpredictable URL,  
+User role controlled by request parameter
+Access Control Models 
+https://delinea.com/blog/access-control-models-methods#:~:text=Access%20Control%20Models%20allow%20organizations,RBAC%20or%20RB%2DRBAC
+
+Mon 23 Dec 2024
+Read https://taligarsiel.com/Projects/howbrowserswork1.html
+
+Tue 24 Dec 2024
+Skimmed through SQL injections in Real World Bug Bounty
+
+Thu 19 Jan 2025 
+Started studying Hacking API and
+BlackHat GraphQL
+
+Mon 22 Jan 2025
+Broken Object Level Authorization
+Broken Function Level Authorization
++ Several other API vuln classes, see Common API Vulns.txt
+
+Portswiger Academy labs solved
+User role can be modified in user profile
+URL-based access control can be circumvented
+Method-based access control can be circumvented
+User ID controlled by request parameter 
+User ID controlled by request parameter, with unpredictable user IDs 
+User ID controlled by request parameter with data leakage in redirect 
+User ID controlled by request parameter with password disclosure
+Multi-step process with no access control on one step 
+Referer-based access control 
+
+Sat 28 Dec 2024
+Started  Configuration and Deployment Management Testing
+
+Sun 29 Dec 2024
+https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/06-Test_HTTP_Methods
+https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/07-Test_HTTP_Strict_Transport_Security
+
+Mon 30 Dec 2024
+https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/10-Test_for_Subdomain_Takeover
+
+https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/12-Test_for_Content_Security_Policy
+
+Mon 30 2024
+OWASP Threat Modelling Skim
+
+
+Sat 4 Jan 2025
+Domain Name System
+
+
+This completes the book
+The Bug Bounty Bootcamp by Vickie Li
+I did skip a few chapters for later though
+Chapter 23 - Hacking Android Applications. 
+Reason: I currently do not have any interest 
+in hacking mobile Applications. I will learn
+later if I have the interest or if I need the 
+knowledge to some en. 
+Chapter 23 - API Hacking 
+While I am interesting in API hacking, this is 
+not the right time for me. I want to take 
+everything I have learnt so far to so try 
+popping some bugs and having a deeper understanding 
+of all the vuln classes I have learnt and when I 
+want to add more I get into hacking API.
+I definitely do have interest in API hacking unlike
+Mobile Applications hacking, I have Corry J Ball's book 
+HAcking APIs for that reason. When I am ready to add 
+more knowledge, I will study Vickie Li's chapter as a 
+primer. I have realized that some vulns classes she
+covered are usually an introduction not a thorough 
+cover. Vuln classes like Single Sign On.

@@ -1,0 +1,19 @@
+<samlp:AuthnRequest
+    xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
+    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+    ID="ONELOGIN_1a4a0dfea3d32becf1262973f4506c9468f27547"
+    Version="2.0"
+    ProviderName="SP"
+    IssueInstant="2024-12-12T14:44:35Z"
+    Destination="http://localhost/simplesamlphp/saml2/idp/SSOService.php"
+    ProtocolBinding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+    AssertionConsumerServiceURL="http://localhost:8000/?acs"
+>
+    <saml:Issuer>http://localhost:8000/metadata/</saml:Issuer>
+    <samlp:NameIDPolicy
+        Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"
+        AllowCreate="true" />
+    <samlp:RequestedAuthnContext Comparison="exact">
+        <saml:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport</saml:AuthnContextClassRef>
+    </samlp:RequestedAuthnContext>
+</samlp:AuthnRequest>

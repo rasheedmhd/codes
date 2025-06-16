@@ -1,0 +1,22 @@
+Golden SAML
+2017
+https://www.cyberark.com/resources/threat-research-blog/golden-saml-newly-discovered-attack-technique-forges-authentication-to-cloud-apps
+
+2018
+https://www.cyberark.com/resources/threat-research-blog/golden-saml-revisited-the-solorigate-connection
+
+https://duo.com/blog/duo-finds-saml-vulnerabilities-affecting-multiple-implementations
+
+https://hackerone.com/reports/812064
+
+Already downloaded
+book/security
+https://docs.oasis-open.org/security/saml/v2.0/saml-profiles-2.0-os.pdf
+Secure SAML validation to prevent XML signature wrapping attacks - https://arxiv.org/pdf/1401.7483v1
+
+https://www.w3.org/TR/xmldsig-core1/
+
+
+
+misc
+https://www.cyberark.com/resources/threat-research-blog/the-hackers-guide-to-the-cosmos-sdk-stealing-millions-from-the-blockchain

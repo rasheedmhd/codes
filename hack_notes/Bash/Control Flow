@@ -1,0 +1,41 @@
+File Test Operators
+Operator Description
+-d Checks whether the file is a directory
+-r Checks whether the file is readable
+-x Checks whether the file is executable
+-w Checks whether the file is writable
+-f Checks whether the file is a regular file
+-s Checks whether the file size is greater than zero
+
+Full list https://ss64.com/bash/test.html | man test 
+
+String Comparison Operators
+Operator    Description
+=           Checks whether a string is equal to another string
+==          Synonym of = when used within [[ ]] constructs
+!=          Checks whether a string is not equal to another string
+<           Checks whether a string comes before another string (in alphabetical order)
+>           Checks whether a string comes after another string (in alphabetical order)
+-z          Checks whether a string is null
+-n          Checks whether a string is not null
+
+Integer Comparison Operators
+Operator    Description
+-eq         Checks whether a number is equal to another number
+-ne         Checks whether a number is not equal to another number
+-ge         Checks whether a number is greater than or equal to another number
+-gt         Checks whether a number is greater than another number
+-lt         Checks whether a number is less than another number
+-le         Checks whether a number is less than or equal to another number
+
+if Conditions
+if [[ condition ]]; then
+    # Do something if the condition is met.
+    else
+    # Do something if the condition is not met.
+fi
+
+In some operating systems, such as those often used in containers, the default shell
+might not necessarily be bash. To account for these cases, you may want to use single
+square brackets ([...]) rather than double to enclose your condition. This use of single brackets meets the Portable Operating System Interface standard and should work
+on almost any Unix derivative, including Linux.
