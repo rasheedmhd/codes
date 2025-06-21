@@ -7,14 +7,14 @@ this is broken into 2 parts
 
 3. Exploit the vulnerabilities
 
-1. Acquire a foundational understanding of theoretical concepts. This doesn’t involve becoming an
+1. Acquire a foundational understanding of theoretical concepts. This doesn't involve becoming an
 expert but providing context and aiding navigation in specific situations. 
 This foundational understanding can be bifurcated into two parts 
 – understanding the technology itself 
 - knowing about potential vulnerabilities and attacks that might be employed.
 
 2. Dive into hands-on practice. This involves exploring our needs through trial and error, observing
-an application’s responses to our requests, and modifying the application to understand its
+an application's responses to our requests, and modifying the application to understand its
 workings better. 
 [Important] In this process, we loop back to theoretical concepts as and when required.
 This iterative approach allows for both practical and theoretical growth.
@@ -28,7 +28,7 @@ Understand the technology that underpins the application
 
 Threat Modeling 
 Prepare potential avenues of attack
-To determine the attack surface, we need to understand the application’s architecture
+To determine the attack surface, we need to understand the application's architecture
 context and related risks.
 Based on the context of what we discover we reach into our bag of bug classes to see
 which vulnerability might be applicable and test for it.
@@ -46,10 +46,10 @@ Post Exploitation
 
 The mindset
 In this activity, attitude is critical. To borrow from the Socratic paradox, we should begin with the
-premise that we neither know nor think we know anything. We can’t afford to take anything for
+premise that we neither know nor think we know anything. We can't afford to take anything for
 granted. 
 For example, if a WAF filters our attacks, we should not assume that the attack is impossible.
-Similarly, a fully patched application doesn’t preclude the existence of new vulnerabilities. 
+Similarly, a fully patched application doesn't preclude the existence of new vulnerabilities. 
 We need to learn how. And we can do it through trial and error, insight, or top-down and bottom-up approaches,
 as in all learning processes. 
 We need to ask ourselves the right questions, and we need to seek answers through empirical evidence. 
@@ -57,11 +57,11 @@ Naturally, all of this requires time and dedication.
 
 The right mindset 
 We must never take anything for granted, learn fast, and not stop when confronted with things
-we don’t know but strive and move forward.
+we don't know but strive and move forward.
 
 Creativity
 Our first principle, creativity, requires us to think outside the box.
-Let’s consider exploiting a web application – we aim to make the application perform functions not
+Let's consider exploiting a web application – we aim to make the application perform functions not
 intended by its developers. For example, we might manipulate a feature meant for photo album uploads
 to execute server commands – all through a chain of vulnerabilities linked to a PHP deserialization
 attack triggered by a simple cookie.
@@ -81,16 +81,24 @@ reading the source code when available, or decompiling it.
 
 Commitment
 Our third principle, commitment, reminds us to “play hard”.
-We must dedicate time to reading, studying, and practicing to satisfy our curiosity. Learning goes
-beyond just absorbing information; it also entails applying our knowledge, testing it, and refining it
-until we fully understand every aspect.
-It’s a time-consuming process, and our intrinsic passion fuels our dedication. Our commitment entails
-knowing our craft well and persevering when faced with a notably secure system. Sometimes, the
-solution is just around the corner. Even years after the first SQL injection was uncovered, we can still
-discover low-hanging fruits – vulnerabilities relatively easy to find and exploit, even with automated tools.
-However, that’s only sometimes the case. We may need to explore many avenues, make numerous
-attempts, conduct extensive research to identify a vulnerability, and then exert even more effort to
-exploit it. We’ve often discovered previously unknown vulnerabilities after weeks of analysis, with
+We must dedicate time to reading, studying, and practicing to satisfy our curiosity. 
+Learning goes beyond just absorbing information; 
+it also entails applying our knowledge, testing it, and refining it until we fully understand every aspect.
+
+It's a time-consuming process, and our intrinsic passion fuels our dedication. 
+Our commitment entails knowing our craft well and persevering when faced with a notably secure system. Sometimes, the solution is just around the corner. 
+Even years after the first SQL injection was uncovered, we can still discover low-hanging fruits.
+
+However, that's only sometimes the case. We may need to explore many avenues, make numerous attempts, 
+conduct extensive research to identify a vulnerability, and then exert even more effort to exploit it. 
+
+We've often discovered previously unknown vulnerabilities after weeks of analysis, with
 successful exploitation taking months. We must continue searching for new vulnerabilities within
 complex environments; our efforts will inevitably be rewarded.
+
+The method : On Static Analysis
+Our approach is methodical. Suppose we have access to the source code and documentation for
+an application. We begin by downloading all the available materials, thoroughly reviewing the
+documentation, and setting up the necessary environment in our lab. 
+Once these preliminary steps are complete, we focus on an in-depth study of our target.
 

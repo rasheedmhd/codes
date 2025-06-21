@@ -4,10 +4,6 @@ NOTES ON RECONNAISSANCE
 3. Uncover the tech and infrastructure of the application
 4. Google dork for info to advance your hacking, eg: searching for payloads
 
-Vuln Search:	https://www.cvedetails.com/documentation/
-
-Wordpress https://www.sitename.org/wp-json/wp/v2/users
-
 SCOPE DISCOVERY
 1. Whois and Reverse Whois
 2. Nslookup
@@ -30,6 +26,7 @@ SCOPE DISCOVERY
 ignore all other possibilities and focus entirely on your end goal. 
 You only stop and begin testing if you find something that leads to your goal. 
 3 OWASP 
+
 ================== zseano from zseano's methodology
 To date, I’ve had the most success after exploring a target, 
 understanding the functionality it provides, and mapping that functionality to
@@ -61,31 +58,97 @@ TruffleHog (https://github.com/trufflesecurity/truffleHog/)
 - Wapplyzer . Builtwith . Stackshare . Retire.js . Whatruns . Whatweb
 
 
+
+Vuln Search:	https://www.cvedetails.com/documentation/
+Wordpress https://www.sitename.org/wp-json/wp/v2/users
+
+======================================================================================================================================================
+Web Security Testing Guide 
+======================================================================================================================================================
 OWASP WSTG - 4.1.X
 1 Conduct Search Engine Discovery Reconnaissance for Information Leakage
 - Google dorking
 - Use different search engines bc they index differently
 - Get robots.txt file
+
 2. Fingerprinting web servers
 - Banner grab ( curl -I domain)
 - Server response adds the server name and version
 - If server obscures name and version, study response header ordering
 Send Malformed Requests
+- Send Non Existent HTTP Method to server
 - Study default server error response msgs
 - Tools: Netcraft . Nikto . Nmap
 
 3. Review Webserver Metafiles for Information Leakage
 Identify hidden + obfuscated paths and functionality through metadata files analysis.
 Extract and map other information that could lead to a better understanding of the system
-- META tags . Robots.txt . Sitemaps . Security.txt . humans.txt
-curl -O -Ss https://www.google.com/robots.txt && head -n5 robots.txt
+- Review META tags . Robots.txt . Sitemaps . Security.txt . humans.txt
+wget --no-verbose https://www.google.com/sitemap.xml && head -n8 sitemap.xml
+curl -O -Ss https://www.moonpay.com/robots.txt && head -n5 robots.txt
+Security TXT
+https://example.com/security.txt
+https://example.com/.well-known/security.txt
+wget --no-verbose https://www.linkedin.com/.well-known/security.txt && cat security.txt
+Humans TXT 
+wget --no-verbose  https://www.google.com/humans.txt && cat humans.txt
 
 4. Enumerate Applications on Webserver
 Enumerate the applications within the scope that exist on the web server.
-Different Base URLs: Site: operator
-Non Standard ports:   Web apps can be hosted on different ports != 443/80
+This is to discover targets to test, remember that sometimes the org might
+not even be aware of these targets hiding under an IP Address
+There are three factors influencing how many applications are related to a given DNS name (or an IP address):
+Different Base URLs: 
+For example, the same symbolic name may be associated to three web applications such as: 
+https://www.example.com/app1  |  https://www.example.com/app2  |  https://www.example.com/app3
+Non Standard ports:   
+Web apps can be hosted on different ports != 443/80
 nmap -sV > nmap –Pn –sT –sV –p0-65535
-Virtual Hosts: DNS allows a single IP address to be associated with one or more symbolic names.
+Virtual Hosts: 
+DNS allows a single IP address to be associated with one or more symbolic names.
+Using site: operator to find other apps under 1 IP 
+This leverages cached, indexed, other pages linked to those apps 
+DNS + directory enumeration and brute forcing and running a ip address 
+look up on the returned hits 
+nmap all port service scan results
+Another unspecified service on port 8000; this might possibly be HTTP,
+since it is not uncommon to find HTTP servers on this port. Let’s examine this issue:
+$ telnet 192.168.10.100 8000
+or curl or visit url 
+The same task may be performed by vulnerability scanners that can identify HTTP[S] services running on non-standard ports. 
+Eg Nessus is capable of identifying them on arbitrary ports (provided it is instructed to scan all the ports), 
+and will provide, with respect to Nmap, a number of tests on known web server vulnerabilities, 
+as well as on the TLS/SSL configuration of HTTPS services. As hinted before, 
+Nessus is also able to spot popular applications or web interfaces which could otherwise go unnoticed
+(for example, a Tomcat administrative interface).
+
+Approaches to Address Issue 3 - Virtual Hosts
+There are a number of techniques which may be used to identify DNS names associated to a given IP address x.y.z.t.
+
+DNS Zone Transfers
+host -t ns www.owasp.org
+returns nameservers 
+host -l www.owasp.org <nameserver>
+
+DNS Inverse Queries
+dig -x 93.184.216.34 +short
+host 93.184.216.34
+nslookup 93.184.216.34
+
+Web Based DNS Searches 
+https://searchdns.netcraft.com/
+
+Reverse IP Services
+MxToolbox Reverse IP  https://mxtoolbox.com/ReverseLookup.aspx
+DNSstuff https://www.dnsstuff.com/scan-network-for-device-ip-address
+Net Square 
+
+openssl s_client -connect 100.64.100.1:443 </dev/null 2>/dev/null \
+  | openssl x509 -noout -text \
+  | grep -E 'Subject:|DNS:'
+
+
+
 
 5. Review Web Page Content for Information Leakage
 Review Web Page Comments and Metadata

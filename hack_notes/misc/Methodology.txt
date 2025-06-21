@@ -21,7 +21,7 @@ Exploitation:
 To exploit, we need to be creative.
 We can search the internet for the various known bypasses
 and randomly throw them at the server, or we can be more surgical
-and study the responsese we get from our attacks efforts
+and study the responses we get from our attacks efforts
 It’s just like a cat-and-mouse game.
 NOTES:
 You need a set of skills, the basics helps right away and the others learn as you encounter
@@ -30,7 +30,7 @@ pushes you to dig deeper when necessary, and spurs you to use your creativity to
 
 
 Web Application Attack Surface
-- Firewell/Proxy/Load Balancer/Web Application Firewell
+- Firewall/Proxy/Load Balancer/Web Application Firewall
 - Web Servers and Web Application servers
 - Proprietary or third-party application code
 - Databases
