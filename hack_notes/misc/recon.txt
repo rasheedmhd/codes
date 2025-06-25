@@ -147,13 +147,13 @@ openssl s_client -connect 100.64.100.1:443 </dev/null 2>/dev/null \
   | openssl x509 -noout -text \
   | grep -E 'Subject:|DNS:'
 
-
-
-
 5. Review Web Page Content for Information Leakage
 Review Web Page Comments and Metadata
-Identifying JavaScript Code and Gathering JavaScript Files
+Identifying JavaScript Code and Gather JavaScript Files
 Identifying Source Map Files
+Source map files will usually be loaded when DevTools open. 
+You might find source map files by adding the “.map” after the ext of external JavaScript files.
+Eg: in /static/js/main.chunk.js file, visit /static/js/main.chunk.js.map.
 Identify Redirect Responses which Leak Information
 
 6. Identify Application Entry Points
@@ -161,19 +161,18 @@ Identify possible entry and injection points through request and response analys
 Pay attention to all HTTP requests as well as every parameter and form field
 that is passed to the application.
 Make special note of any hidden form fields that are being passed to the application.
-Use Attack Surface Detector to uncover end points and parameters that they receive.
+Use Attack Surface Detector to uncover end points and parameters that they receive. 
 
 7. Map Execution Paths Through Application
 ZAP spidering
-ZAP offers various automatic spidering options,
-which can be leveraged based on the tester’s needs:
+ZAP offers various automatic spidering options, which can be leveraged based on the tester’s needs:
 Spider . Ajax Spider . Check for OpenAPI Support
 
 8. Fingerprint Web Application Framework
 Several locations exists to consider to identify frameworks or components:
-HTTP headers . X-Powered-By . X-Generator . Cookies
-HTML source code    .    Specific files and folders
-File extensions     .    Error messages
+HTTP headers . X-Powered-By . X-Generator . Framework Specific Cookies
+HTML source code                  .    Specific files and folders eg /wp-admin/ robots.txt
+File extensions .asp .jsp .php    .    Error messages
 
 9. Map Application Architecture
 Web Framework  .  Web Server  .  Database
@@ -291,8 +290,6 @@ TESTING SUB-DOMAIN TAKE OVER
 Enumerate all possible domains (previous and current).
 Identify any forgotten or misconfigured domains.
 
-https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/10-Test_for_Subdomain_Takeover [Re Read and follow links to learn deeper ]
-
 TESTING FOR CLOUD STORAGE
 First, identify the URL to access the data in the storage service, and then consider the following tests:
 read unauthorized data
@@ -333,9 +330,6 @@ Consider whether allow listed sources provide JSONP endpoints which might be use
 Framing can be enabled for all origins by the use of the wildcard (*) source for the frame-ancestors directive. If the frame-ancestors directive is not defined in the Content-Security-Policy header it may make applications vulnerable to clickjacking attacks.
 Business critical applications should require to use a strict policy.
 
-https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/12-Test_for_Content_Security_Policy [ Dive Deeper ]
-
-
 Test Path Confusion
 Black-Box Testing
 Replace all the existing paths with paths that do not exist,
@@ -344,5 +338,3 @@ For Web Cache Deception vulnerabilities, consider a path such as
 https:// example.com/user/dashboard/non.js
 White-Box Testing
 Examine the application routing configuration, Most of the time, developers use regular expressions in application routing.
-
-https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/13-Test_for_Path_Confusion [ Learn about Web Cache Poisoning in Reference Links]
