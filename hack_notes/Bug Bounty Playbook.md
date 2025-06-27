@@ -10,6 +10,9 @@ https://medium.com/@sahul1996l/how-i-discovered-an-rce-vulnerability-in-tesla-se
 Meth 1 Other V
 Focus on 1-days (where? add links)
 Look for exploits and CVEs (fresh)
+Search elasticsearch for software and the port they are running on
+Elasticsearch shows the CVEs that the software is vulnerable to
+Eg: port:"9200" elastic
 Try to attack target before they patch (Nagli and log4j)
 Identifying the target technology stack (finger printing)
 will help you find the exploits impacting that stack
@@ -55,3 +58,47 @@ Hacking Joomla
 Adobe AEM
 ● https://github.com/0ang3el/aem-hacker
 ● python aem_hacker.py -u <URL Here> --host <Your Public IP>
+
+Github Pillaging
+Using Githu code search (Github dorking)
+https://docs.github.com/en/search-github/github-code-search/understanding-github-code-search-syntax
+Refer to my notes on trufflehog
+
+Subdomain takeover [Refer to my notes]
+
+Firebase Realtime DB
+vuln-domain.firebaseio.com/.json
+
+Elasticsearch
+List all indices
+http://vuln-domain.com:9200/_cat/indices
+
+More details
+/_stats/?pretty=1
+/_cluster/health
+/_all/_search?q=*
+ElasticSearch is unauthenticated by default
+Elastic search has an http server running on port 9200 that can be used to query the
+database.
+Another useful technique is to list all of the field names by making a GET request to the
+“/INDEX_NAME_HERE/_mapping?pretty=1
+“/_all/_search?q=_exists:email&pretty=1”
+
+MongoDB
+port 27017
+Use Mongo cli
+mongo ip-address-here
+
+CouchDB Port:5985,6984
+CassandraDB Port:9042,9160
+
+Bruteforcing with seclists and other wordlists
+RDP     Port:3389
+Telnet  Port:23
+SSH     Port:22
+FTP     Port:21
+https://github.com/danielmiessler/SecLists/tree/master/Passwords/Default-Credentials
+seclists/Passwords/Leaked-Databases/
+seclist/password/Default-Credentials/default-passwords.csv
+
+Use THC Hydra or Burp Intruder
