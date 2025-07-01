@@ -57,6 +57,9 @@ TruffleHog (https://github.com/trufflesecurity/truffleHog/)
 - View HTML source code
 - Wapplyzer . Builtwith . Stackshare . Retire.js . Whatruns . Whatweb
 
+DNS discorvry with Gobuster
+gobuster dns -d moonpay.com -c -i --wildcard --no-color -o gobuster_dns_enum -v -w /Users/Starlet/Dev/Sec/kiterunner/wordlist/best-dns-wordlist.txt 
+
 
 
 Vuln Search:	https://www.cvedetails.com/documentation/
