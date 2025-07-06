@@ -1,34 +1,154 @@
-https://portswigger.net/web-security/host-header/exploiting
+Practical Host Header Injection Attacks 
 
-Inject host override headers
+First Report https://carlos.bueno.org/2008/06/host-header-injection.html
 
-X-Host
-X-Forwarded-Server
-X-HTTP-Host-Override
-Forwarded
+This arises when web applications accept HTTP Host Headers, trust it and use as 
+part of the application logic. 
 
-Although X-Forwarded-Host is the de facto standard for this behavior, 
-you may come across other headers that serve a similar purpose, including: 
-Example 
-GET /example HTTP/1.1
-Host: vulnerable-website.com
-X-Forwarded-Host: bad-stuff-here
+Example Usage Includes:
+1. Appending it in the HTML
+2. Appending static fils sub routes to it to retrieve content
+3. Appending secret tokens to it for password resets
+
+There are two main ways to exploit this trust in regular web applications. 
+1. Web-cache poisoning, where we manipulate caching systems into storing 
+a page generated with a malicious Host and serving it to others. 
+2. Abuse alternative channels like password reset emails where the poisoned content 
+is delivered directly to the target.
+3. Exploiting classic server-side vulnerabilities
+4. Bypassing authentication 
+5. Virtual host brute-forcing
+6. Routing-based SSRF 
+7. Connection state attacks 
 
 Exploitation
 Password Reset Poisoning
 Web Cache Deception 
 
+https://portswigger.net/web-security/host-header/exploiting
+
+Problem 
+All modern standalone caches are Host-aware; 
+they will never assume that the following two requests reference the same resource:
+
+> GET /index.html HTTP/1.1       > GET /index.html HTTP/1.1
+> Host: example.com              > Host: evil.com
+
+To persuade a cache to serve our poisoned response to someone else we need to create a disconnect between 
+the Host Header the cache sees, and the Host Header the application sees.
+
+Research on How the most Popular cache servers handle Host Header injection
+So we can by pass effectively. Varnish, Cloudflare, Nginx, Apache, IIS, Vercel
+
+[ Handling Duplicate Host Headers ]
+Varnish:
+Duplicate Host Headers. Varnish will use the first HH it sees.
+Apache:
+Will concatenate all Host Headers present
+Nginx: 
+Will use the last Host Header
+
+Poisoning Varnish
+> GET / HTTP/1.1
+> Host: example.com
+> Host: evil.com
+
+Application-level caches can also be susceptible. Joomla writes the Host header to every page 
+without HTML-encoding it, and its cache is entirely oblivious to the Host header. 
+Gaining persistent XSS on the homepage of a Joomla installation was as easy as:
+curl -H "Host: cow\"onerror='alert(1)'rel='stylesheet'" http://example.com/ | fgrep cow\"
+
+Research on how other CMS' handle Host Headers (Injection)
+
+Problem 2: Of course Host Headers should have some validation. 
+The Host header's purpose is to ensure that a request is passed to the correct application 
+at a given IP address, therefore there is going to be some validation to ensure that the
+attackers cannot inject arbitrary Host Headers willy-nilly. 
+Attaaaaaaaaackers Assemble! What do we do?
+
+[Again, investigate how other servers (dedicated and application) handle Host Headers (Injection)]
+
+Apache:
+Sometimes it is trivial. If Apache receives an unrecognized Host header, 
+it passes it to the first virtual host defined in httpd.conf. 
+As such, it's possible to pass requests with arbitrary host headers 
+directly to a sizable number of applications.
+
+Although X-Forwarded-Host is the de facto standard for this behavior, 
+you may come across other headers that serve a similar purpose, including: 
+Example 
+> GET /example HTTP/1.1
+> Host: vulnerable-website.com
+> X-Forwarded-Host: bad-stuff-here
+
+Overriding the Host header with user defined custom HTTP Headers
+Examples:
+> X-Forwarded-Host
+> X-Forwarded-Port see https://hackerone.com/reports/409370
+> X-Host
+> X-Forwarded-Server
+> X-Forwarded-SSL
+> Transfer-Encoding albinowax used zTRANSFER-ENCODING on bitbucket.
+> X-HTTP-Host-Override
+> Forwarded
+> Accept_Encoding: br
+Gareth Used this on IG
+When Accept-Encoding is in the Cache Key
+
+// Write ParamMiner,
+Testing Basic Web Cache Poisoning DoS
+Write a script that takes a list of domain names,
+For each domain name test a couple of request with
+the potential to cause cache poisoning and save the 
+response headers and the first 10 lines of the body
+if it exist. For each domain, create a .txt file and 
+save its response. 
+
+Get one of those offline LLMs, 
+
+Real Exploit in 2011
+> POST /en-US/firefox/user/pwreset HTTP/1.1> Host: addons.mozilla.org
+> X-Forwarded-Host: evil.com
+
+Injecting Host Headers as Port Numbers
+Webservers allow a port to be specified in the Host header, but ignore it for the purpose 
+of deciding which virtual host to pass the request to. 
+This is simple to exploit using the ever-useful http://username:password@domain.com syntax:
+> POST /en-US/firefox/user/pwreset HTTP/1.1> 
+> Host: addons.mozilla.org:@passwordreset.net
+
+
+Injecting Host Headers using Absolute URLS (rfc2616) http://www.ietf.org/rfc/rfc2616.txt
+5.2 The Resource Identified by a Request
+[...]
+If Request-URI is an absoluteURI, the host is part of the Request-URI. 
+Any Host header field value in the request MUST be ignored.
+The result? On Apache and Nginx  (and all compliant servers) 
+It's possible to route requests with arbitrary host headers to any application p
+resent by using an absolute URI:
+> POST https://addons.mozilla.org/en-US/firefox/users/pwreset HTTP/1.1
+> Host: evil.com
+In PHP, a SERVER_NAME of addons.mozilla.org but a HTTP['HOST'] of evil.com. 
+Applications that use SERVER_NAME rather than HTTP['HOST'] are unaffected by 
+this particular trick, but can still be exploited on common server configurations.
+Investigate how other Web frameworks/lang/lib handle this technique.
+PHP https://stackoverflow.com/questions/2297403/what-is-the-difference-between-http-host-and-server-name-in-php/2297421#2297421
+
+Securing Servers [ Research and add Links here ]
+Create a dummy vhost that catches all requests with unrecognized Host headers
+https://httpd.apache.org/docs/trunk/vhosts/examples.html#defaultallports
+
 Exploiting classic server-side vulnerabilities
 
 Every HTTP header is a potential vector for exploiting classic server-side vulnerabilities, 
-and the Host header is no exception. For example, you should try the usual SQL injection probing techniques via the Host header. 
+and the Host Header is no exception. For example, you should try the usual SQL injection probing techniques via the Host Header. 
 If the value of the header is passed into a SQL statement, this could be exploitable. 
 
 Accessing restricted functionality
 
 For fairly obvious reasons, it is common for websites to restrict access to certain functionality to internal users only. 
 However, some websites' access control features make flawed assumptions that allow you to bypass these restrictions by 
-making simple modifications to the Host header. This can expose an increased attack surface for other exploits. 
+making simple modifications to the Host Header. This can expose an increased attack surface for other exploits. 
 
 Accessing internal websites with virtual host brute-forcing
 1 Companies mistakenly host public and private, internal website on the same server
@@ -40,7 +160,7 @@ Routing-based SSRF
 see https://portswigger.net/research/cracking-the-lens-targeting-https-hidden-attack-surface
 Routing-based SSRF, on the other hand, relies on exploiting the intermediary components that are
 prevalent in many cloud-based architectures. This includes in-house load balancers and reverse proxies. 
-If they are insecurely configured to forward requests based on an unvalidated Host header, 
+If they are insecurely configured to forward requests based on an unvalidated Host Header, 
 they can be manipulated into misrouting requests to an arbitrary system of the attacker's choice. 
 
 o do this, you'll need to identify private IP addresses that are in use on the target's internal network. 
@@ -49,8 +169,33 @@ to the company to see if any resolve to a private IP address. If all else fails,
 valid IP addresses by simply brute-forcing standard private IP ranges, such as 192.168.0.0/16
 
 Connection State Attacks
- you may occasionally encounter servers that only perform thorough validation on the first request they receive over a new connection. 
- In this case, you can potentially bypass this validation by sending an innocent-looking 
- initial request then following up with your malicious one down the same connection. 
+you may occasionally encounter servers that only perform thorough validation on the first request they receive over a new connection. 
+In this case, you can potentially bypass this validation by sending an innocent-looking 
+initial request then following up with your malicious one down the same connection. 
 
- SSRF via a malformed request line
+SSRF via a malformed request line
+
+Further Research 
+In other cases, the Host may be URL-decoded and placed directly into the email header allowing mail header injection. 
+Using this, attackers can easily hijack accounts by BCCing password reset emails to themselves - 
+Mozilla Persona had an issue somewhat like this, back in alpha. 
+Even if the application's mailer ignores attempts to BCC other email addresses directly, 
+it's often possible to bounce the email to another address by injecting 
+\r\nReturn-To: attacker@evil.com followed by an attachment engineered to trigger a bounce, like a zip bomb.
+
+Mail Header Injection
+https://bugzilla.mozilla.org/show_bug.cgi?id=741814 Mozilla Bug Report
+https://www.invicti.com/learn/email-injection/
+https://portswigger.net/kb/issues/00200800_smtp-header-injection
+https://www.wikiwand.com/en/articles/Email_injection
+https://support.voyager.nz/knowledgebase/article/KA-01052/en-us
+https://beaglesecurity.com/blog/vulnerability/email-header-injection.html
+https://samcurry.net/how-i-stole-the-identity-of-every-yahoo-user
+https://www.acunetix.com/blog/articles/email-header-injection/
+https://dl.acm.org/doi/10.1145/3167132.3167308
+https://www.researchgate.net/publication/315327239_E-mail_Header_Injection_Vulnerabilities
+https://www.codecademy.com/learn/2021-owasp-top-10-injection- \
+attacks/modules/dont-mean-to-inject-but-here-comes-email-header-injection-attacks/cheatsheet
+https://www.google.com/search?q=Mail+Header+Injection&rlz= \
+1C5CHFA_enGH1090GH1090&oq=Mail+Header+Injection&gs_lcrp= \ 
+EgZjaHJvbWUyBggAEEUYOdIBBzE4NWowajeoAgCwAgA&sourceid=chrome&ie=UTF-8
