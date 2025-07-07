@@ -84,27 +84,11 @@ Example
 Overriding the Host header with user defined custom HTTP Headers
 Examples:
 > X-Forwarded-Host
-> X-Forwarded-Port see https://hackerone.com/reports/409370
 > X-Host
 > X-Forwarded-Server
-> X-Forwarded-SSL
-> Transfer-Encoding albinowax used zTRANSFER-ENCODING on bitbucket.
 > X-HTTP-Host-Override
 > Forwarded
-> Accept_Encoding: br
-Gareth Used this on IG
-When Accept-Encoding is in the Cache Key
 
-// Write ParamMiner,
-Testing Basic Web Cache Poisoning DoS
-Write a script that takes a list of domain names,
-For each domain name test a couple of request with
-the potential to cause cache poisoning and save the 
-response headers and the first 10 lines of the body
-if it exist. For each domain, create a .txt file and 
-save its response. 
-
-Get one of those offline LLMs, 
 
 Real Exploit in 2011
 > POST /en-US/firefox/user/pwreset HTTP/1.1> Host: addons.mozilla.org
