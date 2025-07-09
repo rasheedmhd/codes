@@ -166,3 +166,12 @@ On Resp
 > HTTP/1.1 200 OK
 Bc CF won't cache Cache-­Control: private resp, when you get this,
 you can try other pages on the site that is cacheable.
+
+
+Web Cache Entanglement
+Prerequisites
+Cache Oracle: Cacheable page of the target
+Confirmation: The ability to clearly identify if a cache happened.
+Ideal: If the Cache O returns the entire URL or at least 1 q qarameters 
+Asking Nicely:
+> Pragma: akamai-x-get-cache-key, akamai-x-get-true-cache-ke
