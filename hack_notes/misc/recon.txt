@@ -35,6 +35,8 @@ vulnerability types for testing. But areas that I continue to explore, and encou
 you to look into as well, are automation and documenting your methodology.
 ==================
 
+trufflehog github --org=Pinterest --no-verification --results=verified --concurrency=20
+trufflehog github --org=Pinterest --results=verified --concurrency=20
 
 WORD LISTS
 https://github.com/danielmiessler/SecLists/
