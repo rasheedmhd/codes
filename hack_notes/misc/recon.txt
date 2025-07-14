@@ -22,8 +22,9 @@ SCOPE DISCOVERY
 + Map the functionalities of the app 
 = 1 Look for markers of vulnerabilities |  2 Define a specific goal for testing | 3 Follow a checklist.
 1 Look for behaviors commonly assoc with vulns -> found something interesting -> test application
-2 Define the vuln you want to pop and start testing for it. Jobert Abma, Philippe Harewood advocates this 
-ignore all other possibilities and focus entirely on your end goal. 
+2 Define the vuln you want to pop and start testing for it. Jobert Abma, 
+Philippe Harewood, Douglas Day -> https://douglas.day/2025/02/10/hacklikeapirate.html
+advocates this. Ignore all other possibilities and focus entirely on your end goal. 
 You only stop and begin testing if you find something that leads to your goal. 
 3 OWASP 
 

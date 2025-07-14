@@ -18,7 +18,7 @@ cache poisoning, - modify app caches to arbitrary pages and
 return ilegit pages when the right pages are requested 
 firewall by pass/evasion, 
 request hijacking - stealing httponly cookies and HTTP
-authentication information with no interaction between 
+authentication information witbh no interaction between 
 the attacker and client. 
 
 HTTP response splitting

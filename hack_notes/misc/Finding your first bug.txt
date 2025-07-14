@@ -26,12 +26,13 @@ Top Ten Vulnerabilities for OWASP 2024
 8. Software and Data Integrity Failures
 9. Security Logging and Monitoring Failures
 10. Server-Side Request Forgery (SSRF)
+
 What’s Next for OWASP 2025?
 - I found something interesting 
 I took a sneak peak at some vulns reported at most of the programs that I might have interest in and realized that a good amount of reports fall under low or medium severity, I don't know why I think low/medium is easy but yeah that is what I thought, You would think that with all these expert hackers hacking on this platform, they would uncover mostly critical vulns but the data says different.
 My hypothesis is that these platforms pay much attention to critical vulns so much of those are secured and the low/medium as left but that doesnt' make a lot of sense because the low and medium vulns should be easy to catch by their expert security engineers. 
 
-What this means for beginners is that, we can focus on the ubiquitios vulns learn them and be confident that we can find some bugs with what we know rather than being concerned that we are leaving bugs out because we don't know all the vulns types. Once you get good with what you know that even serves as a reinforcement of the strategy, we should give it name? "Kindness of the commons?"
+What this means for beginners is that, we can focus on the ubiquitious vulns learn them and be confident that we can find some bugs with what we know rather than being concerned that we are leaving bugs out because we don't know all the vulns types. Once you get good with what you know that even serves as a reinforcement of the strategy, we should give it name? "Kindness of the commons?"
 
 But based on the data from the reported vulns, some of the OWASP Top 10 vulns can be found there, so based on the OWASP Top 10 vulns and the classes of the majority of vulns reported we can make an informed decision on which vulns to learn first. 
 

@@ -2,25 +2,16 @@ XML External Entities
 - targets application XML parsers
 - difficult to understand and exploit
 - can lead to SSRF and DoS
-- Understand XML (allows arbitrary tag names)
-used for passing data btn entities 
-- used for 
-file uploads, authentication 
-cross application communication etc
-
-- contains DTD (document type definitions)
-used to define the XML document structure
+- XML allows arbitrary tag names, used for passing data btn entities 
+- used for file uploads, authentication cross application communication etc
+- contains DTD (document type definitions) used to define the XML document structure
 declared in the document or loaded externally
 
-Unlike HTML that has predefined tag names, XML
-doesn't have that all tag names are define
-arbitrarily by the author. 
-So there is the need for a meta data part of
-the XML File that tells the parser the signature
-of tags accepted. The DTD has a feature
-called External Entities where the parser
-is instructed to load XML/data from external sources
-like a file system or a web page
+Since all tag names are defined
+arbitrarily by the author, there is the need for a meta data 
+part of the XML File that tells the parser the signature of tags accepted. 
+The DTD has a feature called External Entities where the parser
+is instructed to load XML/data from external sources like a file system or a web page
 
 Causes?
 Use of old/vulnerable XML parsers
@@ -30,21 +21,19 @@ declare their own external entities to achieve malicious results
 
 - XML documents can also use external entities to access either local or
 remote content with a URL.
+
+XXE Syntax:
 <!ENTITY file SYSTEM "http://example.com/index.html">
 - SYSTEM keyword precedes external entities
 <!ENTITY file SYSTEM "file:///example.txt">
 
 VULN
 If users can control the values of XML entities or external entities, they
-might be able to disclose internal files, port-scan internal machines,
-or launch DoS attacks.
+might be able to disclose internal files, port-scan internal machines, or launch DoS attacks.
 
-Exploit
-Application allows user to upload XML files
-Parses the file and displays back to user or 
-make request to external or internal Resources
-during parsing. 
-
+Exploit:
+Application allows user to upload XML files Parses the file and displays back to 
+user or make request to external or internal Resources during parsing. 
 Applications are vulnerable to XXEs when the application accepts
 user supplied XML input or parses user input into DTDs, which is then parsed
 by an XML parser, and that XML parser reads local system files or sends
@@ -58,9 +47,6 @@ Prevention
 - Validation through using allow list
 - Not using XML for formats like JSON
 
-https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.md
-
-
 Hunting for XXEs
 Step 1: Find XML Data Entry Points
 1. Locate areas of the application prone to XXE
@@ -70,10 +56,9 @@ previously mentioned tree-like structures, or by looking for
 the signature of an XML document: the string "<?xml".
 
 Step 2: Test for Classic XXE
-Once you’ve determined that the endpoints can be used to submit XML
-data, you can start to test for the presence of functionalities needed for
-XXE attacks. This usually involves sending a few trial-and-error XXE payloads 
-and observing the application’s response.
+Once you’ve determined that the endpoints can be used to submit XML data, you can start 
+to test for the presence of functionalities needed for XXE attacks. 
+This usually involves sending a few trial-and-error XXE payloads and observing the application’s response.
 
 Step 3: Test for Blind XXE
 Instead of reading files from the server’s response, 
@@ -104,8 +89,7 @@ try to use an alternative data exfiltration method.
 
 
 https://cwe.mitre.org/data/definitions/611.html
-https://www.youtube.com/watch?v=eHSNT8vWLfc
-https://cwe.mitre.org/data/definitions/611.html
+https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html
 
 
 

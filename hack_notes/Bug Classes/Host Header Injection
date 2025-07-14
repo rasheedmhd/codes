@@ -27,18 +27,18 @@ Web Cache Deception
 
 https://portswigger.net/web-security/host-header/exploiting
 
-Problem 
+# Problem 
 All modern standalone caches are Host-aware; 
 they will never assume that the following two requests reference the same resource:
 
 > GET /index.html HTTP/1.1       > GET /index.html HTTP/1.1
 > Host: example.com              > Host: evil.com
 
-To persuade a cache to serve our poisoned response to someone else we need to create a disconnect between 
-the Host Header the cache sees, and the Host Header the application sees.
+To persuade a cache to serve our poisoned response to someone else we need to create a 
+disconnect between the Host Header the cache sees, and the Host Header the application sees.
 
-Research on How the most Popular cache servers handle Host Header injection
-So we can by pass effectively. Varnish, Cloudflare, Nginx, Apache, IIS, Vercel
+## Research on How the most Popular cache servers handle Host Header injection
+## So we can by pass effectively. Varnish, Cloudflare, Nginx, Apache, IIS, Vercel
 
 [ Handling Duplicate Host Headers ]
 Varnish:
@@ -90,19 +90,29 @@ Examples:
 > Forwarded
 
 
-Real Exploit in 2011
+# Real Exploit in 2011
 > POST /en-US/firefox/user/pwreset HTTP/1.1> Host: addons.mozilla.org
 > X-Forwarded-Host: evil.com
 
-Injecting Host Headers as Port Numbers
+# Injecting Host Headers as Port Numbers
 Webservers allow a port to be specified in the Host header, but ignore it for the purpose 
 of deciding which virtual host to pass the request to. 
 This is simple to exploit using the ever-useful http://username:password@domain.com syntax:
 > POST /en-US/firefox/user/pwreset HTTP/1.1> 
 > Host: addons.mozilla.org:@passwordreset.net
 
+# Injecting Host Headers by bypassing broken regex logic
+Other sites will try to apply matching logic to allow for arbitrary subdomains. In this case, you may be able to bypass the validation entirely by registering an arbitrary domain name that ends with the same sequence of characters as a whitelisted one:
+> GET /example HTTP/1.1
+> Host: notvulnerable-website.com
 
-Injecting Host Headers using Absolute URLS (rfc2616) http://www.ietf.org/rfc/rfc2616.txt
+# Inject Duplicate Host Headers
+> GET /example HTTP/1.1
+> Host: vulnerable-website.com
+> Host: bad-stuff-here
+
+
+# Injecting Host Headers using Absolute URLS (rfc2616) http://www.ietf.org/rfc/rfc2616.txt
 5.2 The Resource Identified by a Request
 [...]
 If Request-URI is an absoluteURI, the host is part of the Request-URI. 
@@ -118,48 +128,48 @@ this particular trick, but can still be exploited on common server configuration
 Investigate how other Web frameworks/lang/lib handle this technique.
 PHP https://stackoverflow.com/questions/2297403/what-is-the-difference-between-http-host-and-server-name-in-php/2297421#2297421
 
-Securing Servers [ Research and add Links here ]
+# Securing Servers [ Research and add Links here ]
 Create a dummy vhost that catches all requests with unrecognized Host headers
 https://httpd.apache.org/docs/trunk/vhosts/examples.html#defaultallports
 
-Exploiting classic server-side vulnerabilities
-
+# Exploiting classic server-side vulnerabilities
 Every HTTP header is a potential vector for exploiting classic server-side vulnerabilities, 
-and the Host Header is no exception. For example, you should try the usual SQL injection probing techniques via the Host Header. 
+and the Host Header is no exception. 
+For example, you should try the usual SQL injection probing techniques via the Host Header. 
 If the value of the header is passed into a SQL statement, this could be exploitable. 
 
-Accessing restricted functionality
-
+# Accessing restricted functionality
 For fairly obvious reasons, it is common for websites to restrict access to certain functionality to internal users only. 
 However, some websites' access control features make flawed assumptions that allow you to bypass these restrictions by 
 making simple modifications to the Host Header. This can expose an increased attack surface for other exploits. 
 
-Accessing internal websites with virtual host brute-forcing
+# Accessing internal websites with virtual host brute-forcing
 1 Companies mistakenly host public and private, internal website on the same server
-2 an attacker can typically access any virtual host on any server that they have access to, provided they can guess the hostnames.
-www.example.com: 12.34.56.78
-intranet.example.com: 10.0.0.132
+2 An attacker can typically access any virtual host on any server that they have access to, 
+provided they can guess the hostnames.
+> www.example.com: 12.34.56.78
+> intranet.example.com: 10.0.0.132
 
-Routing-based SSRF
+# Routing-based SSRF
 see https://portswigger.net/research/cracking-the-lens-targeting-https-hidden-attack-surface
-Routing-based SSRF, on the other hand, relies on exploiting the intermediary components that are
+Routing-based SSRF relies on exploiting the intermediary components that are
 prevalent in many cloud-based architectures. This includes in-house load balancers and reverse proxies. 
 If they are insecurely configured to forward requests based on an unvalidated Host Header, 
 they can be manipulated into misrouting requests to an arbitrary system of the attacker's choice. 
 
-o do this, you'll need to identify private IP addresses that are in use on the target's internal network. 
+To do this, you'll need to identify private IP addresses that are in use on the target's internal network. 
 In addition to any IP addresses that are leaked by the application, you can also scan hostnames belonging 
 to the company to see if any resolve to a private IP address. If all else fails, you can still identify 
 valid IP addresses by simply brute-forcing standard private IP ranges, such as 192.168.0.0/16
 
-Connection State Attacks
+# Connection State Attacks
 you may occasionally encounter servers that only perform thorough validation on the first request they receive over a new connection. 
 In this case, you can potentially bypass this validation by sending an innocent-looking 
 initial request then following up with your malicious one down the same connection. 
 
-SSRF via a malformed request line
+# SSRF via a malformed request line
 
-Further Research 
+# Further Research 
 In other cases, the Host may be URL-decoded and placed directly into the email header allowing mail header injection. 
 Using this, attackers can easily hijack accounts by BCCing password reset emails to themselves - 
 Mozilla Persona had an issue somewhat like this, back in alpha. 

