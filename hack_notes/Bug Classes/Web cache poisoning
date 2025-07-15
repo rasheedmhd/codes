@@ -200,13 +200,25 @@ On Resp
 Bc CF won't cache Cache-­Control: private resp, when you get this,
 you can try other pages on the site that is cacheable.
 
-
 # Web Cache Entanglement Prerequisites
 Cache Oracle: Cacheable page of the target
 Confirmation: The ability to clearly identify if a cache happened.
 Ideal: If the Cache O returns the entire URL or at least 1 q qarameters 
 Asking Nicely:
-> Pragma: akamai-x-get-cache-key, akamai-x-get-true-cache-ke
+> Pragma: akamai-x-get-cache-key, akamai-x-get-true-cache-key
+
+# CloudFlare's Protection
+https://blog.cloudflare.com/cache-poisoning-protection/
+Solution: include “interesting” header values in the cache key
+Instead, we decided to change our cache keys for a request only if we think it may influence the origin response. Our default cache key got a bunch of new values:
+
+HTTP Scheme
+HTTP Host
+Path
+Query string
+X-Forwarded-Host header
+X-Host header
+X-Forwarded-Scheme header
 
 # Gobuster Fuzzing for Web Cache Poisoning 
 Info: gobuster fuzz --help

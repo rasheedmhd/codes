@@ -1,4 +1,4 @@
-XML External Entities
+# XML External Entities
 - targets application XML parsers
 - difficult to understand and exploit
 - can lead to SSRF and DoS
@@ -13,7 +13,7 @@ part of the XML File that tells the parser the signature of tags accepted.
 The DTD has a feature called External Entities where the parser
 is instructed to load XML/data from external sources like a file system or a web page
 
-Causes?
+# Causes?
 Use of old/vulnerable XML parsers
 If the parser allows user-defined DTDs or user input within
 the DTD and is configured to parse and evaluate the DTD, attackers can
@@ -22,16 +22,16 @@ declare their own external entities to achieve malicious results
 - XML documents can also use external entities to access either local or
 remote content with a URL.
 
-XXE Syntax:
+# XXE Syntax:
 <!ENTITY file SYSTEM "http://example.com/index.html">
 - SYSTEM keyword precedes external entities
 <!ENTITY file SYSTEM "file:///example.txt">
 
-VULN
+# VULN
 If users can control the values of XML entities or external entities, they
 might be able to disclose internal files, port-scan internal machines, or launch DoS attacks.
 
-Exploit:
+# Exploit:
 Application allows user to upload XML files Parses the file and displays back to 
 user or make request to external or internal Resources during parsing. 
 Applications are vulnerable to XXEs when the application accepts
@@ -39,7 +39,7 @@ user supplied XML input or parses user input into DTDs, which is then parsed
 by an XML parser, and that XML parser reads local system files or sends
 internal or outbound requests specified in the DTD.
 
-Prevention
+# Prevention
 - Limit the capabilities of an XML parser.
 - Disable DTD processing if possible
 - Disable external & parameter entities
@@ -47,30 +47,30 @@ Prevention
 - Validation through using allow list
 - Not using XML for formats like JSON
 
-Hunting for XXEs
-Step 1: Find XML Data Entry Points
+# Hunting for XXEs
+# Step 1: Find XML Data Entry Points
 1. Locate areas of the application prone to XXE
 Use a proxy to browse the target application.
 Find XML-like documents in HTTP messages by looking for the
 previously mentioned tree-like structures, or by looking for
 the signature of an XML document: the string "<?xml".
 
-Step 2: Test for Classic XXE
+# Step 2: Test for Classic XXE
 Once you’ve determined that the endpoints can be used to submit XML data, you can start 
 to test for the presence of functionalities needed for XXE attacks. 
 This usually involves sending a few trial-and-error XXE payloads and observing the application’s response.
 
-Step 3: Test for Blind XXE
+# Step 3: Test for Blind XXE
 Instead of reading files from the server’s response, 
 most blind XXE attacks steal data by having the target server make 
 a request to the attacker’s server with the exfiltrated information.
 
-Step 4: Embed XXE Payloads in Different File Types
+# Step 4: Embed XXE Payloads in Different File Types
 Insert the XXE payload by adding a DTD directly into the file and referencing 
 the external entity in the SVG image. You can then save the file as
 an .svg file and upload it to the server:
 
-Finding Your First XXE!
+# Finding Your First XXE!
 1. Find data entry points that you can submit XML data to.
 2. Determine whether the entry point is a candidate for a classic or blind XXE.
 vulnerable to classic XXE if it returns the parsed XML data in the HTTP response.

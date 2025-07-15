@@ -13,6 +13,7 @@ Keep in mind of the attack surface.
 Ideally you want a program with a large attack surface, 
 based on assets and vuln classes.
 
+Threat-Model based Hacking
 - What you hunt for should be driven by the platform. 
 What vulns you look for should be based on the platform. 
 If you do recon right, understand the target scope, you can make

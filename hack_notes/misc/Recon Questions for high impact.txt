@@ -1,4 +1,4 @@
-Recon Questions for high impact 
+# Recon Questions for high impact 
 What is the app meant to do?
 What is the app meant to not do?
 What is the app protecting?
@@ -9,7 +9,7 @@ How do I by pass these mechanism protecting the sensitive information?
 How do I access the sensitive information ?
 What functionalities does it have?
 
-For Reporting
+# For Reporting
 Take reporting notes in tandem with Recon notes 
 How did I access the sensitive information?
 How do I improve the mechanisms to prevent my access / mechanisms by pass
@@ -18,9 +18,9 @@ How do I improve the mechanisms to prevent my access / mechanisms by pass
 Think about this, I am reading https://zhero-web-sec.github.io/dos-via-cache-poisoning/
 And he is caching bad resp causing a DOS. 
 
-and I am thinking , dummy mean, I have had a gazillion errors in the past, and I have never thought about how to cache them.
+and I am thinking , dummy me, I have had a gazillion errors in the past, and I have never thought about how to cache them.
 THis is why I like  learning new things. bc if my arsenal is huge, I can draw patterns from a gazillion places
 and connect the dots, but If I don't have this wide knowledge, I will only be cheating myself. 
 
 THe more I learn, the more I know, the more I know, the more I can connect the dots. Getting clever bounties.
-This is why I love this. Continual constant learnning, high risk, high reward.
+This is why I love this. Continual constant learning, high risk, high reward.
