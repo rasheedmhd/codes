@@ -1,5 +1,8 @@
+# https://cpdos.org
+
 require 'net/http'
-uri = URI("https://example.org/index.html")
+uri = URI("https://www.starlink.com/public-files/home_illustriation1_d.webp")
+# uri = URI("https://example.org/index.html")
 req = Net::HTTP::Get.new(uri)
 
 num = 200

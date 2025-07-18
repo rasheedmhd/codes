@@ -1,4 +1,4 @@
-Practical Host Header Injection Attacks 
+# Practical Host Header Injection Attacks 
 
 First Report https://carlos.bueno.org/2008/06/host-header-injection.html
 
@@ -34,21 +34,29 @@ they will never assume that the following two requests reference the same resour
 > GET /index.html HTTP/1.1       > GET /index.html HTTP/1.1
 > Host: example.com              > Host: evil.com
 
+# Host Header Confusion
 To persuade a cache to serve our poisoned response to someone else we need to create a 
 disconnect between the Host Header the cache sees, and the Host Header the application sees.
 
 ## Research on How the most Popular cache servers handle Host Header injection
 ## So we can by pass effectively. Varnish, Cloudflare, Nginx, Apache, IIS, Vercel
+http://docs.acquia.com/acquia-cloud-platform/varnish-headers
 
-[ Handling Duplicate Host Headers ]
-Varnish:
-Duplicate Host Headers. Varnish will use the first HH it sees.
-Apache:
-Will concatenate all Host Headers present
-Nginx: 
-Will use the last Host Header
+# Handling Duplicate Host Headers 
+Varnish:        Varnish will use the first HH it sees.
+Apache:         Will concatenate all Host Headers present
+Nginx:          Will use the last Host Header
+Fastly:         Will use the first Host Header
 
-Poisoning Varnish
+| Server      | Behavior with Duplicate Host Headers   |
+| ----------- | -------------------------------------- |
+| **Varnish** | Uses the **first** Host header it sees |
+| **Apache**  | Concatenates **all** Host headers      |
+| **Nginx**   | Uses the **last** Host header          |
+| **Fastly**  | Sends the **first** Host header to OG       |
+https://trac.nginx.org/nginx/ticket/1724
+
+# Poisoning Varnish
 > GET / HTTP/1.1
 > Host: example.com
 > Host: evil.com
@@ -56,53 +64,60 @@ Poisoning Varnish
 Application-level caches can also be susceptible. Joomla writes the Host header to every page 
 without HTML-encoding it, and its cache is entirely oblivious to the Host header. 
 Gaining persistent XSS on the homepage of a Joomla installation was as easy as:
-curl -H "Host: cow\"onerror='alert(1)'rel='stylesheet'" http://example.com/ | fgrep cow\"
+> curl -H "Host: cow\"onerror='alert(1)'rel='stylesheet'" http://example.com/ | fgrep cow\"
 
-Research on how other CMS' handle Host Headers (Injection)
+## Research on how other CMS' handle Host Headers (Injection)
 
-Problem 2: Of course Host Headers should have some validation. 
+# Problem 2: Of course Host Headers should have some validation. 
 The Host header's purpose is to ensure that a request is passed to the correct application 
 at a given IP address, therefore there is going to be some validation to ensure that the
 attackers cannot inject arbitrary Host Headers willy-nilly. 
 Attaaaaaaaaackers Assemble! What do we do?
 
-[Again, investigate how other servers (dedicated and application) handle Host Headers (Injection)]
+## Again, investigate how other servers (dedicated and application) handle Host Headers (Injection)
 
-Apache:
-Sometimes it is trivial. If Apache receives an unrecognized Host header, 
-it passes it to the first virtual host defined in httpd.conf. 
+# Apache:
+If Apache receives an unrecognized Host header, 
+it passes it to the first virtual host defined in **httpd.conf**. 
 As such, it's possible to pass requests with arbitrary host headers 
 directly to a sizable number of applications.
 
-Although X-Forwarded-Host is the de facto standard for this behavior, 
+Although **X-Forwarded-Host** is the de facto standard for this behavior, 
 you may come across other headers that serve a similar purpose, including: 
-Example 
 > GET /example HTTP/1.1
 > Host: vulnerable-website.com
 > X-Forwarded-Host: bad-stuff-here
 
-Overriding the Host header with user defined custom HTTP Headers
-Examples:
+# Overriding the Host header with user defined custom HTTP Headers
 > X-Forwarded-Host
 > X-Host
 > X-Forwarded-Server
 > X-HTTP-Host-Override
 > Forwarded
 
-
 # Real Exploit in 2011
 > POST /en-US/firefox/user/pwreset HTTP/1.1> Host: addons.mozilla.org
 > X-Forwarded-Host: evil.com
 
+# Blind SSRF in Slack via X-Forwarded-Host Injection
+> GET /<URI> HTTP/1.1
+> Host: files.slack.com
+> X-Forwarded-Host: files.slack.com@www.unique-attackers-domain.example.com
+https://www.fastly.com/learning/security/what-are-http-host-header-attacks
+
 # Injecting Host Headers as Port Numbers
-Webservers allow a port to be specified in the Host header, but ignore it for the purpose 
+Web servers allow a port to be specified in the Host header, but ignore it for the purpose 
 of deciding which virtual host to pass the request to. 
 This is simple to exploit using the ever-useful http://username:password@domain.com syntax:
 > POST /en-US/firefox/user/pwreset HTTP/1.1> 
-> Host: addons.mozilla.org:@passwordreset.net
+> Host: addons.mozilla.org:@passwordreset.net  
+OR
+> Host: addons.mozilla.org: www.securepasswordreset.com
 
 # Injecting Host Headers by bypassing broken regex logic
-Other sites will try to apply matching logic to allow for arbitrary subdomains. In this case, you may be able to bypass the validation entirely by registering an arbitrary domain name that ends with the same sequence of characters as a whitelisted one:
+Other sites will try to apply matching logic to allow for arbitrary subdomains. 
+In this case, you may be able to bypass the validation entirely by registering an 
+arbitrary domain name that ends with the same sequence of characters as a whitelisted one:
 > GET /example HTTP/1.1
 > Host: notvulnerable-website.com
 
@@ -114,7 +129,6 @@ Other sites will try to apply matching logic to allow for arbitrary subdomains. 
 
 # Injecting Host Headers using Absolute URLS (rfc2616) http://www.ietf.org/rfc/rfc2616.txt
 5.2 The Resource Identified by a Request
-[...]
 If Request-URI is an absoluteURI, the host is part of the Request-URI. 
 Any Host header field value in the request MUST be ignored.
 The result? On Apache and Nginx  (and all compliant servers) 

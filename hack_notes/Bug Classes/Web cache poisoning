@@ -8,6 +8,7 @@ A CDN like Cloudflare relies on cache keys to compare new requests against cache
 The CDN then determines whether the resource should be served from the cache or 
 requested directly from the origin web server.
 
+
 However, injecting a payload is not the only possible vector for this vulnerability. 
 Other possibilities include :
 A denial-of-service attack through headers like “x-forwarded-scheme”: 
@@ -16,12 +17,13 @@ If the response is cached, this causes an infinite loop making the page inaccess
 Using an illegal header such as “\”, which means that the server will respond to a 400 error page. 
 If this page is cached, it will be inaccessible to other users.
 
-The cache key is a selected set of HTTP request elements (parts of the request line and the headers) and their values. 
+The cache key is a selected set of HTTP request elements 
+(parts of the request line and the headers) and their values. 
 If all the values in a cache key match those of a previous request, 
 the cache assumes it can return the cached response associated with that request, 
 without the need to get a new response from the web server. 
 Parts of the HTTP request that are included in the cache key are called keyed inputs, 
-and the rest are unkeyed inputs. 
+and the rest are called unkeyed inputs. 
 Almost all cache keys include at least the path and host, but other header values may also be used. 
 Sometimes, only selected parts and parameters of the path are keyed, rather than the entire path
 
@@ -61,7 +63,9 @@ Cloudflare caches contents of GET request bodies, but they are not included in t
 GET request bodies should be considered untrusted and should not modify the contents of a response. 
 If a GET body can change the contents of a response, consider bypassing cache or using a POST request.
 
-Cache Poisoning Web Apps with HTTP Headers
+# Cache Poisoning Web Apps with HTTP Headers
+## Varnish Headers
+http://docs.acquia.com/acquia-cloud-platform/varnish-headers
 > Accept_Encoding: br.  Gareth Used this on IG, When Accept-Encoding is in the Cache Key
 > X-Forwarded-Port see https://hackerone.com/reports/409370
 > X-Forwarded-Host

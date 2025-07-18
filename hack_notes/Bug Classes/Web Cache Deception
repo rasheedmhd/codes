@@ -18,19 +18,20 @@ Load Balancer : The server that distributes the traffic to the origin server
 Delimiter     : A character or string that separates the path from the query string [see more explanation below]
 
 # Detecting Origin Delimiters 
+https://snyk.io/blog/cache-poisoning-in-popular-open-source-packages/
 1. Identify a non-cacheable request 
 In that case we hope that what is appended is ignored by the frontend server and makes it to the backend  server.
 2. Send the same request appending a random suffix at the end of the path 
-> abc / ? # % 
+> abc / ? # % ;
 3. Send the same request appending a delimiter before the random suffix at the end of the path 
-> abc / ? # % 
+> abc / ? # % ;
 If the messages are identical, the character or string is used as a delimiter.
 Use Burp Intruder 
 
 What does a Delimiter mean or does exactly? The delimiter is a character, that when the url parser reaches it a logical stop in parsing is decided there whatever character/s that follows
 at character is considered as not part of the URL.
 
-Why is this Important? 
+# Why is this Important? 
 Identifying and using the delimiter allows to essentially coerce the parser to stop parsing at an 
 arbitrary section of the URL that we want. See where this is going? Meaning we can smuggle a payload to the other URL parser or pass the the cache server. In this case we are talking about the Origin Server i.e the application server or servers like nginx, apache, etc not the frontend cache server like cloudflare, etc.
 
