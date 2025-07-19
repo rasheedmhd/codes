@@ -1,0 +1,262 @@
+Studying and working hard is often more valuable than being born innately intelligent 
+
+If you wan to impress the world don't tear down the garage. Instead, build code that can withstand the hackers mauling axe.
+
+HACKING METHODOLOGY 
+1. Information gathering(nmap/nikto2)
+2. Penetration
+3. Optional: Guaranteeing future easy access
+4. Internal Reconnaissance 
+5. Optional: Movement 
+6. Intended action execution 
+7. Optional: Covering tracks.
+
+Penetration techniques 
+- Zero-days
+- Unpatched software 
+- Malware
+- Social engineering 
+- Password issues
+- Eavesdropping/MitM
+- Data leaks
+- Misconfiguration
+- Denial of service
+- Third party
+- User error
+- Physical access
+- Privilege escalation 
+
+Social engineering methods
+- Phishing 
+- Trojan horse
+- Over the phone
+- Purchase scams
+- Carrot or Stick
+Social engineering defenses
+- Education
+- Third party software 
+- EV digital certification
+- Get rid of password 
+- AntiSocial engineering technologies
+
+Defenses against software vulnerabilities 
+- Security developments Lifecycle 
+- More secure programming languages 
+- Code and program analysis(Fuzzers)
+- More secure operating system
+- 3rd party protections/Vendor add-ons
+
+Learn computer security from
+Www.cve.mitre.org/cve/
+
+Ross Anderson security engineering Gary McGraw's favourite security book
+
+MALWARE
+Defenses against Malware 
+- Fully patched software 
+- Training
+- Anti-Malware software(antivirus)
+- Application control programs(white/blacklisting)
+- Security boundaries(firewalls)
+- Network/Host Intrusion Detection/Protection
+
+Susan Bradley: let's tackle the fundamentals because technology is changing 
+Mark Russinovich: Understand the system you are trying to defend from different viewpoints at an expert level.
+
+CRYPTOGRAPHY 
+It is the art of using maths(ciphers) and binary 1s and 0s (key) to encrypt or verify other digital content.
+
+Cryptographic keys are usually 128 bits longer but if the maths is resistant to cipher attacks, the longest key is always 4096bits.
+
+Symmetric Versus Asymmetric Keys:
+If the key used to encrypt the content is the same key used to decrypt it: symmetric but if there is a different key used to decrypt the content it is Asymmetric:
+Asymmetric is also known as public key cryptography which is used in the bitcoin blockchain 
+
+Popular Cryptography
+Symmetric Ciphers
+- Data Encryption Standard(DES)
+- Triple Data Encryption Standard( Tripple DES)
+- Advanced Encryption Standard( AES)
+Symmetric keys usually range from 128 to 256.Every bit increase  double the strength of the key within the same cipher.
+
+Asymmetric Ciphers
+- Diffie-Hellman 
+- Rivest-Shamir-Adleman (RSA)
+- Elliptical Curve Cryptography ( ECC )
+Asymmetric key sizes usually range from 1024 to 4096. 
+2048  is considered the bare minimum of Diffie-Hellman and RSA today.
+
+ECC starts at 256 to 384 bits.
+Asymmetric keys are used to encrypt Symmetric keys which do much of the encryption.
+
+Hashes:
+Cryptography is also used to verify identities and content.
+In this scenario the plain text to be encrypted is applied to a key which returns a unique output known as the harsh. The content or identity can be reharsed
+Again anytime to proof that the identity is not tampered with.
+
+Common hashes include 
+Secure Hash Algorithm 1, 2 ,3
+1 and 2 have some Cryptographic weakness so 3 is recommended but the BITCOIN blockchain uses SHA-256
+
+
+Cryptographic Uses:
+- Password and biometric identity protection 
+- Digital certification 
+- HTTPS
+- Verify downloaded Software 
+- Email
+- Protect harddrives and portable media
+- Protect wireless networks 
+- Credit card transactions 
+
+Without Cryptography the internet would not be the internet and our computers would have never being under our control 
+
+Cryptographic Attacks:
+- Math attacks
+- Known plaintext or cipher key
+- Side channel attacks
+- Insecure Implementation 
+
+MARTIN HELLMAN
+David Kahn the code breakers book
+A New Map for Relationships: Creating True Love at Home and Peace on the Planet: https://www.amazon.com/New-Map-Relationships-
+Creating-Planet/dp/0997492309/
+
+
+https://en.wikipedia.org/wiki/Merkle_signature_scheme
+
+FIREWALLS
+Is a software or hardware security component designed to prevent unauthorized access between two or more security boundaries.
+
+Early history of firewalls
+What was later recognized as a firewall was created in 1987 by AT&T Bell Labs.
+
+"The Packet filter: An efficient mechanism for User-level network code" by Jeffrey Mogul has the first mention of firewall technically.
+
+Firewall Rules (policies)
+The most common rule is to
+Allow all outbound traffic and block all inbound traffic.
+
+Where are firewalls?
+Network based and Host based.
+
+Advanced Firewalls.
+
+What Firewalls protect against
+- Remote buffer overflow attacks
+
+WILLIAM CHESWICK
+Firewalls and Internet security: Repelling the Wily hacker.
+An Evening with Berferd in which a Cracker Is Lured, Endured and Studied.
+Dave Presotto creator of the first firewall.
+
+Steven Bellovin There Be Dragons
+
+DYN DDOS
+
+We will have a significantly better internet security in the future.
+
+PASSWORDS
+Authentication Components
+- Passwords
+- Authentication datases
+- Password hashes
+(Windows: LANManager, PBKDF2, NTLANManager)
+Linux(md5, blowfish, SHA-256 SHA-512)
+Authentication challenges:
+Secure network auth don't pass the password over the network link but performs an auth challenge and passes the answer over the internet for the client....bla..bla...bla...
+
+Authentication factors:
+2FA and MFA
+
+Hacking passwords:
+- Password Guessing 
+- Phishing
+- Keylogging 
+- Hash cracking
+- Credential reuse
+- Hacking password reset portals
+
+Password Defenses:
+- Complexity and Length
+12-character long or 16-character longer for privileged user accounts.
+- Frequent Changes with No repeating 
+- Not sharing password between systems
+- Account lockout
+- Strong password hashes (weak hashes includes LM hashes,SHA-1)
+- Don't use passwords.
+- Credential theft Def 
+- Reset portal defense
+
+
+WIRELESS 
+Types of Wireless attacks
+- Attacking access points
+- Denial of service 
+- Guessing the wireless channel password 
+- Session hijacking 
+- Stealing information 
+- Locating user physically
+
+Tools
+- Wishark
+- Aircrack-NG
+- Kismet
+- Fern
+- Fire sheep
+
+Wireless hacking Defenses:
+- Frequency hoping
+- Predefined client identification 
+- Strong protocols (WPA over WEP)
+- Long password (30 characters or more)
+- Patching access points
+- Electromagnetic shielding 
+
+PENETRATION TESTING
+Hacked every cable box in the country
+Using an Nikto to scan ports and running  a directory traversal attack (http://..//..//..//)
+
+Hacked a major TV network and Pornography.
+"We even used cross-site scripting exploit to take over the entire cable company--from a single cable box"
+
+Certifications
+CISSP
+SANS Institute 
+Certified Ethical Hacker 
+CompTIA Security+
+ISACA
+Vendor-Specific certificates
+
+
+NETWORK ATTACKS 
+- Eavesdropping 
+- Man-in-the-Middle attacks
+
+Defenses against Network attacks:
+- Domain isolation 
+- Virtual private networks 
+- Network Intrusion Detection 
+- Using secure protocols and applications 
+- Anti-Ddos defenses
+- Visit secure web sites and services
+
+LUARA CHAPELL:
+First, learn Wireshark, of course! Just kidding … well, actually, I’m not kidding.
+Wireshark is a perfect tool to use when you really want to understand how the network works, 
+and it’s free! It is ranked #1 in security tools over at sectools.org for a reason.
+(Seriously, it’s a lot more interesting to watch a TCP handshake than read about it in an RFC!) 
+
+Secondly, learn TCP/IP really, really, really well. Take the time to capture your own traffic while you connect to a web server, 
+send email, upload a file using FTP, etc.
+As you are learning how the protocols work, watch the protocols using Wireshark.
+Watch the TCP handshake, the request/reply nature of many applications, the connection teardown process, and more.
+
+Thirdly, put together a simple attack lab. The computers don’t need to be big or fancy
+just tie a few together with a switch and grab some of the free scanning/penetration testing tools available today.
+Capture and analyze the traffic as you launch attacks on your other systems. 
+Most of us are visual learners—being able to see an idle scan is way more interesting than just reading about it.
+Network security is like a two-sided coin—you need to get a feel for how various attacks work in order 
+to know how to defend against them. 
+
+It’s a game.Playing problem-solving games is a great way to prime your brain for networking and security analysis.

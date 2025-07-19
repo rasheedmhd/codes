@@ -37,3 +37,6 @@ retrieve
 # SCHEME MIXUP
 The scheme component of a URL dictates the exact URL protocol which should be used in order to
 parse the URL. 
+
+# Resources 
+https://blog.bugport.net/exploiting-http-parsers-inconsistencies

