@@ -1,14 +1,14 @@
 # Web Cache Poisoning
-A cache poisoning attack uses an HTTP request to trick an origin web server into 
-responding with a harmful resource that has the same cache key as a clean request. 
+A cache poisoning attack uses a HTTP request to trick an origin server into 
+responding with a **malicious resource** that has the same **cache key** as a legitimate request. 
 As a result, the poisoned resource gets cached and served to other users.
 
 # Cache Keys
-A CDN like Cloudflare relies on cache keys to compare new requests against cached resources. 
+A CDN/Cache Proxy relies on cache keys to compare new requests against cached resources. 
 The CDN then determines whether the resource should be served from the cache or 
 requested directly from the origin web server.
 
-
+# Injecting Payloads with unkeyed inputs 
 However, injecting a payload is not the only possible vector for this vulnerability. 
 Other possibilities include:
 A denial-of-service attack through headers like `x-forwarded-scheme`: 
@@ -17,20 +17,24 @@ If the response is cached, this causes an infinite loop making the page inaccess
 Using an illegal header such as `\`, which means that the server will respond to a 400 error page. 
 If this page is cached, it will be inaccessible to other users.
 
+# Determining where the response should come from
 The cache key is a selected set of HTTP request elements 
 (parts of the request line and the headers) and their values. 
 If all the values in a cache key match those of a previous request, 
 the cache assumes it can return the cached response associated with that request, 
 without the need to get a new response from the web server. 
 Parts of the HTTP request that are included in the cache key are called keyed inputs, 
-and the rest are called unkeyed inputs. 
+and the rest are called **unkeyed inputs.** 
 Almost all cache keys include at least the path and host, but other header values may also be used. 
 Sometimes, only selected parts and parameters of the path are keyed, rather than the entire path
 
 # Cache-control directives
 One of the challenges when constructing a web cache poisoning attack is ensuring that the harmful 
 response gets cached. This can involve a lot of manual trial and error to study how the cache behaves.
+However be on the lookout of cache control directives like `max-age` and `s-maxage` and others which
+allows you to easily determine the state of a cache test
 
+    # Examples of Cache-control directives
     HTTP/1.1 200 OK
     Via: 1.1 varnish-v4
     Age: 174
@@ -40,28 +44,24 @@ See discreet poisoning below.
 
 # Vary Header
 The rudimentary way that the Vary header is often used can also provide attackers with a helping hand. 
-The Vary header specifies a list of additional headers that should be treated as 
+The **Vary header** specifies a list of additional headers that should be treated as 
 part of the cache key even if they are normally unkeyed.
-Note: Some CDNs, such as Cloudflare, ignore the Vary header.
+***Note: Some CDNs, such as Cloudflare, ignore the Vary header.***
 See Selective Poisoning below.
 
 # Prevention
-Only cache files that are truly static
-Review the caching configuration for your origin web server and ensure you are caching 
+- Only cache files that are truly static
+- Review the caching configuration for your origin web server and ensure you are caching 
 files that are static and do not depend on user input in any way. 
 
-Which file extensions does Cloudflare cache for static content?
-How Do I Tell Cloudflare What to Cache?
-Do not trust data in HTTP headers
-Client-side vulnerabilities are often exploited through HTTP headers, 
-including cross-site scripting (XSS). 
-In general, you should not trust the data in HTTP headers and as such:
-Do not rely on values in HTTP headers if they are not part of your cache key.
-Never return HTTP headers to users in cached content.
-Do not trust GET request bodies
-Cloudflare caches contents of GET request bodies, but they are not included in the cache key. 
-GET request bodies should be considered untrusted and should not modify the contents of a response. 
-If a GET body can change the contents of a response, consider bypassing cache or using a POST request.
+    Which file extensions does Cloudflare cache for static content?
+    How Do I Tell Cloudflare What to Cache?
+    Do not trust data in HTTP headers
+    Client-side vulnerabilities are often exploited through HTTP headers, 
+    including cross-site scripting (XSS). 
+    In general, you should not trust the data in HTTP headers and as such:
+    Do not rely on values in HTTP headers if they are not part of your cache key.
+    Never return HTTP headers to users in cached content.
 
 # Cache Poisoning Web Apps with HTTP Headers
 ## Varnish Headers
@@ -87,10 +87,11 @@ Find other targets using GCP buckets and test
 Moral of the story, brute force cache poisoning headers 
 
     X-Forwarded-Scheme - Rack Middleware
-    X-Forwarded-Scheme: http               results into a 301 redirect to the same location.
+    X-Forwarded-Scheme: http        results into a 301 redirect to the same location.
 
 If the response is cached by a CDN, it would cause a redirect loop, denying access to the file
 
+# TESTING FOR CACHE POISONING
 # Using multiple headers to exploit web cache poisoning
     # Max bounty $3k Exploit
     GET /main/static.js HTTP/1.1
@@ -99,7 +100,7 @@ If the response is cached by a CDN, it would cause a redirect loop, denying acce
     X-Forwarded-Host: site_to_redirect_to.com
 [Cache Poisoning leads to JS files redirection](https://hackerone.com/reports/1795197)
 
-# Top-Tier 9,700 Real World Exploit on PayPal
+# Top-Tier $9,700 Real World Exploit on PayPal
 [DoS on PayPal via web cache poisoning](https://hackerone.com/reports/622122)
 [Responsible denial of service with web cache poisoning](https://portswigger.net/research/responsible-denial-of-service-with-web-cache-poisoning)
 
@@ -217,6 +218,11 @@ parameters as part of the cache key but the returned response was actually
 influenced by the body params. 
 Affected [Tornado](https://www.tornadoweb.org/en/stable/)
 
+    Do not trust GET request bodies
+    Cloudflare caches contents of GET request bodies, but they are not included in the cache key. 
+    GET request bodies should be considered untrusted and should not modify the contents of a response. 
+    If a GET body can change the contents of a response, consider bypassing cache or using a POST request.
+
 # Sometimes web apps gives precedence to the body parameters
 Yeah, right? Super weird. This can lead to the Cache proxy caching 
 a resource identified by the body params instead of the query params,
@@ -274,6 +280,10 @@ Our default cache key got a bunch of new values:
     X-Forwarded-Host header
     X-Host header
     X-Forwarded-Scheme header
+
+# Resources 
+[Youstin Cache Key normalization DOS](https://youst.in/posts/cache-key-normalization-denial-of-service/)
+[Fastly Header Reference](https://www.fastly.com/documentation/reference/http/http-headers/)
 
 # Gobuster Fuzzing for Web Cache Poisoning 
     Info: gobuster fuzz --help

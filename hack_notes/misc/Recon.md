@@ -1,20 +1,20 @@
-NOTES ON RECONNAISSANCE
+# NOTES ON RECONNAISSANCE
 1. Confirm that active recon is allowed
 2. Manual scope walk through - aim is to reveal the attack surface
 3. Uncover the tech and infrastructure of the application
 4. Google dork for info to advance your hacking, eg: searching for payloads
 
-SCOPE DISCOVERY
+# SCOPE DISCOVERY
 1. Whois and Reverse Whois
 2. Nslookup
 3. Certificates searching with crt.sh
 4. Enumerate Subdomains
-   Sublist3r - query search engines + subdomain dbs
-   Gobuster  - brute forcer
-   Amass     - uses DNS zone transfers, certificate parsing, search engines and subdomain databases to find subdomains.
-   Altdns    - https://github.com/infosec-au/altdns/
-   SubBrute  - brute forcer
-   Subfinder
+  Sublist3r - query search engines + subdomain dbs
+  Gobuster  - brute forcer
+  Amass     - uses DNS zone transfers, certificate parsing, search engines and subdomain databases to find subdomains.
+  Altdns    - https://github.com/infosec-au/altdns/
+  SubBrute  - brute forcer
+  Subfinder
 
 + Screenshotting [ gowitness + eyewitness + aquatone + HTTPScreenshotter ]
 + Content Discovery (Burp Intruder on Pro)
@@ -72,12 +72,12 @@ Wordpress https://www.sitename.org/wp-json/wp/v2/users
 Web Security Testing Guide 
 ======================================================================================================================================================
 OWASP WSTG - 4.1.X
-1 Conduct Search Engine Discovery Reconnaissance for Information Leakage
+# 1 Conduct Search Engine Discovery Reconnaissance for Information Leakage
 - Google dorking
 - Use different search engines bc they index differently
 - Get robots.txt file
 
-2. Fingerprinting web servers
+# 2. Fingerprinting web servers
 - Banner grab ( curl -I domain)
 - Server response adds the server name and version
 - If server obscures name and version, study response header ordering
@@ -86,40 +86,39 @@ Send Malformed Requests
 - Study default server error response msgs
 - Tools: Netcraft . Nikto . Nmap
 
-3. Review Webserver Metafiles for Information Leakage
+# 3. Review Webserver Metafiles for Information Leakage
 Identify hidden + obfuscated paths and functionality through metadata files analysis.
 Extract and map other information that could lead to a better understanding of the system
 - Review META tags . Robots.txt . Sitemaps . Security.txt . humans.txt
-wget --no-verbose https://www.google.com/sitemap.xml && head -n8 sitemap.xml
-curl -O -Ss https://www.moonpay.com/robots.txt && head -n5 robots.txt
-Security TXT
+> wget --no-verbose https://www.google.com/sitemap.xml && head -n8 sitemap.xml
+> curl -O -Ss https://www.moonpay.com/robots.txt && head -n5 robots.txt
+## Security TXT
 https://example.com/security.txt
 https://example.com/.well-known/security.txt
-wget --no-verbose https://www.linkedin.com/.well-known/security.txt && cat security.txt
+> wget --no-verbose https://www.linkedin.com/.well-known/security.txt && cat security.txt
 Humans TXT 
-wget --no-verbose  https://www.google.com/humans.txt && cat humans.txt
+> wget --no-verbose  https://www.google.com/humans.txt && cat humans.txt
 
-4. Enumerate Applications on Webserver
+# 4. Enumerate Applications on Webserver
 Enumerate the applications within the scope that exist on the web server.
 This is to discover targets to test, remember that sometimes the org might
 not even be aware of these targets hiding under an IP Address
 There are three factors influencing how many applications are related to a given DNS name (or an IP address):
-Different Base URLs: 
+## Different Base URLs: 
 For example, the same symbolic name may be associated to three web applications such as: 
-https://www.example.com/app1  |  https://www.example.com/app2  |  https://www.example.com/app3
-Non Standard ports:   
+> https://www.example.com/app1  |  https://www.example.com/app2  |  https://www.example.com/app3
+## Non Standard ports:   
 Web apps can be hosted on different ports != 443/80
-nmap -sV > nmap –Pn –sT –sV –p0-65535
-Virtual Hosts: 
+> nmap -sV > nmap –Pn –sT –sV –p0-65535
+## Virtual Hosts: 
 DNS allows a single IP address to be associated with one or more symbolic names.
-Using site: operator to find other apps under 1 IP 
-This leverages cached, indexed, other pages linked to those apps 
+Using `site: operator to` find other apps under 1 IP. This leverages cached, indexed, other pages linked to those apps 
 DNS + directory enumeration and brute forcing and running a ip address 
 look up on the returned hits 
 nmap all port service scan results
 Another unspecified service on port 8000; this might possibly be HTTP,
 since it is not uncommon to find HTTP servers on this port. Let’s examine this issue:
-$ telnet 192.168.10.100 8000
+> telnet 192.168.10.100 8000 
 or curl or visit url 
 The same task may be performed by vulnerability scanners that can identify HTTP[S] services running on non-standard ports. 
 Eg Nessus is capable of identifying them on arbitrary ports (provided it is instructed to scan all the ports), 
@@ -128,32 +127,32 @@ as well as on the TLS/SSL configuration of HTTPS services. As hinted before,
 Nessus is also able to spot popular applications or web interfaces which could otherwise go unnoticed
 (for example, a Tomcat administrative interface).
 
-Approaches to Address Issue 3 - Virtual Hosts
+# Approaches to Address Issue 3 - Virtual Hosts
 There are a number of techniques which may be used to identify DNS names associated to a given IP address x.y.z.t.
 
 DNS Zone Transfers
-host -t ns www.owasp.org
+> host -t ns www.owasp.org
 returns nameservers 
-host -l www.owasp.org <nameserver>
+> host -l <www.owasp.org_nameserver>
 
-DNS Inverse Queries
+## DNS Inverse Queries
 dig -x 93.184.216.34 +short
 host 93.184.216.34
 nslookup 93.184.216.34
 
-Web Based DNS Searches 
+## Web Based DNS Searches 
 https://searchdns.netcraft.com/
 
-Reverse IP Services
+## Reverse IP Services
 MxToolbox Reverse IP  https://mxtoolbox.com/ReverseLookup.aspx
 DNSstuff https://www.dnsstuff.com/scan-network-for-device-ip-address
 Net Square 
 
-openssl s_client -connect 100.64.100.1:443 </dev/null 2>/dev/null \
-  | openssl x509 -noout -text \
-  | grep -E 'Subject:|DNS:'
+    openssl s_client -connect 100.64.100.1:443 </dev/null 2>/dev/null \
+      | openssl x509 -noout -text \
+      | grep -E 'Subject:|DNS:'
 
-5. Review Web Page Content for Information Leakage
+# 5. Review Web Page Content for Information Leakage
 Review Web Page Comments and Metadata
 Identifying JavaScript Code and Gather JavaScript Files
 Identifying Source Map Files
@@ -162,25 +161,25 @@ You might find source map files by adding the “.map” after the ext of extern
 Eg: in /static/js/main.chunk.js file, visit /static/js/main.chunk.js.map.
 Identify Redirect Responses which Leak Information
 
-6. Identify Application Entry Points
+# 6. Identify Application Entry Points
 Identify possible entry and injection points through request and response analysis.
 Pay attention to all HTTP requests as well as every parameter and form field
 that is passed to the application.
 Make special note of any hidden form fields that are being passed to the application.
 Use Attack Surface Detector to uncover end points and parameters that they receive. 
 
-7. Map Execution Paths Through Application
+# 7. Map Execution Paths Through Application
 ZAP spidering
 ZAP offers various automatic spidering options, which can be leveraged based on the tester’s needs:
 Spider . Ajax Spider . Check for OpenAPI Support
 
-8. Fingerprint Web Application Framework
+# 8. Fingerprint Web Application Framework
 Several locations exists to consider to identify frameworks or components:
 HTTP headers . X-Powered-By . X-Generator . Framework Specific Cookies
 HTML source code                  .    Specific files and folders eg /wp-admin/ robots.txt
 File extensions .asp .jsp .php    .    Error messages
 
-9. Map Application Architecture
+# 9. Map Application Architecture
 Web Framework  .  Web Server  .  Database
 PaaS  .  Serverless   .   Microservices
 Port scan server for any open ports associated with specific databases.
@@ -199,12 +198,12 @@ If a cloud-based WAF is in use, then it may be possible to bypass it
 by directly accessing the backend server, using the same methods discussed
 in the Content Delivery Network section.
 
-10. TESTING HTTP METHODS
+# 10. TESTING HTTP METHODS
 Enumerate supported HTTP methods.
 Test for Access Control bypass.
 Test HTTP method overriding techniques.
 
-Discover the Supported Methods
+## Discover the Supported Methods
 ! all servers may respond to OPTIONS requests
 some may  return inaccurate information.
 Servers may support different methods for different paths.
@@ -214,20 +213,20 @@ For reliability, make a request with that method type,
 and examine the server response. If the method is not permitted,
 the server will return a 405 Method Not Allowed status.
 
-Some servers treat unknown methods as equivalent to GET,
+## Some servers treat unknown methods as equivalent to GET,
 So they may respond to arbitrary methods
 This can occasionally be useful to evade a web application firewall,
 or any other filtering that blocks specific methods.
-curl -X FOO https://example.org
+> curl -X FOO https://example.org
 
 Using PUT to upload files to older webservers
-curl https://example.org --upload-file test.html
+> curl https://example.org --upload-file test.html
 
 Using DELETE to delete files form a webserver
-curl https://example.org/test.html -X DELETE
+> curl https://example.org/test.html -X DELETE
 
 
-Testing for Access Control Bypass
+## Testing for Access Control Bypass
 If application redirects users to a login page with a 302 code,
 it may be possible to bypass this by making a request with a different HTTP method,
 such as HEAD, POST or even a made up method such as FOO.
@@ -235,7 +234,7 @@ If the web application responds with a HTTP/1.1 200 OK rather than the expected 
 it may then be possible to bypass the authentication or authorization.
 
 
-Testing for HTTP Method Overriding
+## Testing for HTTP Method Overriding
 Some web frameworks provide a way to override the HTTP method in the request.
 They achieve this by emulating the missing HTTP verbs and passing some custom headers in the requests.
 The main purpose of this is to circumvent a middleware application
@@ -243,16 +242,16 @@ The main purpose of this is to circumvent a middleware application
 which blocks specific methods.
 The following alternative HTTP headers could potentially be used:
 
-X-HTTP-Method
-X-HTTP-Method-Override
-X-Method-Override
+    X-HTTP-Method
+    X-HTTP-Method-Override
+    X-Method-Override
 
-Preflight request
+## Preflight request
 A CORS preflight request is a CORS request that checks to see if the CORS protocol is understood and a server is aware using specific methods and headers.
 
 OPTIONS	List supported HTTP methods.	Perform a CORS Preflight request.
 
-Test HTTP Strict Transport Security
+## Test HTTP Strict Transport Security
 The HTTP Strict Transport Security (HSTS) feature enables a web server to inform the user’s browser, via a special response header, that it should never establish an unencrypted HTTP connection to the specified domain servers. Instead, it should automatically establish all connection requests to access the site through HTTPS. This also prevents users from overriding certificate errors.
 
 Here’s an example of the HSTS header implementation:
@@ -266,20 +265,19 @@ Attackers intercepting and accessing the information transferred over an unencry
 Attackers carrying out manipulator-in-the-middle (MITM) attacks by taking advantage of users who accept untrusted certificates.
 Users who mistakenly enter an address in the browser using HTTP instead of HTTPS, or users who click on a link in a web application that incorrectly uses the HTTP protocol.
 
-Test Objectives
+## Test Objectives
 Review the HSTS header and its validity.
 How to Test
 Confirm the presence of the HSTS header by examining the server’s response through an intercepting proxy.
 Use curl as follows:
-$ curl -s -D- https://owasp.org | grep -i strict-transport-security:
+> curl -s -D- https://owasp.org | grep -i strict-transport-security:
 
 https://hstspreload.org/
 
-Test File Permission
+## Test File Permission
 How to Test
-In Linux, use ls command to check the file permissions. Alternatively, namei can also be used to recursively list file permissions.
-
-$ namei -l /PathToCheck/
+In Linux, use ls command to check the file permissions. Alternatively, namei can also be used to recursively list file permissions
+> namei -l /PathToCheck/
 
 The files and directories that require file permission testing can include, but are not limited to, the following:
 
@@ -292,11 +290,11 @@ Database files/directory
 Temp files/directory
 Upload files/directory
 
-TESTING SUB-DOMAIN TAKE OVER
+# TESTING SUB-DOMAIN TAKE OVER
 Enumerate all possible domains (previous and current).
 Identify any forgotten or misconfigured domains.
 
-TESTING FOR CLOUD STORAGE
+# TESTING FOR CLOUD STORAGE
 First, identify the URL to access the data in the storage service, and then consider the following tests:
 read unauthorized data
 upload a new arbitrary file
@@ -336,11 +334,11 @@ Consider whether allow listed sources provide JSONP endpoints which might be use
 Framing can be enabled for all origins by the use of the wildcard (*) source for the frame-ancestors directive. If the frame-ancestors directive is not defined in the Content-Security-Policy header it may make applications vulnerable to clickjacking attacks.
 Business critical applications should require to use a strict policy.
 
-Test Path Confusion
+# Test Path Confusion
 Black-Box Testing
 Replace all the existing paths with paths that do not exist,
 and examine the behavior and status code of the target.
 For Web Cache Deception vulnerabilities, consider a path such as
-https:// example.com/user/dashboard/non.js
+https://example.com/user/dashboard/non.js
 White-Box Testing
 Examine the application routing configuration, Most of the time, developers use regular expressions in application routing.
