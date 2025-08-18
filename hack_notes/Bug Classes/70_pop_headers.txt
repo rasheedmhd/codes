@@ -1,0 +1,25 @@
+x-forwarded-scheme
+\
+x-forwarded-host
+capitalized host header
+x-forwarded-proto
+x-http-method-override
+x-amz-website-redirect-location
+authorization
+x-rewrite-url
+x-host
+user-agent
+handle
+x-original-url
+x-original-host
+x-forwarded-prefix
+x-amz-server-side-encryption
+trailer
+fastly-ssl
+fastly-host
+fastly-ff
+fastly-client-ip
+content-type
+api-version
+acunetix-header
+accept-version

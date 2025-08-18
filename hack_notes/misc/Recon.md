@@ -28,6 +28,18 @@ advocates this. Ignore all other possibilities and focus entirely on your end go
 You only stop and begin testing if you find something that leads to your goal. 
 3 OWASP 
 
+# [Attack] Domain enumeration
+## The checklist is simple:
+[Source - Citadelo](https://citadelo.com/en/blog/cloudflare-how-to-do-it-right-and-do-not-reveal-your-real-ip)
+Get all possible domains belonging to the target company (or individual)
+Obtain all existing hostnames / subdomains on all domains
+Obtain all IP addresses associated with the hostnames
+Get PTR records for the IPs
+Get all ASN / IP blocks belonging to the target company
+Get the listing of hostings target company is using
+Evaluate
+Repeat
+
 ================== zseano from zseano's methodology
 To date, I’ve had the most success after exploring a target, 
 understanding the functionality it provides, and mapping that functionality to
@@ -37,6 +49,7 @@ you to look into as well, are automation and documenting your methodology.
 
 trufflehog github --org=Pinterest --no-verification --results=verified --concurrency=20
 trufflehog github --org=Pinterest --results=verified --concurrency=20
+trufflehog github --org=kub-chain --results=verified --concurrency=20
 
 WORD LISTS
 https://github.com/danielmiessler/SecLists/
@@ -342,3 +355,8 @@ For Web Cache Deception vulnerabilities, consider a path such as
 https://example.com/user/dashboard/non.js
 White-Box Testing
 Examine the application routing configuration, Most of the time, developers use regular expressions in application routing.
+
+
+# httpx 
+httpx -l sbf -title -status-code -tech-detect -follow-redirects
+httpx -l amass_domains_enum.txt -title -status-code -tech-detect -follow-redirects

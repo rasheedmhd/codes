@@ -1,0 +1,15 @@
+https://medium.com/@renwa/the-underrated-bugs-clickjacking-css-injection-drag-drop-xss-cookie-bomb-login-logout-csrf-84307a98fffa
+https://mksben.l0.cm/2021/11/css-exfiltration-svg-font.html
+https://blog.babelo.xyz/posts/css-exfiltration-under-default-src-self/
+https://research.securitum.com/stealing-data-in-great-style-how-to-use-css-to-attack-web-application/
+https://xsleaks.dev/docs/attacks/css-injection/
+https://aszx87410.github.io/beyond-xss/en/ch3/css-injection/
+https://x-c3ll.github.io/posts/2019/10/16/CSS-Injection-Primitives.html
+https://jorianwoltjer.com/blog/p/hacking/xs-leaking-flags-with-css-a-ctfd-0day
+https://blog.voorivex.team/css-data-exfiltration-to-steal-oauth-token
+https://jorianwoltjer.com/blog/p/research/x3ctf-blogdog-new-css-injection-xs-leak
+https://blog.pspaul.de/posts/bench-press-leaking-text-nodes-with-css/
+
+
+https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/adding-an-email-address-to-your-github-account
+Using Depi, we gathered the email addresses of the company’s GitHub contributors and scanned them for any expired domains. The scan revealed a single contributor account with an expired email domain, yet the account remained active within the organization. We found that GitHub’s multi-email feature allowed a secondary, expired email to stay attached to the account, enabling the reset password link to work for the expired email domain even though it wasn’t the primary one.

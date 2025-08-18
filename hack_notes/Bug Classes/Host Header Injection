@@ -53,7 +53,7 @@ Fastly:         Will use the first Host Header
 | **Varnish** | Uses the **first** Host header it sees |
 | **Apache**  | Concatenates **all** Host headers      |
 | **Nginx**   | Uses the **last** Host header          |
-| **Fastly**  | Sends the **first** Host header to OG       |
+| **Fastly**  | Sends the **first** Host header to OG  |
 https://trac.nginx.org/nginx/ticket/1724
 
 # Poisoning Varnish
@@ -104,6 +104,26 @@ you may come across other headers that serve a similar purpose, including:
 > Host: files.slack.com
 > X-Forwarded-Host: files.slack.com@www.unique-attackers-domain.example.com
 https://www.fastly.com/learning/security/what-are-http-host-header-attacks
+
+# Host Header Injection leads to SSRF
+[Getting SSRF in Gitlab through Host Header Injection](https://hackerone.com/reports/398799)
+```
+def access_token
+  auth_params = params
+                  .slice(:code, :client_id, :client_secret)
+                  .merge(grant_type: 'authorization_code', redirect_uri: oauth_jira_callback_url)
+
+  # The Gitlab::HTTP.post call is using the oauth_token_url directly. 
+  # This _url Rails routing helper uses the Host Header to construct the URL it needs to point to. 
+  # Because every host is accepted in GitLab, the constructed URL can point to an internal system. 
+  # This is how it's supposed to work. However, the Host Header should be checked before making 
+  # the post call to avoid an attacker being able to make arbitrary requests.
+  auth_response = Gitlab::HTTP.post(oauth_token_url, body: auth_params, allow_local_requests: true)
+  token_type, scope, token = auth_response['token_type'], auth_response['scope'], auth_response['access_token']
+
+  render text: "access_token=#{token}&scope=#{scope}&token_type=#{token_type}"
+end
+```
 
 # Injecting Host Headers as Port Numbers
 Web servers allow a port to be specified in the Host header, but ignore it for the purpose 

