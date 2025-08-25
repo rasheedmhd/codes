@@ -117,3 +117,14 @@ more knowledge, I will study Vickie Li's chapter as a
 primer. I have realized that some vulns classes she
 covered are usually an introduction not a thorough 
 cover. Vuln classes like Single Sign On.
+
+Fragmented learning 
+take something i recently learned in dept
+Content Security Policy (CSP)
+1 learned basics in a book 
+2 learned what and why its value is placed in http-equiv 
+http-equiv = http-equivalence and it is named so bc it is supposed to be returned 
+as an http header - response header from MDN
+3 why we have 2 ways of specifying it, in http response headers and http-equiv bc
+you might be hosting you website in a CDN where you might not have control over the response headers
+learned from OWASP cheatsheet series on CSP

