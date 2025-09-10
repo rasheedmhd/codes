@@ -1,0 +1,36 @@
+dig
+host
+dnsenum
+dnsrecon
+fierce
+nslookup 
+hping3 
+nmap 
+# Nmapping 
+nmap <domain_name> | <ip_addr>
+
+### UDP 
+nmap -sU <domain_name>
+nmap -p <port_number>
+> no ping
+nmap -Pn 
+nmap -sU <domain_name> -p <port_number>
+# Digging 
+dig <domain_name>
+dig @<name_server> <domain_name>
+### Specifying resource records 
+dig @<name_server> <domain_name> <record_type>
+dig <>
+
+# NSLookingup 
+    $ nslookup
+    > set querytype=soa
+    > google.com
+
+# Information Leaks with Chaos
+dig @<name_server> <class> <domain_name> <record_type>
+dig @127.0.0.1 chaos version.bing txt
+
+# Zone Transfers
+dig @<name_server> AXFR <domain_name>
+host -t ns <name_server>

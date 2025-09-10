@@ -1,4 +1,4 @@
-Recon 
+# Recon 
 Look for "Sign in / Sign up with <social-media, mostly, github, google etc> buttons
 Proxy Sign in and Sign Up request in Proxy to inspect looking for markers, query
 parameters used mostly for oauth like client_id, redirect_uri, scope, state 
@@ -6,14 +6,15 @@ Check directories for
 /.well-known/oauth-authorization-server
 /.well-known/openid-configuration
 
-
-4 important parties
+[XSS + OAuth leads to ATO](https://7odamoo.medium.com/xss-oauth-misconfigs-token-theft-and-ato-d0837c44cd31)
+[ATO via Reverse Proxy](https://blog.voorivex.team/hijacking-oauth-code-via-reverse-proxy-for-account-takeover?s=35)
+# 4 important parties
 - Resource Owner
 - Client
 - Authorization Server 
 - Resource Server
 
-Requests to  /oath/ to client
+# Requests to  /oath/ to client
 Client redirects to the Resource Server with
 - client_id
 - redirect_uri
@@ -21,32 +22,32 @@ Client redirects to the Resource Server with
 - scope
 - state(recommended) unguessable value that prevents cross-site request forgeries
 
-Exploiting OAuth authentication vulnerabilities
-Vulnerabilities in the client application
+# Exploiting OAuth authentication vulnerabilities
+## Vulnerabilities in the client application
     Improper implementation of the implicit grant type
     Flawed CSRF protection
-Vulnerabilities in the OAuth service
+## Vulnerabilities in the OAuth service
     Leaking authorization codes and access tokens
     Flawed scope validation
     Unverified user registration
 
-Improper implementation of the implicit grant type
+## Improper implementation of the implicit grant type
 Example: Where the client decides to persist a state of the user 
 that owns the access token that is has been granted. 
 Sending a post req to its backend server with a payload 
 containing the access token and additional info like Email, Id etc 
 We can intercept this request and modify the email's etc 
 
-Flaw CSRF Protection
+## Flaw CSRF Protection
 Where the state parameter, is not sent to the server or easily manipulated. 
 It potentially means that an attacker can initiate an OAuth flow themselves before tricking 
 a user's browser into completing it, similar to a traditional CSRF attack
 
-Leaking authorization codes and access tokens via Open Redirect 
+## Leaking authorization codes and access tokens via Open Redirect 
 using state or nonce protection does not necessarily prevent these attacks 
 because an attacker can generate new values from their own browser.
 
-By stealing a valid code or token, the attacker may be able to access the victim's data.
+## By stealing a valid code or token, the attacker may be able to access the victim's data.
 potentially leading to an account take over 
 More seriously, the attacker could potentially log in as the victim user on 
 any client application that is registered with this OAuth service. 
@@ -64,7 +65,7 @@ the client application will simply complete the code/token exchange on the attac
 before logging them in to the victim's account. 
 
 
-Flawed redirect_uri validation
+## Flawed redirect_uri validation
 When auditing an OAuth flow, you should try experimenting with the 
 redirect_uri parameter to understand how it is being validated.
 
@@ -85,7 +86,7 @@ alter the parsing of the redirect_uri, allowing you to submit URIs that would ot
 if you notice that the web_message response mode is supported, 
 this often allows a wider range of subdomains in the redirect_uri
 
-Stealing codes and access tokens via a proxy page
+## Stealing codes and access tokens via a proxy page
 try to work out whether you can change the redirect_uri parameter to 
 point to any other pages on a whitelisted domain. 
 you may be able to use directory traversal tricks to supply any arbitrary path on the domain. 
@@ -95,7 +96,7 @@ Dangerous JavaScript that handles query parameters and URL fragments
 XSS vulnerabilities
 HTML injection vulnerabilities
 
-Flawed scope validation
+## Flawed scope validation
 Scope upgrade: authorization code flow - authorization code grant type 
 Where the client adds additional scopes to in the token grant phase, and if 
 the Resource server fails to get the scope that was initially granted by the 
@@ -112,11 +113,11 @@ he is granted permission to the added scope
 Unverified user registration - highly unlikely for these modern popular oauth providers/servers
 
 
-OAuth Dirty Dancing to steal codes & tokens
+# OAuth Dirty Dancing to steal codes & tokens
 the idea is to end up on some form of error page or similar that 
 still loads third-party Javascript for us to leak the tokens.
 
-Breaking State Intentionally
+### Breaking State Intentionally
 1. Intercept the redirect response from the authorization server
 and modify the state, at this point the code/token has already 
 been created if the user was logged in already to the authorization server
@@ -130,21 +131,21 @@ if an attacker can send a login-flow-link to a victim tainted with a valid state
 the OAuth-dance will fail for the victim and the code will never be sent to the OAuth-provider. 
 The code will still be possible to use if the attacker can get it.
 
-Attacker starts a sign-in flow on the website using “Sign in with X”.
+### Attacker starts a sign-in flow on the website using “Sign in with X”.
 Attacker uses the state-value and constructs a link for the victim to sign in with the OAuth-provider but with the attacker’s state.
 Victim gets signed-in with the link and redirected back to the website.
 Website validates the state for the victim and stops processing the sign-in flow since it’s not a valid state. Error page for victim.
 Attacker finds a way to leak the code from the error page.
 Attacker can now sign in with their own state and the code leaked from the victim.
 
-Response-type/Response-mode switching
+### Response-type/Response-mode switching
 Changing response-types or response-modes of the OAuth-dance will effect in what 
 way the codes or tokens are sent back to the website, 
 which most of the time causes unexpected behavior.
 https://labs.detectify.com/writeups/account-hijacking-using-dirty-dancing-in-sign-in-oauth-flows/#response-type-response-mode-switching
 
 
-Redirect-uri case shifting
+### Redirect-uri case shifting
 Some OAuth-providers allows case-shifting in the path of the redirect_uri
 If the whitelisted routes are case-sensitive, case shifting will cause a non happy path 
 ...
@@ -159,7 +160,7 @@ there is no need to hit the resource server, this trick works
 Chaining an Open Redirect + Path traversal can lead to leaking 
 access tokens or codes. A dirty dance 
 
-Redirect-uri parameter appending
+### Redirect-uri parameter appending
 Some OAuth-providers allow additional query or fragment parameters to be added to the redirect_uri. 
 You can use this by triggering a non-happy path by providing the same parameters that will be appended to the URL
 response_type=code&
@@ -173,10 +174,11 @@ https://example.com/callback#id_token=xxx&id_token=real-id_token
 Depending on the javascript that fetches the fragment parameters when multiple 
 parameters of the same name are present, this could also end up in a non-happy path.
 
-Redirect-uri leftovers or misconfigurations
-the start-page also as a valid redirect_uri. 
+### Redirect-uri leftovers or misconfigurations the start-page also as a valid redirect_uri. 
 For example, if redirect_uri=https://auth.example.com/callback
 redirect_uri=https://example.com/
 redirect_uri=https://example.com
 redirect_uri=https://www.example.com/
 redirect_uri=https://www.example.com
+
+

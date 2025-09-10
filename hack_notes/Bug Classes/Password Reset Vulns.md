@@ -34,5 +34,17 @@ Check if the system handles duplicate or reused tokens properly.
 ```
 {"email":["victim@gmail.com","attacker@gmail.com"]}
 ```
+[$35k GitLab ATO](https://hackerone.com/reports/2293343)
 Check if the password reset flow is vulnerable to HPP attacks by injecting extra parameters in the HTTP request.
 Test how the system handles multiple occurrences of the same parameter in a single request.
+
+
+# 9. Password Reset Poisoning
+[Password reset link injection allows redirect to malicious URL](https://hackerone.com/reports/281575)
+
+# Bypassing Host Header Validation
+> Host: example.com?.mavenlink.com
+[Generating HTTP reset link with Http instead of https](https://hackerone.com/reports/1888915)
+
+# Storing reset tokens in cookies
+[Reset password cookie leads to account takeover](https://hackerone.com/reports/1004536)

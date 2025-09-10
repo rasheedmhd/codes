@@ -11,6 +11,8 @@ Rails            .         Dot
 OpenLiteSpeed    %00       Null encoded byte
 Nginx            %0a       New encoded byte
 
+[Modern Technology Delimiters](https://medium.com/@0xAwali/http-parameter-pollution-in-2024-32ec1b810f89)
+
 # Terminology
 Origin Server : The server that serves the content AKA Backend server
 Cache Proxy   : The server that caches the content AKA Frontend server

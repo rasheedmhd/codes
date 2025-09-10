@@ -5,7 +5,7 @@ Manipulating browsers to make state changing request on victims behalf.
 - CSRF Tokens (set my web frameworks like rails/django)
 - SameSite header settings (cookies) Strict/Lax/None + HttpOnly
 prevent sending cookies on POST, AJAX and iframes
-set Lax by some browsers like chromes
+set Lax by some browsers like Chrome
 
 ## Caveats:
 - When browsers allow state-changing req with GET, CSRF becomes easier 
@@ -23,14 +23,14 @@ set Lax by some browsers like chromes
 # CORS 
 Preflight request 
 application/json
-samesite lax/strict/
+samesite lax/strict/none
 
 # Bypassing CSRF Protection
 1. Through clickjacking
 2. Changing the Request Method
 Sometimes sites will accept multiple request methods for the same endpoint, 
 but protection might not be in place for each of those methods.
-Change the req method and submit the req without the CSRF token
+> Test: change the req method and submit the req without the CSRF token
 
 ## Bypass CSRF Tokens Stored on the Server
 Websites can use CSRF tokens without proper validation
@@ -102,6 +102,7 @@ anyone who signed up via their social media account and hasn’t yet done so.
 # Real World Reports
 [Shopify Twitter Disconnect](https://hackerone.com/reports/111216)
 [Badoo CSRF to Account TakeOver](https://hackerone.com/reports/127703/)
+[From Hidden Parameter to Account Takeover](https://medium.com/@radwan0x/from-hidden-parameter-to-account-takeover-e6905f35d93a)
 
     POC
     <html>
@@ -110,47 +111,27 @@ anyone who signed up via their social media account and hasn’t yet done so.
       </body>
     </html>
 
-# Finding Your First CSRF!
+# Finding Your First CSRF
 
 1. Spot the state-changing actions on the application and keep a note on
 their locations and functionality.
 2. Check these functionalities for CSRF protection. 
 If you can’t spot any protections, you might have found a vulnerability!
 3. If any CSRF protection mechanisms are present, try to bypass the protection
-4. Confirm the vulnerability by crafting a malicious HTML page and visiting that page to see if the action has executed.
+4. Confirm the vulnerability by crafting a malicious HTML page and 
+visiting that page to see if the action has executed.
 5. Think of strategies for delivering your payload to end users.
 6. Draft your first CSRF report!
-
-
-# CSRF Filter Bypass
-
-    \/yoururl.com
-    \/\/yoururl.com
-    \\yoururl.com
-    //yoururl.com
-    //theirsite@yoursite.com
-    /\/yoursite.com
-    https://yoursite.com%3F.theirsite.com/
-    https://yoursite.com%2523.theirsite.com/
-    https://yoursite?c=.theirsite.com/ (use # \ also)
-    //%2F/yoursite.com
-    ////yoursite.com
-    https://theirsite.computer/
-    https://theirsite.com.mysite.com
-    /%0D/yoursite.com (Also try %09, %00, %0a, %07)
-    /%2F/yoururl.com
-    /%5Cyoururl.com
-    //google%E3%80%82com
 
 
 From https://whitton.io/articles/messenger-site-wide-csrf/
 The way I normally check for these is as follows:
 
-1 Perform the request without modifying the parameters, so we can see what the expected result is
-2 Remove the CSRF token completely (in this case, the fb_dtsg parameter)
-3 Modify one of the characters in the token (but keep the length the same)
-4 Remove the value of the token (but leave the parameter in place)
-5 Convert to a GET request
+1. Perform the request without modifying the parameters, so we can see what the expected result is
+2. Remove the CSRF token completely (in this case, the fb_dtsg parameter)
+3. Modify one of the characters in the token (but keep the length the same)
+4. Remove the value of the token (but leave the parameter in place)
+5. Convert to a GET request
 
 If any of the above steps produce the same result as #1 then we know that the end-point is likely to be vulnerable 
 (there are some instances where you might get a successful response, 
@@ -166,7 +147,7 @@ Perform the request normally
 > Check for one-time use enforcement.
 > Use an old/expired token (from history).
 1. Remove the CSRF token parameter entirely.
-2. Send token parameter with no value (X-CSRF-TOKEN=).
+2. Send token parameter with no value (e.g X-CSRF-TOKEN=).
 3. Modify one character in the token (length preserved).
 4. Replace with a token of incorrect length.
 
@@ -179,7 +160,7 @@ Perform the request normally
 
 ## Transport & Request Method
 1. Change `POST` to `GET`.
-2. Change `POST` to `PUT | DELETE`
+2. Change `POST` to `PUT | DELETE | PATCH`
 3. Send request as [ thwart preflight requests ]
 `application/x-www-form-urlencoded`, `multipart/form-data`, and `application/json`
 > Some backends validate CSRF only for certain content types.

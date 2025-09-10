@@ -1,6 +1,6 @@
 # Practical Host Header Injection Attacks 
 
-First Report https://carlos.bueno.org/2008/06/host-header-injection.html
+[First Report](https://carlos.bueno.org/2008/06/host-header-injection.html)
 
 This arises when web applications accept HTTP Host Headers, trust it and use as 
 part of the application logic. 
@@ -25,7 +25,7 @@ Exploitation
 Password Reset Poisoning
 Web Cache Deception 
 
-https://portswigger.net/web-security/host-header/exploiting
+[Exploiting Host Header Injections](https://portswigger.net/web-security/host-header/exploiting)
 
 # Problem 
 All modern standalone caches are Host-aware; 
@@ -202,6 +202,9 @@ In this case, you can potentially bypass this validation by sending an innocent-
 initial request then following up with your malicious one down the same connection. 
 
 # SSRF via a malformed request line
+
+# Bypassing Host Header Validation
+> Host: example.com?.mavenlink.com
 
 # Further Research 
 In other cases, the Host may be URL-decoded and placed directly into the email header allowing mail header injection. 

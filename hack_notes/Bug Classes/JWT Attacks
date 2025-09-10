@@ -51,3 +51,6 @@ You could theoretically do this with any file, but one of the simplest methods i
 
 JWT algorithm confusion
 Even if a server uses robust secrets that you are unable to brute-force, you may still be able to forge valid JWTs by signing the token using an algorithm that the developers haven't anticipated. This is known as an algorithm confusion attack.
+
+# Real world Exploits
+[0-Click Account Takeover via Password Reset](https://hackerone.com/reports/2831902)
