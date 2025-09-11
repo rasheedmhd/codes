@@ -316,6 +316,9 @@ Our default cache key got a bunch of new values:
 [Youstin Cache Key normalization DOS](https://youst.in/posts/cache-key-normalization-denial-of-service/)
 [Fastly Header Reference](https://www.fastly.com/documentation/reference/http/http-headers/)
 
+# CVE
+[Incorrect handling of url fragment leads to cache poisoning](https://www.cve.org/CVERecord?id=CVE-2021-27577)
+
 # Gobuster Fuzzing for Web Cache Poisoning 
     Info: gobuster fuzz --help
     -c, --cookies string   

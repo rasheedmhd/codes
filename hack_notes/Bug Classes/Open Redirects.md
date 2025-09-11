@@ -153,5 +153,7 @@ window’s location property through the Document Object Model (DOM).
     //google%E3%80%82com
 
 
-Related Blog Post 
+# Related Blog Post 
 https://medium.com/@merttasci/a-little-open-redirect-bypass-story-87dde12a00a0 : Read 
+
+[CBC "cut and paste" attack may cause Open Redirect(even XSS)](https://hackerone.com/reports/126203)

