@@ -9,7 +9,7 @@
 Spring           ;         Semicolon
 Rails            .         Dot
 OpenLiteSpeed    %00       Null encoded byte
-Nginx            %0a       New encoded byte
+Nginx            %0a       New line encoded byte
 
 [Modern Technology Delimiters](https://medium.com/@0xAwali/http-parameter-pollution-in-2024-32ec1b810f89)
 
@@ -20,29 +20,34 @@ Load Balancer : The server that distributes the traffic to the origin server
 Delimiter     : A character or string that separates the path from the query string [see more explanation below]
 
 # Detecting Origin Delimiters 
-1. Identify a non-cacheable request 
-In that case we hope that what is appended is ignored by the frontend server and makes it to the backend  server.
+1. Identify a `non-cacheable` request 
+In this case we hope that what is appended is ignored by the frontend server and makes it to the backend server.
 2. Send the same request appending a random suffix at the end of the path 
 > abc / ? # % ; %2F %00 %0a %09 %20
 3. Send the same request appending a delimiter before the random suffix at the end of the path 
 > abc / ? # % ; %2F %00 %0a %09 %20
-If the messages are identical, the character or string is used as a delimiter.
+If the responses are identical, the character or string is used as a delimiter.
 Use Burp Intruder 
 # & URL delimiters in the real world 
 ## CVE from web framework(bottle) using ; as delimiter 
-https://security.snyk.io/vuln/SNYK-PYTHON-BOTTLE-1017108
-https://snyk.io/blog/cache-poisoning-in-popular-open-source-packages
-https://github.com/python/cpython/blob/main/Lib/urllib/parse.py#L739
+[Python Bottle delimiter](https://security.snyk.io/vuln/SNYK-PYTHON-BOTTLE-1017108)
+[Open Source Packages](https://snyk.io/blog/cache-poisoning-in-popular-open-source-packages)
+[Fix in code](https://github.com/python/cpython/blob/main/Lib/urllib/parse.py#L739)
 
-What does a Delimiter mean or does exactly? The delimiter is a character, that when the url parser reaches it a logical stop in parsing is decided there whatever character/s that follows
+What does a `delimiter` mean or does exactly? 
+The delimiter is a character, that when the url parser reaches it,
+a logical stop in parsing is decided there whatever character/s that follows
 at character is considered as not part of the URL.
 
 # Why is this Important? 
 Identifying and using the delimiter allows to essentially coerce the parser to stop parsing at an 
-arbitrary section of the URL that we want. See where this is going? Meaning we can smuggle a payload to the other URL parser or pass the the cache server. In this case we are talking about the Origin Server i.e the application server or servers like nginx, apache, etc not the frontend cache server like cloudflare, etc.
+arbitrary section of the URL that we want. 
+See where this is going? Meaning we can smuggle a payload to the other URL parser or pass the the cache server. 
+In this case we are talking about the Origin Server i.e the application server or servers like nginx, apache, 
+etc not the frontend cache server like cloudflare, etc.
 
 # Detecting Cache Delimiters 
-Cache servers often don't use delimiters aside from ?
+Cache servers often don't use delimiters aside from `?`
 1. Identify cacheable request
 Because it is a cacheable request, we can be sure that at least the cache server will pay attention to it, parse it. 
 2. Send same req with a potential delimiter and compare the response
@@ -51,53 +56,55 @@ Because it is a cacheable request, we can be sure that at least the cache server
 
 # Normalization
 URL parsers are used by both the cache and origin server to extract paths for endpoint mapping,
-cache keys, and rules. First, path delimiters are identified to locate the start and end of the
+cache keys, and rules. First, `path delimiters` are identified to locate the start and end of the
 pathname. Once the path is extracted, it's normalized to its absolute form by decoding characters
-and removing dot-segments
+and removing `dot-segments`
 
 # Encoding 
-Sometimes, a delimiter character needs to be sent for interpretation by the application rather than
+Sometimes, a `delimiter character` needs to be sent for interpretation by the application rather than
 the HTTP parser. For such cases, the URI RFC defines URL encoding, which allows characters to
 be encoded to avoid modifying the meaning of the pathname.
 
 # Detecting decoding behaviors
 To test if a character is being decoded, compare a base request with its encoded version.
 Encode chars individually
-example:
-/home/index → /%68%6f%6d%65%2f%69%6e%64%65%78
+Example:
+> /home/index → /%68%6f%6d%65%2f%69%6e%64%65%78
 
 # Dot-segment normalization
-It's possible to exploit dot-segment normalization by leveraging the discrepancies between parsers
+It's possible to exploit `dot-segment normalization` by leveraging the discrepancies between parsers
 to modify the behavior of the cache rules and obtain crafted keys. 
 
 # Detecting dot-segment normalization
 To detect normalization in the origin server, issue a non-cacheable request (or a request with a
 cache buster) to a known path, then send the same message with a path traversal sequence:
-> GET /home/index?cacheBuster
-> GET /aaa/../home/index?cacheBuster or 
-> GET /aaa%2F..%2Fhome/index?cacheBuster or 
-> GET /aaa\..\home/index?cacheBuster
+> GET /home/index?cacheBuster=donotpoisoneveryone
+> GET /aaa/../home/index?cacheBuster=donotpoisoneveryone or 
+> GET /aaa%2F..%2Fhome/index?cacheBuster=donotpoisoneveryone or 
+> GET /aaa\..\home/index?cacheBuster=donotpoisoneveryone
 
 # Normalization discrepancies
 The following tables illustrate how different HTTP servers and web cache proxies normalize the
-path /hello/..%2Fworld. Some resolve the path to /world, while others don't normalize it at all.
+path `/hello/..%2Fworld`. Some resolve the path to /world, while others don't normalize it at all.
 
 # Exploiting Web Cache Deception 
 ## Static file extensions / URL Mapping discrepancies
 This is where the cache rule says the proxy should cache all files that ends with one of 
 the static extensions it supports 
-Here you add /test.js : A /(sometimes encoded) a random string(test) and a static file extension(.js)
+Here you add `/test.js : A /(sometimes encoded) a random string(test) and a static file extension(.js)`
 Refer to the proxy static file extensions list 
-https://developers.cloudflare.com/cache/concepts/default-cache-behavior/#default-cached-file-extensions
+[Cloudflare default Cache File extensions](https://developers.cloudflare.com/cache/concepts/default-cache-behavior/#default-cached-file-extensions)
 
 # How/Why it happens 
-Proxy sees and pays attention to a.css
-Server sees and ignores a.css
-Cache Proxy                 Origin Server
+Here we are assuming that the Origin Server's delimiter is a `$/#` 
+and the cached file extensions the proxy supports is a `.css`
+Proxy sees and pays attention to `a.css`
+Server sees and ignores `a.css`
+Cache Proxy                   Origin Server
 > /myAccount$a.css            /myAccount$a.css
 > /myAccount%23a.css          /myAccount#a.css 
 
-Sometimes the Cache Proxy/LB/Frontend Server decodes before forwarding to the origin server
+Sometimes the Cache Proxy/LB/Frontend Server decodes the URL before forwarding to the Origin Server
 Load Balancer:              /myAccount%25%32%33a.css 
 Cache Proxy:                /myAccount%23a.css  
 Origin Server:              /myAccount#a.css 
@@ -105,7 +112,7 @@ If you are sending # in the browser, you need to encode it. Browsers don't send 
 
 # Static directories
 Eg: Where to find them
-Tip: Cache your browser network tap for which files are cached.
+Tip: Check your browser network tap for cached files/request responses.
 ```
 /static
 /assets
@@ -117,30 +124,30 @@ Tip: Cache your browser network tap for which files are cached.
 ```
 
 # Exploiting static directories with delimiters
-If a char is used as a delimiter by the Origin Server but not by the cache server and the 
+If a char is used as a `delimiter` by the Origin Server but not by the cache server and the 
 cache server normalizes the path before applying a static directory rule, 
-you can hide a path traversal segment after the delimiter, which the cache will resolve:
+you can hide a path traversal segment after the `delimiter`, which the cache will resolve:
 
-> GET /<Dynamic_Resource><Delimiter><Encoded_Dot_Segment><Static_Directory>
-CP normalizes req, applying the path traversal so it sees /static/any 
-Origin Server uses $ as delimiter so it ignores $/..%2Fstatic/any and serves /myAccount
-CP applying static directory rules caches /myAccount as /static/any 
-Browser                        Cache Proxy      Origin Server
+> GET /<DynamicResource><Delimiter><EncodedDotSegment><StaticDirectory>
+CP normalizes req, applying the path traversal so it sees `/static/any` 
+Origin Server uses `$` as `delimiter` so it ignores `$/..%2Fstatic/any` and serves `/myAccount`
+CP applying static directory rules caches `/myAccount` as `/static/any` 
+Browser                          Cache Proxy      Origin Server
 > /myAccount$/..%2Fstatic/any    /static/any      /myAccount
 
-Remember to test, the behavior of the CP 
+Remember to test the behavior of the CP 
 
 # Exploiting static directories through Backend only normalization
 The Origin Server normalizes the path before mapping the endpoint but the 
 cache doesn't normalize the path before evaluating the cache rules, 
 You can add a path traversal segment that will only be processed by the Origin Server:
 
-GET /<Static_Directory><Encoded_Dot_Segment><Dynamic_Resource>
+GET /<StaticDirectory><EncodedDotSegment><DynamicResource>
 CP doesn't normalize encoding, forwards to Origin Server
-Origin Server normalizes path traversal dot segments and server /myAccount 
-CP caches response thinking it is under /static/
-Browser                 Cache Proxy                 Origin Server
-/static/..%2FmyAccount  /static/..%2FmyAccount      /myAccount
+Origin Server normalizes path traversal dot segments and serves `/myAccount` 
+CP caches response thinking it is under `/static/`
+Browser                   Cache Proxy                 Origin Server
+> /static/..%2FmyAccount  /static/..%2FmyAccount      /myAccount
 
 # Real world Exploit normalization
 https://nokline.github.io/bugbounty/2024/02/04/ChatGPT-ATO.html
@@ -149,12 +156,12 @@ https://nokline.github.io/bugbounty/2024/02/04/ChatGPT-ATO.html
 # Static files
 Some files, like /robots.txt, /favicon.ico, and /index.html, 
 
-Exploiting static files
+# Exploiting static files
 Use the technique used in static directories where
 the CP normalizes the req and there is a delimiter at backend. 
 The static directory is replaced by the filename and a cache buster
 
-> GET /<Dynamic_Resource><Delimiter><Encoded_Dot_Segment><Static_File>
+> GET /<DynamicResource><Delimiter><EncodedDotSegment><Static_File>
 Browser                         Cache Proxy     Origin Server
 > /myAccount/..%2Frobots.txt      /robots.txt     /myAccount
 
@@ -329,7 +336,7 @@ https://hackerone.com/reports/631589
 
 
 https://zhero-web-sec.github.io/cache-deception-to-csrf/
-Web Cache Deceptionce to CSRF form 
+Web Cache Deception CSRF form 
 <html>
     <form id="csrf" enctype="application/x-www-form-urlencoded" method="POST" action="https://www.nope.com/nope">
         <table>
