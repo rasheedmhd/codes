@@ -1,0 +1,39 @@
+# What the ORM is an ORM 
+
+# Conditions for an ORM Leak Vulnerability
+1. The attacker can control the column to filter results by.
+2. The ORM supports an operator that matches a fragment of a value. 
+Suitable operators use the LIKE SQL condition in the generated query, 
+perform regex matching with attacker controlled patterns or 
+allow comparison operators such as <, >.
+3. The attacker can control the operator for a filter.
+4. The queried model has a sensitive field that was not intended to be leaked.
+
+# Relational Filtering Attacks for the Django ORM
+If an ORM supports filtering objects by the value of a field on a related model 
+without needing to enable this relational filtering in the code, 
+then an attacker could chain relational fields to then access sensitive data 
+in what we call a relational filtering attack.
+
+# ORM that support relational filtering 
+
+
+# Finding an Entry Point
+
+# Slight Problem 
+We do have one slight problem. The current relational filtering payload 
+`created_by__user__password` is filtering on one-to-one mappings by 
+filtering Article objects and is currently restricted to the users that have created an Article. 
+However, there will be scenarios where want dump sensitive data for 
+different users that weren’t directly linked to our entrypoint.
+
+# Using Many-to-Many Relationships to Bypass Filter Restrictions
+
+# Error-based Leaking via ReDoS Payloads
+The one thing all of the previous exploit methods I have talked about in this article depended on was using the response length change as an oracle to determine when we had guessed the next correct character. There could be a scenario where Django code is vulnerable to ORM Leaks but the content length would not vary based on query results.
+
+the Django ORM allowed was the regex operator. Regex matching with user provided patterns is dangerous, and could potentially introduce a ReDoS vulnerability. To mitigate against ReDoS attacks, MySQL (the DBMS used in this example) had a default regex time limit that would raise a timeout exception if a regex pattern match exceeded the limit.
+
+The issue of powerful query conditions that can be abused for character by character brute force by end users is not limited to Ransack.
+
+

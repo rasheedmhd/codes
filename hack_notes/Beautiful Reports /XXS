@@ -1,0 +1,4 @@
+
+Content-Type manipulation leads to One Click Account Takeover through PAT
+Type: Source Code Review
+https://bugcrowd.com/disclosures/d5f4aa80-77da-49bb-a259-afe23b6bfa0a/authentication-bypass-in-the-rest-api-via-xss-on-safari-and-chrome-ios-iphone-only
