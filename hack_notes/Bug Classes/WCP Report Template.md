@@ -2,7 +2,7 @@
 The web application is vulnerable to a cache poisoning issue on the following endpoint:
  
 ```
-<URL>
+https://
 ```
  
 The responses to GET requests are being served from a public cache, however due to the lack of the request body being present in the cache keys, we can achieve <insert vulnerability> via the <parameter_name> parameter of our requests.
@@ -14,7 +14,7 @@ The responses to GET requests are being served from a public cache, however due 
 3. Add the following cachebuster as a GET parameter: 'dontpoison=true'. This will ensure to isolate the resulting exploit to users who make requests to this endpoint with the 'dontpoison' parameter & value pair present.
 4. Insert the following POST parameter and value to the request body:
  
-<param>=<value>
+<param> = <value>
  
 The entire request should now look like:
  

@@ -7,6 +7,7 @@ As a result, the poisoned resource gets cached and served to other users.
 A CDN/Cache Proxy relies on cache keys to compare new requests against cached resources. 
 The CDN then determines whether the resource should be served from the cache or 
 requested directly from the origin web server.
+[Cloudflare Cache Keys](https://developers.cloudflare.com/cache/how-to/cache-keys/)
 
 # Injecting Payloads with unkeyed inputs 
 However, injecting a payload is not the only possible vector for this vulnerability. 
@@ -248,11 +249,12 @@ I hope you get the cache poisoning implication. The Cache Proxy uses the query
 parameters as part of the cache key but the returned response was actually 
 influenced by the body params. 
 Affected [Tornado](https://www.tornadoweb.org/en/stable/)
+Since Tornado gives precedence to the body parameters,
 
-    Do not trust GET request bodies
-    Cloudflare caches contents of GET request bodies, but they are not included in the cache key. 
-    GET request bodies should be considered untrusted and should not modify the contents of a response. 
-    If a GET body can change the contents of a response, consider bypassing cache or using a POST request.
+## Do not trust GET request bodies
+[Cloudflare caches contents of GET request bodies](https://developers.cloudflare.com/cache/cache-security/avoid-web-poisoning/#do-not-trust-get-request-bodies), but they are not included in the cache key. 
+GET request bodies should be considered untrusted and should not modify the contents of a response. 
+If a GET body can change the contents of a response, consider bypassing cache or using a POST request.
 
 # Sometimes web apps gives precedence to the body parameters
 Yeah, right? Super weird. This can lead to the Cache proxy caching 
@@ -299,10 +301,11 @@ Ideal: If the Cache O returns the entire URL or at least 1 q qarameters
 Asking Nicely: `Pragma: akamai-x-get-cache-key, akamai-x-get-true-cache-key`
 
 # CloudFlare's Protection
-[Cloudflare CP P](https://blog.cloudflare.com/cache-poisoning-protection/)
-Solution: include ***interesting*** header values in the cache key
-Instead, we decided to change our cache keys for a request only if we think it may influence the origin response. 
-Our default cache key got a bunch of new values:
+[Cloudflare Cache Poisoning Protection](https://blog.cloudflare.com/cache-poisoning-protection/)
+Cloudflare includes ***interesting*** header values in the cache key in hopes to reducing the 
+impact of a Cache Poisoning Attack. Headers like X-Forwarded-Host are only added to the Cache Key
+when they differ from what’s in the URL or Host header this is for performance gains, as sharded and
+look cache keys will impact look up times and cache frequency.
 ## Cloudflare Cache Key Values
     HTTP Scheme
     HTTP Host
@@ -315,7 +318,7 @@ Our default cache key got a bunch of new values:
 # Resources 
 [Youstin Cache Key normalization DOS](https://youst.in/posts/cache-key-normalization-denial-of-service/)
 [Fastly Header Reference](https://www.fastly.com/documentation/reference/http/http-headers/)
-
+[Snyk Open Source Cache Poisoning Research](https://snyk.io/blog/cache-poisoning-in-popular-open-source-packages/)
 # CVE
 [Incorrect handling of url fragment leads to cache poisoning](https://www.cve.org/CVERecord?id=CVE-2021-27577)
 

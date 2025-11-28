@@ -1,0 +1,71 @@
+Since you have a dev background, what I would recommend you trying it 
+
+1. Take a common vulnerability type and find examples of source code where that bug was introduced
+Like real examples. Not whatever toy examples you find on these learning sites
+2. And study the mistake in code
+
+3. Think about why the developer made that mistake. And how else would that kind of mistake look like in code
+4. Then use github’s regex search to try and find other instances of similar (not necessarily identical) mistakes. 
+> Nahamsec has a regex video out that gives some context on that
+
+    When i ran dropbox’s bug bounty program, one of my favorite things to do was study the mistakes our engineers made to see what they mightve done wrong. 
+
+- Perhaps it was a function they thought did one thing, but did something slightly different. 
+[Wormhole Hack](https://composable-security.com/blog/6-security-sins-of-web3-bridges/)
+- Maybe it was a case where they forgot to check an exception/error a function returns that had security properties. 
+- Maybe there was a dangerous property in a framework they thought they used safely, but failed to consider all edge cases
+- When you do source code review, you can start from the mistakes and work backwards to find ways to interact with them.
+
+> It’s a lot easier to find the treasure in the maze, if you start at the treasure chest and work your way backwards to an entrance 🙂
+> I found my auth CVE on Hashicorp’s Vault product using this exact method ^ though i was looking for a different type of mistake at the time 😄
+
+## It helps you start to think about the underlying reasons bugs exist
+While I’m hacking, I’m actually thinking about how it was designed and what mistakes they mightve made
+## Also you can do bug bounty on source code too, there’s just less of it (and a lot less bug hunters looking too 😉 )
+# I did this for an opensource library on paypal and in 2 hours found a bug that paid $5k. Pretty good payoff for time spent, if you ask me 😏
+
+# But seriously tho - this helps a loooot
+# When most bug hunters find “weird behavior” on a site, they just blindly send payloads hoping a bug pops out.
+
+But being able to build a mental model for how the dev implemented it 
+(like really down to the fictional lines of code they wrote), you’ll be able to think of those mistakes the devs might’ve made 🙂
+And as you continue to poke it, you’ll adapt your mental model allowing you to do more targeted testing
+
+Nice! Yea and learn frameworks too
+Since a lot of issues come out of them. 
+Frameworks usually do a lot of magic, but often have footguns in them
+----------------------------------------------------------------------------------------------
+rasheed starlet maverick — Yesterday at 11:11 PM
+yeah i see targets with source codes, I do love code review, 
+I read open source projects for learning purposes. 
+But I haven't tried that with bug bounty bc I am always thinking, no way, I am going to find anything here, these devs are way better than me, and also many other more talented hackers had reviewed this already. 
+Probably a poisonous thought killing my bugs
+---- d0nut
+Yea that mentality is bad
+Don’t be 🥀
+Be 🌹
+That $5k bug was in a security library btw From paypal they have good devs over there
+But the sheer volume of stuff they gotta build and maintain, means it’s an impossible challenge to think of everything So don't ever think “the devs are smarter than me and probably fixed everything”
+-----------------------------------------------
+
+Lot of golang based stuff now too, but companies that have been around for like 10+ years will probably have a django surface
+And it’ll usually be the core app
+eg Robinhood and Dropbox :KEKW: but plenty of others too
+
+Mainly manual review
+So static usually
+But spinning up an instance of the software is helpful for testing ideas
+
+# You could also build up your own custom semgrep ruleset which can help flag the interesting bits if the source code to start working backward from, but I usually recommend you follow the typical flows in the code first
+> Like “how does login work from start to finish” 
+> “How do i fetch a widget?”
+> So you understand the common patterns in the code you should expect
+> Then go to the weird stuff and work backward
+
+I should do a writeup on my vault bug so y’all can see how i found it
+And i could leave a nugget of a potential vuln to look for that i have never seen anyone report before 😄
+
+https://discuss.hashicorp.com/t/hcsec-2024-05-vault-cert-auth-method-did-not-correctly-validate-non-ca-certificates/63382
+
+My favorite talk I did was the EuroRust one. If you know some rust, you might enjoy it. It’s an intersection between rust and security
+https://youtu.be/QcS9UNsVhp8?feature=shared

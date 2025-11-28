@@ -1,0 +1,32 @@
+# Reentrancy
+Happens when a contract sends ether to an unknown external address.
+The contract owning the external address can create a malicious contract 
+using its fallback function
+
+# Prevention
+- Checks-Effects-Interactions pattern 
+All external calls to other addresses/contracts should only be done
+after the affected/resultant state changes are made
+```contract Fund {
+    /// @dev Mapping of ether shares of the contract.
+    mapping(address => uint) shares;
+    /// Withdraw your share.
+    function withdraw() public {
+        uint share = shares[msg.sender];
+        shares[msg.sender] = 0;
+        payable(msg.sender).transfer(share);
+    }
+}
+```
+https://docs.soliditylang.org/en/latest/security-considerations.html#use-the-checks-effects-interactions-pattern
+- Use msg.sender.transfer which allocates a gas of 2300 capping the computation
+of the contract call limiting the ability of the malicious contract to reenter
+the vulnerable contract
+- Use a reEntrancyMutex 
+
+# Overflow and Underflow 
+
+# Access Control 
+
+# Unsafe use of Language Primitives
+panics in rust 

@@ -214,6 +214,8 @@ Even if the application's mailer ignores attempts to BCC other email addresses d
 it's often possible to bounce the email to another address by injecting 
 \r\nReturn-To: attacker@evil.com followed by an attachment engineered to trigger a bounce, like a zip bomb.
 
+[Laminas Security Advisory](https://getlaminas.org/security/advisory/LP-2022-02)
+
 Mail Header Injection
 https://bugzilla.mozilla.org/show_bug.cgi?id=741814 Mozilla Bug Report
 https://www.invicti.com/learn/email-injection/
