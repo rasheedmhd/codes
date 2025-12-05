@@ -48,17 +48,18 @@ type PoisonTester struct {
 // Built-in headers to test for cache poisoning
 var poisonHeaders = []string{
 	"X-Forwarded-Host",
-	"X-Forwarded-Scheme",
+	// "X-Forwarded-Scheme",
 	"X-Original-URL",
 	"X-Rewrite-URL",
 	"X-Host",
 	"X-Forwarded-Server",
-	"X-Forwarded-Proto",
+	// "X-Forwarded-Proto",
 	"Forwarded",
 	"X-Original-Host",
 	"X-Host-Override",
 	"X-HTTP-Host-Override",
-	"X-Forwarded-Port",
+	// "X-HTTP-Method-Override",
+	// "X-Forwarded-Port",
 	"X-Backend-Host",
 	"X-Real-IP",
 	"True-Client-IP",
@@ -67,11 +68,11 @@ var poisonHeaders = []string{
 
 // Detection payloads for different attack vectors
 var payloads = map[string]string{
-	"xss":           `"><script>alert('WCP')</script>`,
-	"redirect":      "evil.com",
-	"host_override": "attacker-domain.com",
-	"path_override": "/admin",
-	"canary":        "cachepoisontest123",
+	// "xss":           `"><script>alert('WCP')</script>`,
+	"redirect":      "dzzwolliujyjdurzfshmn1wh36t7vzx9c.oast.fun",
+	"host_override": "adzzwolliujyjdurzfshmn1wh36t7vzx9c.oast.fun",
+	// "path_override": "/admin",
+	"canary":        "cacheprobe1337",
 }
 
 func main() {
@@ -81,8 +82,8 @@ func main() {
 	workers 	:= flag.Int("workers", 10, "Number of concurrent workers")
 	timeout 	:= flag.Int("timeout", 10, "HTTP timeout in seconds")
 	verbose 	:= flag.Bool("v", false, "Verbose output")
-	output 	    := flag.String("o", "", "Output file for results (JSON)")
-	
+	output 		:= flag.String("o", "", "Output file for results (JSON)")
+
 	flag.Parse()
 
 	if *urlFile == "" && *urlArg == "" {
@@ -122,15 +123,15 @@ func main() {
 	}
 
 	tester := NewPoisonTester(config)
-	
+
 	fmt.Printf("[*] Starting Web Cache Poisoning Detection\n")
 	fmt.Printf("[*] Testing %d URLs with %d workers\n", len(config.URLs), config.Workers)
-	fmt.Printf("[*] Using %d built-in headers + %d custom headers\n\n", 
+	fmt.Printf("[*] Using %d built-in headers + %d custom headers\n\n",
 		len(poisonHeaders), len(config.CustomHeaders))
 
 	tester.Run()
 
-	fmt.Printf("\n[+] Scan Complete!\n")
+	fmt.Printf("\n[+] Scan Completed!\n")
 	fmt.Printf("[+] Found %d potential vulnerabilities\n\n", len(tester.results))
 
 	// Display results
@@ -200,61 +201,64 @@ func (pt *PoisonTester) testURL(targetURL string, workerID int) {
 		fmt.Printf("[Worker %d] Testing: %s\n", workerID, targetURL)
 	}
 
-	// Test 1: Cache key probing - identify unkeyed inputs
-	pt.probeCacheKey(targetURL)
+	// // Test 1: Cache key probing - identify unkeyed inputs
+	// pt.probeCacheKey(targetURL)
 
-	// Test 2: Header-based poisoning
+	// // Test 2: Header-based poisoning
 	pt.testHeaderPoisoning(targetURL)
 
-	// Test 3: Query parameter cloaking
-	pt.testParameterCloaking(targetURL)
+	// // Test 3: Query parameter cloaking
+	// pt.testParameterCloaking(targetURL)
 
-	// Test 4: Fat GET poisoning
-	pt.testFatGET(targetURL)
+	// // Test 4: Fat GET poisoning
+	// pt.testFatGET(targetURL)
 
-	// Test 5: Port-based poisoning
-	pt.testPortPoisoning(targetURL)
+	// // Test 5: Port-based poisoning
+	// pt.testPortPoisoning(targetURL)
 
 	// Test 6: Custom headers
-	for header, value := range pt.config.CustomHeaders {
-		pt.testCustomHeader(targetURL, header, value)
-	}
+	// for header, value := range pt.config.CustomHeaders {
+	// 	pt.testCustomHeader(targetURL, header, value)
+	// }
 }
 
 // probeCacheKey identifies which request components are keyed
-func (pt *PoisonTester) probeCacheKey(targetURL string) {
-	// Add a unique cachebuster parameter
-	cacheBuster := fmt.Sprintf("cb=%d", time.Now().UnixNano())
-	testURL := addQueryParam(targetURL, cacheBuster)
+// func (pt *PoisonTester) probeCacheKey(targetURL string) {
+// 	// Add a unique cache buster parameter
+// 	cacheBuster := fmt.Sprintf("cb=%d", time.Now().UnixNano())
+// 	testURL := addQueryParam(targetURL, cacheBuster)
+// 	fmt.Println(testURL)
 
-	// Test if port is excluded from cache key
-	resp1 := pt.makeRequest(testURL, "Host", addPort(extractHost(targetURL), "1337"), nil)
-	if resp1 == nil {
-		return
-	}
+// 	// Test if port is excluded from cache key
+// 	resp1 := pt.makeRequest(testURL, "Host", addPort(extractHost(targetURL), "1337"), nil)
+// 	fmt.Printf("%+v\n", resp1)
+// 	if resp1 == nil {
+// 		return
+// 	}
 
-	resp2 := pt.makeRequest(testURL, "", "", nil)
-	if resp2 == nil {
-		return
-	}
+// 	resp2 := pt.makeRequest(testURL, "", "", nil)
+// 	fmt.Printf("%+v\n", resp2)
+// 	if resp2 == nil {
+// 		return
+// 	}
 
-	if pt.isCacheHit(resp2) && pt.responsesMatch(resp1, resp2) {
-		pt.addResult(VulnerabilityResult{
-			URL:         targetURL,
-			VulnType:    "Cache Key - Port Not Keyed",
-			Header:      "Host",
-			CacheStatus: pt.getCacheStatus(resp2),
-			IsPoisoned:  true,
-			Timestamp:   time.Now(),
-		})
-	}
-}
+// 	if pt.isCacheHit(resp2) && pt.responsesMatch(resp1, resp2) {
+// 		pt.addResult(VulnerabilityResult{
+// 			URL:         targetURL,
+// 			VulnType:    "Cache Key - Port Not Keyed",
+// 			Header:      "Host",
+// 			CacheStatus: pt.getCacheStatus(resp2),
+// 			IsPoisoned:  true,
+// 			Timestamp:   time.Now(),
+// 		})
+// 	}
+// }
 
 // testHeaderPoisoning tests standard cache poisoning headers
 func (pt *PoisonTester) testHeaderPoisoning(targetURL string) {
 	for _, header := range poisonHeaders {
 		for payloadName, payload := range payloads {
-			cacheBuster := fmt.Sprintf("wptest=%d", time.Now().UnixNano())
+			cacheBuster := fmt.Sprintf("cb=%d", time.Now().UnixNano())
 			testURL := addQueryParam(targetURL, cacheBuster)
 
 			// Phase 1: Poison the cache
@@ -284,7 +288,7 @@ func (pt *PoisonTester) testHeaderPoisoning(targetURL string) {
 				})
 
 				if pt.config.Verbose {
-					fmt.Printf("[!] VULN: %s vulnerable to %s poisoning via %s\n", 
+					fmt.Printf("[!] VULN: %s vulnerable to %s poisoning via %s\n",
 						targetURL, payloadName, header)
 				}
 			}
@@ -295,9 +299,9 @@ func (pt *PoisonTester) testHeaderPoisoning(targetURL string) {
 // testParameterCloaking tests cache parameter cloaking attacks
 func (pt *PoisonTester) testParameterCloaking(targetURL string) {
 	cloakingTests := []struct {
-		name    string
-		param   string
-		canary  string
+		name   string
+		param  string
+		canary string
 	}{
 		{"Semicolon Delimiter", "utm_content=legit;callback=", "alert(1)"},
 		{"Question Mark in Param", "q=test?cb=", "malicious"},
@@ -373,40 +377,41 @@ func (pt *PoisonTester) testFatGET(targetURL string) {
 }
 
 // testPortPoisoning tests port-based cache key manipulation
-func (pt *PoisonTester) testPortPoisoning(targetURL string) {
-	cacheBuster := fmt.Sprintf("port=%d", time.Now().UnixNano())
-	testURL := addQueryParam(targetURL, cacheBuster)
+// Completely WRONG: REWORK. TO DO
+// func (pt *PoisonTester) testPortPoisoning(targetURL string) {
+// 	cacheBuster := fmt.Sprintf("port=%d", time.Now().UnixNano())
+// 	testURL := addQueryParam(targetURL, cacheBuster)
 
-	host := extractHost(targetURL)
-	hostWithPort := addPort(host, "8080")
+// 	host := extractHost(targetURL)
+// 	hostWithPort := addPort(host, "8080")
 
-	// Phase 1: Request with non-standard port
-	resp1 := pt.makeRequest(testURL, "Host", hostWithPort, nil)
-	if resp1 == nil {
-		return
-	}
+// 	// Phase 1: Request with non-standard port
+// 	resp1 := pt.makeRequest(testURL, "Host", hostWithPort, nil)
+// 	if resp1 == nil {
+// 		return
+// 	}
 
-	time.Sleep(100 * time.Millisecond)
+// 	time.Sleep(100 * time.Millisecond)
 
-	// Phase 2: Request without port
-	resp2 := pt.makeRequest(testURL, "", "", nil)
-	if resp2 == nil {
-		return
-	}
+// 	// Phase 2: Request without port
+// 	resp2 := pt.makeRequest(testURL, "", "", nil)
+// 	if resp2 == nil {
+// 		return
+// 	}
 
-	if pt.isCacheHit(resp2) && (strings.Contains(resp2.Body, ":8080") || 
-		strings.Contains(resp2.Headers["Location"], ":8080")) {
-		pt.addResult(VulnerabilityResult{
-			URL:         targetURL,
-			VulnType:    "Port Poisoning",
-			Header:      "Host",
-			Payload:     hostWithPort,
-			CacheStatus: pt.getCacheStatus(resp2),
-			IsPoisoned:  true,
-			Timestamp:   time.Now(),
-		})
-	}
-}
+// 	if pt.isCacheHit(resp2) && (strings.Contains(resp2.Body, ":8080") ||
+// 		strings.Contains(resp2.Headers["Location"], ":8080")) {
+// 		pt.addResult(VulnerabilityResult{
+// 			URL:         targetURL,
+// 			VulnType:    "Port Poisoning",
+// 			Header:      "Host",
+// 			Payload:     hostWithPort,
+// 			CacheStatus: pt.getCacheStatus(resp2),
+// 			IsPoisoned:  true,
+// 			Timestamp:   time.Now(),
+// 		})
+// 	}
+// }
 
 // testCustomHeader tests a custom header provided by user
 func (pt *PoisonTester) testCustomHeader(targetURL, header, value string) {
@@ -459,10 +464,14 @@ func (pt *PoisonTester) makeRequest(targetURL, header, value string, body io.Rea
 	}
 
 	// Set common headers
-	req.Header.Set("User-Agent", "WCP-Scanner/1.0")
+	req.Header.Set("User-Agent", "Mozilla/5.0 Gecko/20100101 Firefox/146.0")
 	req.Header.Set("Accept", "*/*")
+	req.Header.Set("Cookie", "_ga13_37=T1.2.12345S789.T23156N8G0; _gid=GA1.2.987654321.1234567890")
+	req.Header.Set("Accept-Encoding", "gzip, deflate, br")
 
+	fmt.Println(*req)
 	resp, err := pt.client.Do(req)
+	fmt.Println(*resp)
 	if err != nil {
 		return nil
 	}
@@ -498,12 +507,12 @@ func (pt *PoisonTester) isCacheHit(resp *HTTPResponse) bool {
 	}
 
 	cacheIndicators := map[string][]string{
-		"CF-Cache-Status":    {"HIT"},
-		"X-Cache":            {"HIT", "TCP_HIT"},
-		"X-Cache-Hit":        {"true", "1"},
-		"Age":                {},  // Presence indicates cached
-		"X-Served-By":        {},  // CDN indicator
-		"X-Cache-Status":     {"HIT"},
+		"CF-Cache-Status": {"HIT", "MISS", "DYNAMIC"},
+		"X-Cache":         {"HIT", "MISS", "TCP_HIT", "Error from cloudfront", "Hit from cloudfront"},
+		"X-Cache-Hit":     {"true", "1"},
+		"Age":             {}, // Presence indicates cached
+		"X-Served-By":     {}, // CDN indicator
+		"X-Cache-Status":  {"HIT"},
 	}
 
 	for header, values := range cacheIndicators {
@@ -529,7 +538,7 @@ func (pt *PoisonTester) getCacheStatus(resp *HTTPResponse) string {
 	}
 
 	statusHeaders := []string{
-		"CF-Cache-Status", "X-Cache", "X-Cache-Status", 
+		"CF-Cache-Status", "X-Cache", "X-Cache-Status",
 		"X-Cache-Hit", "Cache-Status",
 	}
 
@@ -551,9 +560,9 @@ func (pt *PoisonTester) responsesMatch(resp1, resp2 *HTTPResponse) bool {
 	if resp1 == nil || resp2 == nil {
 		return false
 	}
-	return resp1.Hash == resp2.Hash || 
-		(resp1.StatusCode == resp2.StatusCode && 
-		 len(resp1.Body) > 0 && len(resp1.Body) == len(resp2.Body))
+	return resp1.Hash == resp2.Hash ||
+		(resp1.StatusCode == resp2.StatusCode &&
+			len(resp1.Body) > 0 && len(resp1.Body) == len(resp2.Body))
 }
 
 // addResult safely adds a result to the results slice
@@ -611,10 +620,10 @@ func (pt *PoisonTester) SaveResults(filename string) error {
     "cache_status": "%s",
     "is_poisoned": %v,
     "timestamp": "%s"
-  }`, result.URL, result.VulnType, result.Header, 
-			escapeJSON(result.Payload), result.CacheStatus, 
+  }`, result.URL, result.VulnType, result.Header,
+			escapeJSON(result.Payload), result.CacheStatus,
 			result.IsPoisoned, result.Timestamp.Format(time.RFC3339)))
-		
+
 		if i < len(pt.results)-1 {
 			file.WriteString(",\n")
 		}
@@ -685,13 +694,13 @@ func extractHost(targetURL string) string {
 	return u.Host
 }
 
-func addPort(host, port string) string {
-	// Remove existing port if present
-	if idx := strings.LastIndex(host, ":"); idx != -1 {
-		host = host[:idx]
-	}
-	return host + ":" + port
-}
+// func addPort(host, port string) string {
+// 	// Remove existing port if present
+// 	if idx := strings.LastIndex(host, ":"); idx != -1 {
+// 		host = host[:idx]
+// 	}
+// 	return host + ":" + port
+// }
 
 func extractSnippet(body, payload string) string {
 	idx := strings.Index(body, payload)

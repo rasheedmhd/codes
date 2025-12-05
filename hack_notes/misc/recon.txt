@@ -1,0 +1,178 @@
+OWASP WSTG - 4.1.X
+1 Conduct Search Engine Discovery Reconnaissance for Information Leakage
+- Google dorking
+- Use different search engines bc they index differently
+
+DONE - Get robots.txt file 
+
+2. Fingerprinting web servers
+DONE - Banner grab ( curl -I domain)  server: cloudflare
+- Server response adds the server name and version
+- If server obscures name and version, study response header ordering
+Send Malformed Requests
+- Study default server error response msgs
+- Tools: Netcraft . Nikto . Nmap
+
+3. Review Webserver Metafiles for Information Leakage
+Identify hidden + obfuscated paths and functionality through metadata files analysis.
+Extract and map other information that could lead to a better understanding of the system
+- META tags . Robots.txt . Sitemaps . Security.txt . humans.txt
+curl -O -Ss https://www.google.com/robots.txt && head -n5 robots.txt
+
+4. Enumerate Applications on Webserver
+Enumerate the applications within the scope that exist on the web server.
+Different Base URLs: Site: operator
+Non Standard ports:   Web apps can be hosted on different ports != 443/80
+nmap -sV > nmap –Pn –sT –sV –p0-65535
+Virtual Hosts: DNS allows a single IP address to be associated with one or more symbolic names.
+
+5. Review Web Page Content for Information Leakage
+
+6. Identify Application Entry Points
+
+7. Map Execution Paths Through Application
+ZAP spidering
+ZAP offers various automatic spidering options,
+which can be leveraged based on the tester’s needs:
+Spider . Ajax Spider . Check for OpenAPI Support
+
+8. Fingerprint Web Application Framework
+Several locations exists to consider to identify frameworks or components:
+HTTP headers . X-Powered-By . X-Generator . Cookies
+HTML source code    .    Specific files and folders
+File extensions     .    Error messages
+
+9. Map Application Architecture
+Web Framework  .  Web Server  .  Database
+PaaS  .  Serverless   .   Microservices
+Port scan server for any open ports associated with specific databases.
+Trigger SQL/NoSQL related error messages [ find existing errors from a search engine ]
+Load Balancers
+Content Delivery Network (CDN) [to read]
+If the majority of the ports are shown as “closed”
+(i.e, they return a RST packet in response to the initial SYN packet),
+this suggests that the server may not be protected by a firewall.
+If the ports are shown as “filtered”
+(i.e, no response is received when sending a SYN packet to an unused port),
+then a firewall is most likely to be in place.
+Network Intrusion Detection and Prevention System
+Web App Firewall
+If a cloud-based WAF is in use, then it may be possible to bypass it
+by directly accessing the backend server, using the same methods discussed
+in the Content Delivery Network section.
+
+10. TESTING HTTP METHODS
+Enumerate supported HTTP methods.
+Test for Access Control bypass.
+Test HTTP method overriding techniques.
+
+Discover the Supported Methods
+
+Using PUT to upload files to older webservers
+curl https://example.org --upload-file test.html
+
+Using DELETE to delete files form a webserver
+curl https://example.org/test.html -X DELETE
+
+
+Testing for Access Control Bypass
+
+Testing for HTTP Method Overriding
+
+The following alternative HTTP headers could potentially be used:
+
+X-HTTP-Method
+X-HTTP-Method-Override
+X-Method-Override
+
+Preflight request
+A CORS preflight request is a CORS request that checks to see if the CORS protocol is understood and a server is aware using specific methods and headers.
+
+OPTIONS	List supported HTTP methods.	Perform a CORS Preflight request.
+
+Test HTTP Strict Transport Security
+
+
+Here’s an example of the HSTS header implementation:
+
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+Test Objectives
+Review the HSTS header and its validity.
+$ curl -s -D- https://owasp.org | grep -i strict-transport-security:
+
+https://hstspreload.org/
+
+Test File Permission
+How to Test
+In Linux, use ls command to check the file permissions. Alternatively, namei can also be used to recursively list file permissions.
+
+$ namei -l /PathToCheck/
+
+The files and directories that require file permission testing can include, but are not limited to, the following:
+
+Web files/directory
+Configuration files/directory
+Sensitive files(encrypted data, password, key)/directory
+Log files(security logs, operation logs, admin logs)/directory
+Executables(scripts, EXE, JAR, class, PHP, ASP)/directory
+Database files/directory
+Temp files/directory
+Upload files/directory
+
+TESTING SUB-DOMAIN TAKE OVER
+Enumerate all possible domains (previous and current).
+Identify any forgotten or misconfigured domains.
+
+https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/10-Test_for_Subdomain_Takeover [Re Read and follow links to learn deeper ]
+
+TESTING FOR CLOUD STORAGE
+First, identify the URL to access the data in the storage service, and then consider the following tests:
+read unauthorized data
+upload a new arbitrary file
+
+To test the ability to read an object:
+curl -X GET https://<cloud-storage-service>/<object>
+To test the ability to upload a file:
+curl -X PUT -d 'test' 'https://<cloud-storage-service>/test.txt'
+
+Testing for Amazon S3 Bucket Misconfiguration
+The Amazon S3 bucket URLs follow one of two formats,
+either virtual host style or path-style.
+
+Virtual Hosted Style Access
+Virtual Hosted Style Access:
+https://bucket-name.s3.Region.amazonaws.com/key-name
+https://my-bucket.s3.us-west-2.amazonaws.com/puppy.png
+Path-Style Access: https://s3.Region.amazonaws.com/bucket-name/key-name
+
+Test with the AWS-CLI
+list: aws s3 ls s3://<bucket-name>
+upload: aws s3 cp arbitrary-file s3://bucket-name/path-to-save
+remove: aws s3 rm s3://bucket-name/object-to-remove
+more:
+https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingBucket.html
+
+TESTING CSP
+How to Test
+To test for misconfigurations in CSPs, look for insecure configurations by examining the Content-Security-Policy HTTP response header or CSP meta element in a proxy tool:
+
+https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/12-Test_for_Content_Security_Policy [ Dive Deeper ]
+
+
+Test Path Confusion
+Black-Box Testing
+
+
+https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/13-Test_for_Path_Confusion [ Learn about Web Cache Poisoning in Reference Links]
+
+
+
+
+
+
+
+
+
+
+

