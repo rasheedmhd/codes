@@ -9,6 +9,14 @@ The CDN then determines whether the resource should be served from the cache or
 requested directly from the origin web server.
 [Cloudflare Cache Keys](https://developers.cloudflare.com/cache/how-to/cache-keys/)
 
+## Using hop-by-hop headers as unkeyed inputs 
+[See https://nathandavison.com/blog/abusing-http-hop-by-hop-request-headers](https://datatracker.ietf.org/doc/html/rfc2068#section-13.5.1)
+[See Internal Route Header Attack p.7](https://dl.acm.org/doi/10.1145/3658644.3690361)
+[Worldwide Server-side Cache Poisoning on All Akamai Edge Nodes ($50K+ Bounty Earned)](https://medium.com/@jacopotediosi/worldwide-server-side-cache-poisoning-on-all-akamai-edge-nodes-50k-bounty-earned-f97d80f3922b)
+[Abusing HTTP hop-by-hop request headers](https://nathandavison.com/blog/abusing-http-hop-by-hop-request-headers)
+[Apache CVE-2022-31813](https://community.f5.com/kb/technicalarticles/apache-cve-2022-31813-and-the-hop-by-hop-header-mechanism/299354)
+
+
 # Injecting Payloads with unkeyed inputs 
 However, injecting a payload is not the only possible vector for this vulnerability. 
 Other possibilities include:
