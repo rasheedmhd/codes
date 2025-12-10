@@ -1,4 +1,4 @@
-Summary 
+# Summary 
 1. Detect the GraphQL API end point
 2. Detect the server impl 
 3. Match server impl with the Threat Matrix 
@@ -9,7 +9,7 @@ Summary
 8. Spectre to Generate SDL Documentation
 
 
-GraphQL Questions to Impact
+# GraphQL Questions to Impact
 ===========================
 Does the web server even have a GraphQL API? 
 On which endpoint is GraphQL configured to receive queries? 
@@ -21,7 +21,8 @@ What types of defenses exist for the specific GraphQL implementation?
 What are some of the out-of-the-box default configuration settings of this implementation? 
 Does the GraphQL server have any additional security protection layers in place?
 
-1 Detect GraphQL End point 
+## 1 Detect GraphQL End point 
+```
 /v1/graphql
 /v2/graphql
 /v3/graphql
@@ -30,11 +31,13 @@ https://github.com/danielmiessler/SecLists/blob/fe2aa9e7b04b98d94432320d09b5987f
 Additionally check for GUI end points 
 /graphiql      /v1/graphiql       /v2/graphiql,
 /playground    /v1/playground     /v2/playground
+```
 
-2 Detecting GraphQL
+## 2 Detecting GraphQL
 Manual guessing of possible graphql impl end points
 Guessing usage of tools like graphiql 
 Examples 
+```
 Apollo   -> TypeScript
 Yoga
 
@@ -50,9 +53,11 @@ graphql-java -> Java
 Sangria      -> Scala
 Juniper      -> Rust
 HyperGraphQL -> Java
+```
 
 Graphene can expose two endpoints, one for GraphQL, and the other
 for GraphiQL Explorer, which is built into Graphene
+```
 [
     app.add_url_rule('/graphql', view_func=GraphQLView.as_view(
         'graphql',
@@ -64,72 +69,74 @@ for GraphiQL Explorer, which is built into Graphene
         graphiql = True
     ))
 ]
+```
+
 Each endpoint could have different security settings.
 One could be stricter than the other
 
-End points list 
+## End points list 
 https://github.com/dolevf/Black-Hat-GraphQL/blob/master/ch04/common-graphql-endpoints.txt
 
-$ curl -X GET http://localhost:5013/graphql
+> curl -X GET http://localhost:5013/graphql
 {"errors":[{"message":"Must provide query string."}]}
 
 With this information, We automate a scan and
 pick up any other GraphQL servers that may exist. 
 - Detecting GraphQL end points with Nmap + http-grep NSE script
-$ nmap -p 5013 -sV --script=http-grep --script-args='match="Must provide query string", 
-http-grep.url="/graphql"' localhost
+> nmap -p 5013 -sV --script=http-grep --script-args='match="Must provide query string", http-grep.url="/graphql"' localhost
 
-GraphQL servers could run on any port,
+## GraphQL servers could run on any port,
 but a few are quite common, such as 
-80–89, 443, 4000–4005, 8443, 8000, and 8080
+> 80–89, 443, 4000–4005, 8443, 8000, and 8080
 
-Common Responses
+## Common Responses
 This is basically comparing the return message with the nature of GraphQL responses 
-"data": {
-    #valid
-    #query response information 
-}
 
-"errors": [{
-    #invalid 
-    #what went wrong 
-}]
+    "data": {
+        #valid
+        #query response information 
+    }
 
-Identifying GraphQL without knowing any fields 
-The __typename Field
-query {
-    __typename
-}
+    "errors": [{
+        #invalid 
+        #what went wrong 
+    }]
+
+    Identifying GraphQL without knowing any fields 
+    The __typename Field
+    query {
+        __typename
+    }
 
 When GraphQL servers accept queries using GET, you can pass the
 query parameter along with the GraphQL query (in this case, the query{__typename}) 
 With this in mind, we can automate the detection of GraphQL by using Nmap fairly easily. 
 Example 
-# nmap -p 5013 -sV --script=http-grep --script-args='match="__typename",
-http-grep.url="/graphql?query=\{__typename\}"' localhost
+> nmap -p 5013 -sV --script=http-grep --script-args='match="__typename", http-grep.url="/graphql?query=\{__typename\}"' localhost
 
 If you have more than a handful of hosts to scan, you can use
 Nmap’s -iL flag to point to a file that contains a list of hostnames, as
-nmap -p 5013 -iL hosts.txt -sV ........
+> nmap -p 5013 -iL hosts.txt -sV ........
 
 If the GraphQL server does not support GET-based queries, we can use
 cURL and the __typename field to make a POST request to detect GraphQL
 
-curl -X POST http://localhost:5013/graphql -d '{"query":"{__typename }"}'
--H "Content-Type: application/json"
+> curl -X POST http://localhost:5013/graphql -d '{"query":"{__typename }"}' -H "Content-Type: application/json"
 
-List of Host, using bash 
-for host in $(cat hosts.txt); do
-    curl -X POST "$host" -d '{"query":"{__typename }"}' -H "Content-Type: application/json"
-done
 
-GraphW00f 
--d detect
--t target 
--f fingerprint 
-$ python3 main.py -d -t http://localhost:5013
+## List of Host, using bash 
 
-Scanning for Graphical Interfaces with EyeWitness <TO STUDY>
+    for host in $(cat hosts.txt); do
+        curl -X POST "$host" -d '{"query":"{__typename }"}' -H "Content-Type: application/json"
+    done
+
+## Using GraphW00f 
+    -d detect
+    -t target 
+    -f fingerprint 
+     python3 main.py -d -f -t http://localhost:5013
+
+## Scanning for Graphical Interfaces with EyeWitness <TO STUDY>
 -h help
 -d dump report
 --web uses headless browser 
@@ -137,7 +144,7 @@ Scanning for Graphical Interfaces with EyeWitness <TO STUDY>
 eyewitness --web --single http://localhost:5013/graphiql -d dvga-report
 
 
-INTROSPECTION
+# INTROSPECTION
 one of the first things we want to test when we run into a
 GraphQL application is whether its introspection mechanism is enabled.
 
@@ -156,37 +163,38 @@ Go        graphql-go      Enabled by default            Not available
 Ruby      graphql-ruby    Enabled by default            Available
 Java      graphql-java    Enabled by default            Not available
 
-query IntrospectionQuery {
-    __schema {
-        queryType { name }
-        mutationType { name }
-        subscriptionType { name }
-        types {
-            kind
-            name
-            fields {
-                name    
-                args {
-                    name
+    query IntrospectionQuery {
+        __schema {
+            queryType { name }
+            mutationType { name }
+            subscriptionType { name }
+            types {
+                kind
+                name
+                fields {
+                    name    
+                    args {
+                        name
+                    }
                 }
             }
         }
     }
-}
 
 Using nmap to detect when introspection is enabled
-nmap --script=graphql-introspection -iL hosts.txt -sV -p 5013
+> nmap --script=graphql-introspection -iL hosts.txt -sV -p 5013
 
 Full fledged Introspection script 
-https://github.com/dolevf/Black-Hat-GraphQL/blob/master/queries/introspection_query.txt
+[Instrospection Query](https://github.com/dolevf/Black-Hat-GraphQL/blob/master/queries/introspection_query.txt)
+[SecList GraphQL](https://github.com/danielmiessler/SecLists/blob/fe2aa9e7b04b98d94432320d09b5987f39a17de8/Discovery/Web-Content/graphql.txt)
 
-SecList GraphQL 
-https://github.com/danielmiessler/SecLists/blob/fe2aa9e7b04b98d94432320d09b5987f39a17de8/Discovery/Web-Content/graphql.txt
-
-Visualizing Introspection with GraphQL Voyager
-
+## Visualizing Introspection with GraphQL Voyager
 Generating Introspection Documentation with SpectaQL
-SpectaQL (https://github.com/anvilco/spectaql)
+[SpectaQL](https://github.com/anvilco/spectaql)
 
-Fingerprinting GraphQL
+## Fingerprinting GraphQL
 curl -I https://apache.org/
+
+Had problems with clairvoyance but clairvoyancex came to the rescue
+[Clairvoyancex](https://github.com/y0k4i-1337/clairvoyancex)
+> poetry run python -m clairvoyancex -vv -o ~/<out put file dir>/schema.json -w ~/<word list dir>/1k-english.txt <url>
