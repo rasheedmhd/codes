@@ -88,6 +88,10 @@ try to use an alternative data exfiltration method.
 7. See if you can launch an SSRF attack using the XXE.
 
 
+# Real World Exploits 
+[SpaceRacoon's XML Path Traversal to RCE](https://spaceraccoon.dev/a-tale-of-two-formats-exploiting-insecure-xml-and-zip-file-parsers-to-create-a/)
+
+
 https://cwe.mitre.org/data/definitions/611.html
 https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html
 

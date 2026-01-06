@@ -360,3 +360,6 @@ Examine the application routing configuration, Most of the time, developers use 
 # httpx 
 httpx -l sbf -title -status-code -tech-detect -follow-redirects
 httpx -l amass_domains_enum.txt -title -status-code -tech-detect -follow-redirects
+
+# ffuf 
+ffuf -w ~/dev/sec/wordlists/parameters.txt -fc 200,300,301,403  -u https://ls.cte.hwcloud.m-pesa.africa/web/FUZZ -mc all -fs 42 -c -v
