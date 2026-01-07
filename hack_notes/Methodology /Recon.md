@@ -51,7 +51,7 @@ trufflehog github --org=Pinterest --no-verification --results=verified --concurr
 trufflehog github --org=Pinterest --results=verified --concurrency=20
 trufflehog github --org=kub-chain --results=verified --concurrency=20
 
-WORD LISTS
+# WORD LISTS
 https://github.com/danielmiessler/SecLists/
 https://github.com/assetnote/commonspeak2/
 5. Service Enumeration (port scanning)
@@ -334,7 +334,7 @@ remove: aws s3 rm s3://bucket-name/object-to-remove
 more:
 https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingBucket.html
 
-TESTING CSP
+# TESTING CSP
 How to Test
 To test for misconfigurations in CSPs, look for insecure configurations by examining the Content-Security-Policy HTTP response header or CSP meta element in a proxy tool:
 
@@ -363,3 +363,12 @@ httpx -l amass_domains_enum.txt -title -status-code -tech-detect -follow-redirec
 
 # ffuf 
 ffuf -w ~/dev/sec/wordlists/parameters.txt -fc 200,300,301,403  -u https://ls.cte.hwcloud.m-pesa.africa/web/FUZZ -mc all -fs 42 -c -v
+
+# JS Files Search
+[Source](https://blog.stackademic.com/hunting-javascript-file-for-bug-hunters-e8b278a1306a)
+cat target.txt | gau | grep ".js" | tee js.txt
+cat target.txt | waybackurls | grep ".js" | tee -a js.txt
+
+cat target.txt | subjs | httpx -mc 200 | tee -a js.txt
+
+nuclei -l js.txt -t http/exposures/ -o js_bugs.txt
