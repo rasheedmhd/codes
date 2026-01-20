@@ -25,6 +25,7 @@ http://169.254.169.254/latest/meta-data
 2. **Test endpoints** - Focus on those potentially prone to SSRF vulnerabilities
 
 ## Achieving SSRF through protocol change 
+Put a server on [Test SSRF Server](https://ssrf.fly.dev) to test this 
 [DoyenSec](https://blog.doyensec.com/2023/03/16/ssrf-remediation-bypass.html)
 
 ### 1. Spot Features Prone to SSRF
