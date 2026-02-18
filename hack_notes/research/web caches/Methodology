@@ -1,0 +1,29 @@
+# 1 Target acquisition
+## Gather targets that have bug bounty programs
+- Hackerone
+- Bugcrowd
+- Immunifi
+- Hackenproof
+- bbscope
+- yeswehack
+[ seed pool ]
+INFO: Google dorks to gather sites that had a reported
+WCP/D in the pass to retest them / test other end points
+
+## Expand target list
+Expand target list gathering subdomains and urls to test
+[ expanded pool ] - aquatone, sublister, amass
+me: subfinder, amass, httpx, ffuf 
+
+## Sign up 
+Create accounts in the targets - OAuth
+Feed victim accounts with data to grep for in cached responses
+Sensitive inputs fields
+Gather cookies
+
+# 2 Cache Header Filtering
+- Run an automated script to crawl the gathered 
+urls and domains and parse the responses for cache header statuses 
+Gather a list of responses with cache header statuses into a new list
+
+

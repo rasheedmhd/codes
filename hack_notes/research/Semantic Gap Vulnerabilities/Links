@@ -1,0 +1,64 @@
+https://about.gitlab.com/blog/how-to-exploit-parser-differentials/
+blog.deesee.xyz
+https://blog.deesee.xyz/fuzzing/security/2021/02/26/ssrf-bypassing-hostname-restrictions-fuzzing.html
+
+https://www.blackhat.com/docs/us-17/thursday/us-17-Tsai-A-New-Era-Of-SSRF-Exploiting-URL-Parser-In-Trending-Programming-Languages.pdf
+
+https://hackerone.com/reports/704621
+
+
+https://blog.bugport.net/exploiting-http-parsers-inconsistencies
+
+
+https://blog.trailofbits.com/2025/06/17/unexpected-security-footguns-in-gos-parsers/
+
+encoding/json: parser ignores the case of member names
+https://github.com/golang/go/issues/14750
+
+proposal: encoding/xml: option to treat unknown fields as an error 
+https://github.com/golang/go/issues/30301
+
+proposal: encoding/json/v2: new API for encoding/json
+https://github.com/golang/go/issues/71497
+
+Enter the Vault: Authentication Issues in HashiCorp Vault
+https://nvd.nist.gov/vuln/detail/cve-2020-16250
+https://googleprojectzero.blogspot.com/2020/10/enter-the-vault-auth-issues-hashicorp-vault.html
+
+encoding/json: the Decoder.Decode API lends itself to misuse
+https://github.com/golang/go/issues/36225
+
+Parsing JSON is a Minefield 💣
+https://seriot.ch/projects/parsing_json.html
+
+An Exploration of JSON Interoperability Vulnerabilities
+By: Jake Miller, Security Researcher
+https://bishopfox.com/blog/json-interoperability-vulnerabilities
+
+
+Early case in the wild Erlang JSON parse issue affecting CouchDb
+https://nvd.nist.gov/vuln/detail/CVE-2017-12635
+
+
+https://blog.siguza.net/
+https://blog.siguza.net/psychicpaper/
+
+XMPP Stanza Smuggling or How I Hacked Zoom
+Ivan Fratric, Google Project Zero
+BlackHat USA 2022
+https://i.blackhat.com/USA-22/Thursday/US-22-Fratric-XMPP-Stanza-Smuggling.pdf
+
+
+Sign in as anyone: Bypassing SAML SSO authentication with parser differentials
+https://github.blog/security/sign-in-as-anyone-bypassing-saml-sso-authentication-with-parser-differentials/
+
+A Survey of Parser Differential Anti-Patterns
+Year: 2023, Pages: 105-116
+https://www.computer.org/csdl/proceedings-article/spw/2023/123600a105/1P5ZnKk745O
+
+Parse, don't validate
+https://lexi-lambda.github.io/
+
+https://daniel.haxx.se/blog/2022/01/10/dont-mix-url-parsers/
+
+https://www.brainonfire.net/blog/2022/04/11/what-is-parser-mismatch/
