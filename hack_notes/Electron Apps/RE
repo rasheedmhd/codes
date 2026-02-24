@@ -1,0 +1,19 @@
+# On Mac
+hdiutil attach RE.app.dmg
+cd /Volumes/RE/RE.app /Applications
+
+asar extract app.asar app <output folder>
+
+grep -R "nodeIntegration" .
+grep -R "contextIsolation" .
+grep -R "preload" .
+
+grep -R "api" .
+grep -R "token" .
+grep -R "key" .
+
+grep -R "https://" .
+
+grep -R "ipcMain" .
+grep -R "ipcRenderer" .
+
