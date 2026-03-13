@@ -69,3 +69,25 @@ https://discuss.hashicorp.com/t/hcsec-2024-05-vault-cert-auth-method-did-not-cor
 
 My favorite talk I did was the EuroRust one. If you know some rust, you might enjoy it. It’s an intersection between rust and security
 https://youtu.be/QcS9UNsVhp8?feature=shared
+
+
+## ON RECON
+I think the key to building automation is this
+
+You need to have a specific methodology in mind already that is successful
+Build that methodology into a tool
+Run the tool
+
+The tool just automates your methodology. 
+
+You should start simple (like very simple) and go from there. I would recommend not starting with recon automation, but start with bug finding automation. Recon automation is such an easy trap to get caught up in because you can always get more data, but ultimately we're not here to collect data; we're here to collect bounties. To do that, we need to find bugs. 
+
+Here's what I'd do
+
+1. Screen record yourself looking for an XSS or an idor for like 5 minutes, from scratch (_start from being completely logged out so you record yourself logging in and playing with ids and such in burp/caido/etc)
+
+2. Go back and write down the steps you took in a text file (step 1: log in, step 2: navigate to each page in the navigation bar and record all the http traffic, step 3: for each url that looks like it has an id field, try to change it to a different ID and look for a successful result, etc)
+
+3. Now you have a text file that tells you specific steps to repeat, go and implement this. These days AI is pretty good at building simple scripts, so you can ask it to generate a tool that does these steps. Also some people are using AI to do some of this automation automatically by prompting it. You can probably lay out your methodology in a prompt and see good results that way too.
+So having practice doing manual bug hunting is good because you'll at least know the steps to find a bug, but now you just need to specifically lay out what you do when you're bug hunting
+if you're just haphazardly clicking around and guessing on stuff then it'll be hard to explain what you're doing, and therefore hard to automate
