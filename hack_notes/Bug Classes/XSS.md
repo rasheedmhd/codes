@@ -49,6 +49,12 @@ X-Forwarded-For: >
 Cookie: gdId=xss</script%20
 ```
 
+## Bypassing WAFs
+"Understand that when you are put up against a WAF that it's all trial and error.
+You put in a few possible payloads and go a few characters at a time until 
+you understand what is causing the WAF to kill the request"
+[- Brett B](https://buer.haus/2017/03/08/airbnb-when-bypassing-json-encoding-xss-filter-waf-csp-and-auditor-turns-into-eight-vulnerabilities/)
+
 # Cheatsheet
 https://portswigger.net/web-security/cross-site-scripting/cheat-sheet
 https://github.com/masatokinugawa/filterbypass/wiki/Browser's-XSS-Filter-Bypass-Cheat-Sheet
@@ -101,7 +107,7 @@ Despite the potential damage XSS can cause on a site, fixing XSS vulnerabilities
 When they say they have fixed your issue, please test again to confirm that it has really be fixed. 
 if it isn't fixed properly, point out to them to make a proper complete fix.
 
-XSS Polymorphism 
+## XSS Polymorphism 
 - Changing your payload based of sanitation information received from the target
 - if your payload is getting sanitized, 
 how do you by pass the sanitization?
@@ -126,8 +132,8 @@ Turning HTML Injection into XSS
 <form id="test"></form><button form="test" formaction="javascript:alert(1)">X</button>
 
 
-BROWSERS HACKERS HANDBOOK
-URL OBFUSCATION
+# BROWSERS HACKERS HANDBOOK
+## URL OBFUSCATION
 The following are ways in which to obfuscate a URL:
 ■ URL Shorteners
 ■ URL Redirectors

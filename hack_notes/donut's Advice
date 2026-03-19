@@ -78,9 +78,12 @@ You need to have a specific methodology in mind already that is successful
 Build that methodology into a tool
 Run the tool
 
-The tool just automates your methodology. 
-
-You should start simple (like very simple) and go from there. I would recommend not starting with recon automation, but start with bug finding automation. Recon automation is such an easy trap to get caught up in because you can always get more data, but ultimately we're not here to collect data; we're here to collect bounties. To do that, we need to find bugs. 
+## The tool just automates your methodology. 
+**You should start simple (like very simple) and go from there.** 
+**I would recommend not starting with recon automation, but start with bug finding automation** 
+**Recon automation is such an easy trap to get caught up in because you can always get more data**
+**but ultimately we're not here to collect data**
+**we're here to collect bounties. To do that, we need to find bugs.** 
 
 Here's what I'd do
 
@@ -95,15 +98,25 @@ if you're just haphazardly clicking around and guessing on stuff then it'll be h
 
 ## NahamSec's Advice 
 [How are people finding hundreds/thousands of bugs so quickly?](https://www.reddit.com/r/bugbounty/comments/dq67ea/how_are_people_finding_hundredsthousands_of_bugs/)
-Depends on the hacker. If you are looking at their profile on HackerOne and their 'impact' is ~20 or more then they are finding more than "best practices" because that means their bounties are more than average. For hackers that are finding 100 of bugs every year, it comes down to a few things:
+Depends on the hacker. If you are looking at their profile on HackerOne and their 
+'impact' is ~20 or more then they are finding more than "best practices" because that means 
+their bounties are more than average. For hackers that are finding 100 of bugs every year, 
+it comes down to a few things:
 
-Having your methodology down: Know how you look for bugs. How you test for them quickly to see if it's even vulnerable to specific bug classes.
+1. Having your methodology down: Know how you look for bugs. 
+How you test for them quickly to see if it's even vulnerable to specific bug classes.
 
-Automation: If you are doing it more than 2-3 a day, you should definitely automate it so you spend your time on things that matter. (those 30-40 seconds add up if you do it 100 times a day + 7 times a week.
+2. Automation: If you are doing it more than 2-3 a day, 
+you should definitely automate it so you spend your time on things that matter. 
+(those 30-40 seconds add up if you do it 100 times a day + 7 times a week.
 
-Recognize patterns: If you see a site vulnerable to IDOR, stick to it. Find as many as you can. Chances are if 2/6 random endpoints you've hit are vulnerable, then you can probably find more if you know how to test for them (knowing how to automate for this would be pretty handy)
+3. Recognize patterns: If you see a site vulnerable to IDOR, stick to it. 
+Find as many as you can. Chances are if 2/6 random endpoints you've hit are vulnerable, 
+then you can probably find more if you know how to test for them 
+(knowing how to automate for this would be pretty handy)
 
-Stick to a program with a big scope: The more you get to know a company the better you get at hacking them. This means you know what mistakes they make, how they name things, and what matters to them the most.
+4. Stick to a program with a big scope: The more you get to know a company the better you get at hacking them. 
+This means you know what mistakes they make, how they name things, and what matters to them the most.
 
 And of course.. practice: the more you do it the better you get at all of the points I have mentioned.
 
