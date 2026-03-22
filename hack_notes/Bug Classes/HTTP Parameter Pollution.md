@@ -18,3 +18,5 @@ ASP + IIS = all occurences
 [Stefan Di Paolo + Luca Carettoni OG Research Slide](https://www.slideshare.net/slideshow/http-parameter-pollution-a-new-category-of-web-attacks/1457503)
 
 https://www.slideshare.net/slideshow/http-parameter-pollution-vulnerabilities-in-web-applications-black-hat-eu-2011/7306673
+
+[Exploiting an IDOR via Parameter Pollution](https://0xgaurang.medium.com/case-study-bypassing-idor-via-parameter-pollution-78f7b3f9f59d)
