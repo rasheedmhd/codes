@@ -350,3 +350,46 @@ XLSX
 # Real world exploits
 https://hackerone.com/reports/631589
 https://zhero-web-sec.github.io/cache-deception-to-csrf/
+
+# Report Sample 
+Web Cache Deception
+Web cache deception is a vulnerability that enables an attacker to trick a web cache into storing sensitive, dynamic content. It's caused by discrepancies between how the cache server and origin server handle requests.
+In a web cache deception attack, an attacker persuades a victim to visit a malicious URL, inducing the victim's browser to make an ambiguous request for sensitive content. The cache misinterprets this as a request for a static resource and stores the response. The attacker can then request the same URL to access the cached response, gaining unauthorized access to private information.
+Websites often tend to use web cache functionality with CDNs to store files(mostly static) that are often retrieved, to reduce latency from the web server. For example let's say http://www.example.com is configured to go cache some files on a CDN. A dynamic page that is stored on the server and returns personal content of users, such as http://www.example.com/home.php, will have to created dynamically per user, since the data is different for each user. This kind of data, or at least its personalized parts, isn't cached.
+As said above what is commonly cached and reasonably so are static, public files: style sheets (css), scripts (js), text files (txt), images (png, bmp, gif), etc. This makes sense because these files usually don't contain any sensitive information and don't change too often. It's a widely recommended practice to cache all static files that are meant to be public.
+What happens when accessing a URL like http://www.example.com/home.php/random_might_not_even_exist.css ? The browser makes a GET request to that URL. How does the server interpret the request URL? The server returns the content of http://www.example.com/home.php. And yes, the URL remains http://www.example.com/home.php/random_might_not_even_exist.css. The HTTP headers will be the same as for accessing http://www.example.com/home.php directly: same caching headers and same content type (text/html, in this case).
+As stated prior http://www.example.com/home.php has dynamic and sensitive information and it is not supposed to be cached. But now we have appended a file that might not even exist to insinuate to the Web Server that we want to get that file and because the GET request has to pass through the CDN first, and the URL matches the CDN's rules of caching static files, On the first request http://www.example.com/home.php/random_might_not_even_exist.css isn't cached so the request is forwarded to the Server that returns http://www.example.com/home.php as http://www.example.com/home.php/random_might_not_even_exist.css and the CDN caches
+http://www.example.com/home.php/random_might_not_even_exist.css. Now anyone even unauthenticated can visit http://www.example.com/home.php/random_might_not_even_exist.css anywhere and they will see the victim's information at http://www.example.com/home.php/random_might_not_even_exist.css. Information that was only supposed to be available at http://www.example.com/home.php for the authenticated user/victim.
+
+
+## Summary of the Issue
+The web application is vulnerable to a cache poisoning issue on the following endpoint:
+ 
+```
+https://
+```
+ 
+The responses to GET requests are being served from a public cache, however due to the lack of the request body being present in the cache keys, we can achieve <insert vulnerability> via the <parameter_name> parameter of our requests.
+ 
+## Steps to reproduce
+ 
+1. Open Burp Suite and ensure it's sniffing all HTTP(S) requests in the background.
+2. Navigate to <endpoint>. Find the request to this endpoint in Burp's proxy history and send it to the repeater.
+3. Add the following cachebuster as a GET parameter: 'dontpoison=true'. This will ensure to isolate the resulting exploit to users who make requests to this endpoint with the 'dontpoison' parameter & value pair present.
+4. Insert the following POST parameter and value to the request body:
+ 
+<param> = <value>
+ 
+The entire request should now look like:
+ 
+<Full HTTP Request>
+ 
+5. Submit the request 8-10 times. Remove the POST parameter and value pair that was added in the previous step. 
+6. Change your IP address, and submit the request again. As you can see, the exploit has persisted, showing caching poisoning.
+  
+## Impact statement
+An attacker can poison the response served from the public cache to all users who navigate to the affected endpoint, resulting in <vulnerability name>
+ 
+## Remediation
+ 
+Ensure that the application does not process the HTTP body of a GET request.
