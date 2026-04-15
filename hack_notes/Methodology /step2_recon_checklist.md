@@ -21,7 +21,7 @@ An ASN (Autonomous System Number) groups IP ranges owned by an organization. Fin
 # going out to touch grass
 amass intel -org "Target Company Name"
 
-# asnlookup — search by 
+# asnmap — search by 
 org name    (-d), 
 ip          (-i), 
 dns         (-d), 

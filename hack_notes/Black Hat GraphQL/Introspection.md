@@ -17,7 +17,7 @@ _EnumValue  : provides one of the possible values of an enum
 _Directive  : information on both custom and built-in directives
 
 
-Validation and Execution
+# Validation and Execution
 All GraphQL query requests are tested for their validity against the schema
 and type system before they are executed and resolved by the server.
 
@@ -28,7 +28,7 @@ field, argument,
 fragment, value, 
 directive, and variable validations.
 
-COMMON WEAKNESSES
+# COMMON WEAKNESSES
 Specification Rule and Implementation Weaknesses
 GraphQL’s specification defines rules, design principles, and standard practices. 
 If you ever want to develop your own GraphQL implementation, this
@@ -44,8 +44,8 @@ about how implementations conform to the spec
 3 Authentication and Authorization Flaws
 4 Injections 
 
-Overcoming Disabled Introspection
-Use InQL for for Introspection is disabled
+# Overcoming Disabled Introspection
+Use InQL for Introspection is disabled
 
 1 Detect disabled introspection 
 2 Exploit non-production environments 
@@ -78,7 +78,7 @@ try
 {"query": "query{__schema{queryType{name}}}"}
 
 
-Errors
+# Errors
 It's interesting to know if the errors are going to be shown as they will contribute with useful information.
 ?query={__schema}
 ?query={}
@@ -89,17 +89,16 @@ the WAF blocking the intro req might be searching for
 the __schema meta-field and blocking it, like in AWS 
 AppSync's case 
 
-2 Use Field Suggestions 
-The Edit Distance Algorithm 
+# 2 Use Field Suggestions 
+# The Edit Distance Algorithm 
 To determine whether a typo is similar to a valid object, field, or argument
 in the schema, GraphQL implementations rely on the simple edit-distance
-algorithm. 
-a pull request was made on January 28, 2022, to disable field 
+algorithm. a pull request was made on January 28, 2022, to disable field 
 suggestions whenever introspection is disabled. 
-If merged, this pull request would
-make it difficult to abuse field suggestions when introspection is disabled
+If merged, this pull request would make it difficult to abuse field suggestions 
+when introspection is disabled
 
-3 Using Field Stuffing 
+# 3 Using Field Stuffing 
 We can use field stuffing to
 potentially discover sensitive information like passwords, keys, and PII by
 guessing and passing these potential field names into a query request that
@@ -118,8 +117,8 @@ python3 -m clairvoyance https://flyby-router-demo.herokuapp.com/
 -w ../high-frequency-vocabulary/30k.txt -o clairvoyance-apollo-schema.json
 
 
-Abusing Error Messages
-Error Message structure
+# Abusing Error Messages
+# Error Message structure
 Message
 Location
 Path - references a particular field and is used to determine 
@@ -128,7 +127,7 @@ whether a null result is intentional or caused by a runtime error
 Most information disclosure weaknesses
 occur in the message field
 
-Enabled Debug Mode 
+# Enabled Debug Mode 
 Some impl have debug on by default
 - might be through env vars 
 - parameters : see Magento's 
@@ -142,14 +141,14 @@ http://example.com/graphql?debug=1
 Some impl log debug msgs to the console be sure to 
 monitor the console tab
 
-Inferring Information from Stack Traces
+# Inferring Information from Stack Traces
 Various GraphQL endpoints on the same server
 could have different configuration settings. 
 For example, DVGA’s /graphql endpoint does not throw
 stack traces to client requests that raise an error.
 However, the /graphiql does 
 
-Leaking Data by Using GET-Based Queries
+# Leaking Data by Using GET-Based Queries
 some GraphQL implementations allow
 clients to execute queries using the GET method
 Because GET requests transmit data as query parameters in the URL,
