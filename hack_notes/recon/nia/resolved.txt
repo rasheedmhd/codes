@@ -1,0 +1,14 @@
+www.nia.gov.gh                         212.85.30.12, 
+test.nia.gov.gh                        197.253.68.65, 
+deploy.nia.gov.gh                      212.85.30.12, 
+portal.nia.gov.gh                      62.72.4.128, 
+backend.nia.gov.gh                     54.195.204.45,54.72.30.238, (cname:lb-backend-1905215316.eu-west-1.elb.amazonaws.com.)
+verifyid.nia.gov.gh                    154.160.73.250, 
+register.nia.gov.gh                    176.34.123.63,52.17.146.144, (cname:lb-frontend-498327508.eu-west-1.elb.amazonaws.com.)
+recruitment.nia.gov.gh                 212.85.30.12, 
+appointments.nia.gov.gh                197.253.68.65, 
+registertest.nia.gov.gh                52.17.146.144,54.229.191.207, (cname:lb-frontend-498327508.eu-west-1.elb.amazonaws.com.)
+www.recruitment.nia.gov.gh             76.223.54.146,13.248.169.48, (cname:recruitment.niaofficial.com.)
+www.appointments.nia.gov.gh            197.253.68.65, 
+mobileregistration.nia.gov.gh          104.236.84.90, 
+www.mobileregistration.nia.gov.gh      104.236.84.90, 

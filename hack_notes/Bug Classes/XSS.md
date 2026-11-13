@@ -21,7 +21,7 @@
 - test on HTML tag attributes like onload, onclick, onerror
 - HTTP URL schemes like javascript: and data:
 - with data: you can pass a base64 encode of the script payload
-- like data:text/html;base64,PHNjcmlwdD5hbGVydCgnWFNTIGJ5IFZpY2tpZScpPC9zY3JpcHQ+"
+- like data:text/html;base64,PHNjcmlwdD5hbGVydCgnWFNTIGJ5IFZpY2tpZScpPC9zY3JpcHQ+
 - or just pass the script 
 
 # XSS Validation
@@ -62,7 +62,7 @@ https://github.com/masatokinugawa/filterbypass/wiki/Browser's-XSS-Filter-Bypass-
 Everything about web application firewalls (WAFs) from a security perspective. 🔥
 https://github.com/0xInfection/Awesome-WAF
 
-Payloads All The Things
+# Payloads All The Things
 A list of useful payloads and bypasses for Web Application Security. Feel free to improve with your payloads and techniques !
 https://swisskyrepo.github.io/PayloadsAllTheThings/XSS%20Injection/#other-ways
 
@@ -307,7 +307,7 @@ Note that I use hexadecimal to represent characters that you probably can't type
 ## Prefix URI schemes.
 Firefox (\x09, \x0a, \x0d, \x20)
 Chrome (Any character \x01 to \x20)
-<iframe src="\x01javascript:alert(0)"></iframe> <!-- Example for Chrome -->
+<iframe src="\x01javascript:alert(0)"></iframe> 
 
 ## No greater-than characters needed (IE, Firefox, Chrome, Safari).
 <img src='1' onerror='alert(0)' <

@@ -1,0 +1,4 @@
+https://mlgcra.gov.gh
+https://www.mlgcra.gov.gh
+https://cp.mlgcra.gov.gh:8083
+https://mlgcra.gov.gh/phpmyadmin/
